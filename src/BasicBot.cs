@@ -25,6 +25,11 @@ namespace Microsoft.BotBuilderSamples
         public const string CancelIntent = "Cancel";
         public const string HelpIntent = "Help";
         public const string NoneIntent = "None";
+        public const string SearchIntent = "Search";
+
+        // Messages
+        public const string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox.";
+        public const string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";
 
         /// <summary>
         /// Key in the bot config (.bot file) for the LUIS instance.
@@ -114,15 +119,22 @@ namespace Microsoft.BotBuilderSamples
                         case DialogTurnStatus.Empty:
                             switch (topIntent)
                             {
-                                case GreetingIntent:
-                                    await dc.BeginDialogAsync(nameof(GreetingDialog));
+
+                                case SearchIntent:
+                                    // await dc.BeginDialogAsync(nameof(GreetingDialog));
+                                    await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
+                                    break;
+
+                                case HelpIntent:
+                                    await dc.Context.SendActivityAsync("You want help? ... I'm not very helpful just yet, sorry.");
                                     break;
 
                                 case NoneIntent:
+                                    await dc.Context.SendActivityAsync($"You don't seem to have an intent .... {DontUnderstand}");
+                                    break;
+
                                 default:
-                                    // Help or no intent identified, either way, let's provide some help.
-                                    // to the user
-                                    await dc.Context.SendActivityAsync("I didn't understand what you just said to me.");
+                                    await dc.Context.SendActivityAsync(DontUnderstand);
                                     break;
                             }
 
@@ -152,7 +164,7 @@ namespace Microsoft.BotBuilderSamples
                         // Greet anyone that was not the target (recipient) of this message.
                         if (member.Id != activity.Recipient.Id)
                         {
-                            await dc.Context.SendActivityAsync("Welcome, I can help you find Microsoft devices such as the Surface or Xbox.");
+                            await dc.Context.SendActivityAsync(Welcome);
                         }
                     }
                 }

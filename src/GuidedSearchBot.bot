@@ -1,61 +1,72 @@
 {
-  "name": "GuidedSearchBot",
-  "padlock": "WOjNNBWUJB2dKZVzgtL4xA==!iSPFpgHxMaYoWCovVWNfdk5VKgp1Tuwqpq9Kw+C2cleQ4OgBcE37SWpA6npOx37b",
-  "version": "2.0",
-  "services": [
-    {
-      "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
-      "resourceGroup": "GuidedSearchBot",
-      "serviceName": "GuidedSearchBot",
-      "type": "abs",
-      "name": "GuidedSearchBot",
-      "id": "1"
-    },
-    {
-      "connectionString": "1nQwvnZmeGQTaWV+pyC8SA==!jBtmZ5xEWxW157FfEaoSQbIEDa2Ard4UlkwhWBp1MKGzhnDpyEgz7dAmu8xLdHW0+zmamqgeQ60SpjEWO3S6nEE7iZwt4aoI6gEuEeuvQRseyRLckukctNbQy2AcsSsrzqfFQGegFZ7URTOXB8H24EsUm8br1JNlol6oky0Qp/0RblDjrHW/b9g2P0Nkhec8ZAak8RaUnxp+WkTMAi9BIpkgTMtAYzvWRAJwhYdO4K8=",
-      "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
-      "resourceGroup": "GuidedSearchBot",
-      "serviceName": "guidedsearchbotstorage",
-      "type": "blob",
-      "id": "2"
-    },
-    {
-      "appId": "",
-      "appPassword": "",
-      "endpoint": "http://localhost:3978/api/messages",
-      "type": "endpoint",
-      "name": "development",
-      "id": "3"
-    },
-    {
-      "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
-      "appPassword": "Q4LH9qJ5l5i/MgGT5RTrKw==!ovQNIaxwc6y1P9kwTDiZAnMKTvU0loHaN0yUc3qjVWM=",
-      "endpoint": "https://guidedsearchbot.azurewebsites.net/api/messages",
-      "type": "endpoint",
-      "name": "production",
-      "id": "4"
-    },
-    {
-      "instrumentationKey": "4sF0lFgzKb4zWdx0Xx1G2g==!kiP+1osPibHPOJHvUmZA8/iM7BUg+XsZYoxzygd9WIKhz1gKIrm/sTlxkWFDNfcb",
-      "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
-      "apiKeys": {},
-      "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-      "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
-      "resourceGroup": "GuidedSearchBot",
-      "serviceName": "GuidedSearchBoth6hd2s",
-      "type": "appInsights",
-      "id": "5"
-    },
-    {
-      "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
-      "authoringKey": "qxDTxG0AdnM6OpHy1ds53g==!BDAfA7q/lg+cvmeTnRp65AT/4ZQYAM3Q1qGWZyXoOGOTA1Yh8SgZiwpXeB9DgED1",
-      "version": "0.1",
-      "region": "westeurope",
-      "type": "luis",
-      "name": "BasicBotLuisApplication",
-      "id": "6"
-    }
-  ]
+    "name": "GuidedSearchBot",
+    "description": "",
+    "services": [
+        {
+            "type": "abs",
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "resourceGroup": "GuidedSearchBot",
+            "serviceName": "GuidedSearchBot",
+            "name": "GuidedSearchBot",
+            "id": "1",
+            "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841"
+        },
+        {
+            "type": "blob",
+            "connectionString": "GRVYWsnQ7GO9cxu2yO2tWw==!eHoZp5FW31J8WQLZm4blnCkNrbmE2QyE5XYrN/sNYO3L8elD/DHU99GFbdiAI9pPK9qA9lfTt9QSHoTk8HyX7UO2q30vW63uEBiiep5HxSP/fnpTZ1fttLAwL3fNU/nIZy6zV+gXfSMrEzbdYKGloqpR8/EP85JUIvd2ypbljLC/hUVNtmk1LtV1edg3BqJimdowEllBSCtoyVcLTKLXdjSI5iJB0lHAHsX4dFYydzE=",
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "resourceGroup": "GuidedSearchBot",
+            "serviceName": "guidedsearchbotstorage",
+            "id": "2"
+        },
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "name": "development",
+            "id": "3"
+        },
+        {
+            "type": "endpoint",
+            "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
+            "appPassword": "7eBD/a9nZDF8zUjW5xbDzw==!HHOQ485imXJ6erZJ9WfNrccf1N8evz4DCI0+QYMgmRw=",
+            "endpoint": "https://guidedsearchbot.azurewebsites.net/api/messages",
+            "name": "production",
+            "id": "4"
+        },
+        {
+            "type": "appInsights",
+            "instrumentationKey": "WiLeYqHGHe2/FIB/PwJrQQ==!xIHEbUe3ScR60K6X8sg2vv/nu+AkZChpwwP1Xpn4hWX/XcS3XDaNxiFZlsCN37s4",
+            "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
+            "apiKeys": {},
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "resourceGroup": "GuidedSearchBot",
+            "serviceName": "GuidedSearchBoth6hd2s",
+            "id": "5"
+        },
+        {
+            "type": "luis",
+            "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
+            "authoringKey": "pIZ1ooOOl+cTuCtRvS7YuQ==!OaN89xQhJOPx6hA58OcTkXXvvR1Aj4WU1KzAxP1xWeiW75OeSY7YyYiFKwxdQfaH",
+            "version": "0.1",
+            "region": "westeurope",
+            "name": "BasicBotLuisApplication",
+            "id": "6"
+        },
+        {
+            "type": "qna",
+            "name": "MicrosoftStoreFAQ",
+            "kbId": "c6cdccd4-cd69-4b8f-afc3-a1765660aafd",
+            "subscriptionKey": "+d3frCu3DULzvfsfVF1UbA==!m6xzBJ+pRMhpmzGAgtNsU7jN5/eC+uFLH2cTsKRuq3L+lYWIBCyul84d066Tr8Cd",
+            "endpointKey": "TRMfo/+clTOUQruGly7v5A==!W6z+2opnaNde8v7RIy7KdDVcVh5fMtKz2CgR3kQTvFqdXsBJna44IRBF3s6WM+TB",
+            "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
+            "id": "254"
+        }
+    ],
+    "padlock": "WOjNNBWUJB2dKZVzgtL4xA==!iSPFpgHxMaYoWCovVWNfdk5VKgp1Tuwqpq9Kw+C2cleQ4OgBcE37SWpA6npOx37b",
+    "version": "2.0"
 }

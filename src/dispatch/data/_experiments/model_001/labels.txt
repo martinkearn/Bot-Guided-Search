@@ -1,5 +1,0 @@
-Label	LabelName	Samples
-0	l_BasicBotLuisApplication	49
-1	None	58
-2	q_LinkMappings	10
-3	q_MicrosoftStoreFAQ	113

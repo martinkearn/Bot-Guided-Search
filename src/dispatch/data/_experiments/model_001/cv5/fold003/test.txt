@@ -1,0 +1,56 @@
+Label	Weight	Text
+l_BasicBotLuisApplication	9	i'm lost
+l_BasicBotLuisApplication	9	don't do it
+l_BasicBotLuisApplication	9	i would like to cancel
+l_BasicBotLuisApplication	9	quit
+l_BasicBotLuisApplication	9	what are your capabilities
+l_BasicBotLuisApplication	9	please stop
+l_BasicBotLuisApplication	9	i want a surface pro 6 with 8gb ram and a 128 gb disk
+l_BasicBotLuisApplication	9	frustrated
+l_BasicBotLuisApplication	9	help
+l_BasicBotLuisApplication	9	what i7 machines do you have
+None	7.5	how are you today
+None	7.5	paris
+None	7.5	gnocchi
+None	7.5	delhi
+None	7.5	you are boring
+None	7.5	my location is new york
+None	7.5	what's your age
+None	7.5	i'm john from cairo
+None	7.5	you can assume i live in cairo
+None	7.5	toronto
+None	7.5	who am i speaking to
+None	7.5	who are you
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_MicrosoftStoreFAQ	3.913043	Can Microsoft Surface Book 2 run Photoshop
+q_MicrosoftStoreFAQ	3.913043	Will Surface Dock work with Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	Will Surface Dock work with Surface Go
+q_MicrosoftStoreFAQ	3.913043	Can the Surface Go run games
+q_MicrosoftStoreFAQ	3.913043	What are the dimensions of the Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	What ports are on the Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	How much does the Surface Laptop 2 weight
+q_MicrosoftStoreFAQ	3.913043	What processor is in the Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	Does the new Surface Laptop 2 come with a keyboard
+q_MicrosoftStoreFAQ	3.913043	Is the Surface Go worth it
+q_MicrosoftStoreFAQ	3.913043	Is Surface Go good for students
+q_MicrosoftStoreFAQ	3.913043	Is Surface Go good for drawing
+q_MicrosoftStoreFAQ	3.913043	Can you upgrade RAM on Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	When was Surface Laptop 2 release
+q_MicrosoftStoreFAQ	3.913043	What is the difference between Surface Book 2 and Surface Book
+q_MicrosoftStoreFAQ	3.913043	Will Surface Laptop 2 run Office
+q_MicrosoftStoreFAQ	3.913043	Is Surface Laptop 2 good for students
+q_MicrosoftStoreFAQ	3.913043	Does Surface Go have a camera
+q_MicrosoftStoreFAQ	3.913043	When was Surface Go release
+q_MicrosoftStoreFAQ	3.913043	Can I charge Surface Book 2 via USB-C
+q_MicrosoftStoreFAQ	3.913043	What is the resolution of Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	What is the resolution of Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	When was Surface Book 2 release

@@ -1,0 +1,56 @@
+Label	Weight	Text
+l_BasicBotLuisApplication	9	i need a machine with a 512gb hard disk
+l_BasicBotLuisApplication	9	i'm bailing
+l_BasicBotLuisApplication	9	i am looking for a grey surface book 2 with 256 gb disk
+l_BasicBotLuisApplication	9	please cancel
+l_BasicBotLuisApplication	9	cancel
+l_BasicBotLuisApplication	9	i want a surface go in grey with 64gb storage
+l_BasicBotLuisApplication	9	help please
+l_BasicBotLuisApplication	9	how do i interact with you
+l_BasicBotLuisApplication	9	confused
+l_BasicBotLuisApplication	9	i want a surface pro 6
+None	7.5	you can call me steve
+None	7.5	i'm lili
+None	7.5	world wide pants
+None	7.5	melanie
+None	7.5	good morning
+None	7.5	dan
+None	7.5	getting tired of you
+None	7.5	hello
+None	7.5	how are you
+None	7.5	i live in london
+None	7.5	yo
+None	7.5	dhaka
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_MicrosoftStoreFAQ	3.913043	Is Surface Go a tablet or laptop
+q_MicrosoftStoreFAQ	3.913043	Does Surface Go need antivirus
+q_MicrosoftStoreFAQ	3.913043	Does Surface Book 2 need a screen protector
+q_MicrosoftStoreFAQ	3.913043	Does Surface Laptop 2 have a camera
+q_MicrosoftStoreFAQ	3.913043	Can Microsoft Surface Go run Photoshop
+q_MicrosoftStoreFAQ	3.913043	Can you code or programming on Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	Will Surface Go run Office
+q_MicrosoftStoreFAQ	3.913043	Does Surface Laptop 2 need a screen protector
+q_MicrosoftStoreFAQ	3.913043	Is Microsoft Office free on Surface Go
+q_MicrosoftStoreFAQ	3.913043	How long does the Surface Book 2 last
+q_MicrosoftStoreFAQ	3.913043	What size is Surface Go’s display
+q_MicrosoftStoreFAQ	3.913043	How much does a Surface Book 2 cost
+q_MicrosoftStoreFAQ	3.913043	How much does a Surface Go cost
+q_MicrosoftStoreFAQ	3.913043	Can you download apps on Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	Can the Surface Book 2 run games
+q_MicrosoftStoreFAQ	3.913043	What size is Surface Laptop 2’s display
+q_MicrosoftStoreFAQ	3.913043	Does Surface Laptop run Windows 10
+q_MicrosoftStoreFAQ	3.913043	Does Surface Book 2 need antivirus
+q_MicrosoftStoreFAQ	3.913043	Can you download apps on Surface Go
+q_MicrosoftStoreFAQ	3.913043	What is the company that makes Surface Go
+q_MicrosoftStoreFAQ	3.913043	What is the default Surface Laptop 2 display scaling
+q_MicrosoftStoreFAQ	3.913043	How do I reset my Surface Go
+q_MicrosoftStoreFAQ	3.913043	How long does the Surface Go last

@@ -1,0 +1,5 @@
+No	Intent	Utterance Count	Utterance Average Length	Utterance Maximum Length	Utterance Minimum Length	Utterance Length StdDev
+0	l_BasicBotLuisApplication	49	22.02	55	4	14.774
+1	q_LinkMappings	1	7	7	7	NaN
+2	q_MicrosoftStoreFAQ	113	37.646	63	20	7.754
+3	None	58	13.931	36	2	7.741

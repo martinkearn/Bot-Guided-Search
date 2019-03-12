@@ -1,0 +1,56 @@
+Label	Weight	Text
+l_BasicBotLuisApplication	9	no way, i won't give you my location
+l_BasicBotLuisApplication	9	i want 32gb disk
+l_BasicBotLuisApplication	9	abort
+l_BasicBotLuisApplication	9	what can you do
+l_BasicBotLuisApplication	9	what can you help me with
+l_BasicBotLuisApplication	9	no way
+l_BasicBotLuisApplication	9	i don't understand
+l_BasicBotLuisApplication	9	why doesn't this work
+l_BasicBotLuisApplication	9	i'n looking for a surface studio
+l_BasicBotLuisApplication	9	stop
+None	7.5	i'm lauren, and i'm from madrid
+None	7.5	who am i speaking with
+None	7.5	mumbai
+None	7.5	i reside in san francisco
+None	7.5	hello bot
+None	7.5	vishwac is my name
+None	7.5	my name is maria and i'm from sydney
+None	7.5	portland
+None	7.5	cook me something
+None	7.5	hey there
+None	7.5	how old are you
+None	7.5	who is your boss
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_LinkMappings	9	Surface
+q_MicrosoftStoreFAQ	3.913043	Is Surface Go 64-bit
+q_MicrosoftStoreFAQ	3.913043	Is Surface Book 2 a tablet or a laptop
+q_MicrosoftStoreFAQ	3.913043	What is the resolution of Surface Go
+q_MicrosoftStoreFAQ	3.913043	What are the dimensions of the Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	Is Microsoft Office free on Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	Is Surface Laptop 2 64-bit
+q_MicrosoftStoreFAQ	3.913043	Does Surface Go need a screen protector
+q_MicrosoftStoreFAQ	3.913043	What is the aspect ratio of Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	How much does a Surface Laptop 2 cost
+q_MicrosoftStoreFAQ	3.913043	Can Microsoft Surface Laptop 2 run Photoshop
+q_MicrosoftStoreFAQ	3.913043	Can you code or programming on Surface Laptop 2
+q_MicrosoftStoreFAQ	3.913043	Can I charge my Surface Book 2’s tablet section alone
+q_MicrosoftStoreFAQ	3.913043	Can I charge my Surface Book 2 base alone
+q_MicrosoftStoreFAQ	3.913043	What is the company that makes Surface Book 2
+q_MicrosoftStoreFAQ	3.913043	What is the battery capacity of Microsoft Surface Laptop
+q_MicrosoftStoreFAQ	3.913043	Does Surface Laptop 2 include pen
+q_MicrosoftStoreFAQ	3.913043	Can the Surface Laptop 2 run games
+q_MicrosoftStoreFAQ	3.913043	Can you play Fortnite on Surface Go
+q_MicrosoftStoreFAQ	3.913043	Is Surface Laptop 2 good for drawing
+q_MicrosoftStoreFAQ	3.913043	What is the battery capacity of Microsoft Surface Go
+q_MicrosoftStoreFAQ	3.913043	How to turn off S-Mode on Surface Go
+q_MicrosoftStoreFAQ	3.913043	Is Surface Book 2 64-bit
+q_MicrosoftStoreFAQ	3.913043	How do I charge my Surface Book 2

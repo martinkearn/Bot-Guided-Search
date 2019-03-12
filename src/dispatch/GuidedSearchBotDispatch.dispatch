@@ -1,0 +1,45 @@
+{
+  "authoringRegion": "westeurope",
+  "hierarchical": true,
+  "useAllTrainingData": false,
+  "dontReviseUtterance": false,
+  "services": [
+    {
+      "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
+      "authoringKey": "3ff4064dc38b4292adfc4c1b44ea6116",
+      "version": "0.1",
+      "region": "westeurope",
+      "type": "luis",
+      "name": "BasicBotLuisApplication",
+      "id": "6"
+    },
+    {
+      "kbId": "c6cdccd4-cd69-4b8f-afc3-a1765660aafd",
+      "subscriptionKey": "fd145a9f069549e3afdf8aba1f267356",
+      "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
+      "endpointKey": "6ea65618-a6c7-4505-80c2-31251b0901d0",
+      "type": "qna",
+      "name": "MicrosoftStoreFAQ",
+      "id": "254"
+    },
+    {
+      "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
+      "subscriptionKey": "fd145a9f069549e3afdf8aba1f267356",
+      "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
+      "endpointKey": "6ea65618-a6c7-4505-80c2-31251b0901d0",
+      "type": "qna",
+      "name": "LinkMappings",
+      "id": "173"
+    }
+  ],
+  "serviceIds": [
+    "6",
+    "254",
+    "173"
+  ],
+  "authoringKey": "3ff4064dc38b4292adfc4c1b44ea6116",
+  "version": "Dispatch",
+  "region": "westeurope",
+  "type": "dispatch",
+  "name": "GuidedSearchBotDispatch"
+}

@@ -1,0 +1,21 @@
+{
+  "qnaDocuments": [
+    {
+      "id": 1,
+      "answer": "https://www.microsoft.com/en-gb/store/b/surface?icid=HP-HypNav1-MicrosoftSurface",
+      "source": "Editorial",
+      "questions": [
+        "Surface"
+      ],
+      "metadata": [
+        {
+          "name": "productfamily",
+          "value": "surface"
+        }
+      ],
+      "alternateQuestionClusters": [],
+      "changeStatus": "NoChange",
+      "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e"
+    }
+  ]
+}

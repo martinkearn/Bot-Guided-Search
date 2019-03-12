@@ -1,0 +1,1169 @@
+{
+  "luis_schema_version": "3.1.0",
+  "versionId": "Dispatch",
+  "name": "BotDispatch",
+  "desc": "Dispatch model for BotDispatch",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "l_BasicBotLuisApplication"
+    },
+    {
+      "name": "q_LinkMappings"
+    },
+    {
+      "name": "q_MicrosoftStoreFAQ"
+    },
+    {
+      "name": "None"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [],
+  "model_features": [
+    {
+      "name": "i_0",
+      "mode": true,
+      "words": "surface,xbox,office,windows mixed reality",
+      "activated": true
+    },
+    {
+      "name": "i_1",
+      "mode": true,
+      "words": "surface go,surface laptop 2,surface pro 6,surface book 2,surface headphones,surface studio 2,surface hub",
+      "activated": true
+    },
+    {
+      "name": "i_2",
+      "mode": true,
+      "words": "grey,black",
+      "activated": true
+    },
+    {
+      "name": "i_3",
+      "mode": true,
+      "words": "i5,i7",
+      "activated": true
+    },
+    {
+      "name": "i_4",
+      "mode": true,
+      "words": "wifi,lte",
+      "activated": true
+    }
+  ],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "i need a machine with a 512gb hard disk",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm bailing",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i am looking for a grey surface book 2 with 256 gb disk",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "please cancel",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "cancel",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want a surface go in grey with 64gb storage",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "help please",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "how do i interact with you",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "confused",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want a surface pro 6",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "no way, i won't give you my location",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want 32gb disk",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "abort",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what can you do",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what can you help me with",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "no way",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i don't understand",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "why doesn't this work",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'n looking for a surface studio",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "stop",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i will not give you my name",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm not going to tell you where i live",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "can you help me",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "don't do that",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm looking for an i5 laptop in black",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm looking for 256 storage",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what can i say",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what do i do now",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "ineed a surface book with 512 disk and 16gb memory",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm stuck",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm lost",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "don't do it",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i would like to cancel",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "quit",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what are your capabilities",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "please stop",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want a surface pro 6 with 8gb ram and a 128 gb disk",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "frustrated",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "help",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "what i7 machines do you have",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i will not give you my location or name",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want a machine with 512gb storage",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "lost",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i need 62gb",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i won't give you my name",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "help me",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i'm looking for a surface",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i want a device with lte connectivity and 8gb ram",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "i need a surface laptop 2 in black with 16gb ram",
+      "intent": "l_BasicBotLuisApplication",
+      "entities": []
+    },
+    {
+      "text": "surface",
+      "intent": "q_LinkMappings",
+      "entities": []
+    },
+    {
+      "text": "is surface go a tablet or laptop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go need antivirus",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 need a screen protector",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop 2 have a camera",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can microsoft surface go run photoshop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you code or programming on surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface go run office",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop 2 need a screen protector",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is microsoft office free on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how long does the surface book 2 last",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what size is surface go’s display",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does a surface book 2 cost",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does a surface go cost",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you download apps on surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can the surface book 2 run games",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what size is surface laptop 2’s display",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop run windows 10",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 need antivirus",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you download apps on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the company that makes surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the default surface laptop 2 display scaling",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i reset my surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how long does the surface go last",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface go 64-bit",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface book 2 a tablet or a laptop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the resolution of surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what are the dimensions of the surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is microsoft office free on surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface laptop 2 64-bit",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go need a screen protector",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the aspect ratio of surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does a surface laptop 2 cost",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can microsoft surface laptop 2 run photoshop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you code or programming on surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can i charge my surface book 2’s tablet section alone",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can i charge my surface book 2 base alone",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the company that makes surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the battery capacity of microsoft surface laptop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop 2 include pen",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can the surface laptop 2 run games",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you play fortnite on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface laptop 2 good for drawing",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the battery capacity of microsoft surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how to turn off s-mode on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface book 2 64-bit",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i charge my surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface laptop 2 a tablet or a laptop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what are the dimensions of the surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how long does the surface laptop 2 last",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 have a camera",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 include pen",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what processor is in the surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is the surface book 2 fanless",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is windows 10 in s mode",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i reset my surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go include pen",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface book 2 good for drawing",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the aspect ratio of surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you download apps on surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go run windows 10",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface dock work with surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop 2 need antivirus",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the company that makes surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is microsoft office free on surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does the surface book 2 weight",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you upgrade ram on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can i charge surface go with usb-c",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can i charge surface laptop 2 via usb",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is the surface laptop 2 fanless",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can microsoft surface book 2 run photoshop",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface dock work with surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface dock work with surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can the surface go run games",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what are the dimensions of the surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what ports are on the surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does the surface laptop 2 weight",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what processor is in the surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does the new surface laptop 2 come with a keyboard",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is the surface go worth it",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface go good for students",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface go good for drawing",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you upgrade ram on surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "when was surface laptop 2 release",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the difference between surface book 2 and surface book",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface laptop 2 run office",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "is surface laptop 2 good for students",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go have a camera",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "when was surface go release",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can i charge surface book 2 via usb-c",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the resolution of surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the resolution of surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "when was surface book 2 release",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you upgrade ram on surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i charge my surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does a screen protector reduce the responsiveness of surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go run full windows",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the battery capacity of microsoft surface book 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface laptop 2 run full windows",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does the new surface book 2 come with a keyboard",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 run windows 10",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "will surface book 2 run office",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what ports are on the surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface go come with a keyboard",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i charge my surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what size is surface book 2’s display",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what ports are on the surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how do i reset my surface laptop 2",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "how much does the surface go weight",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the difference between surface go and surface 3",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "does surface book 2 run full windows",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what processor is in the surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "can you code or programming on surface go",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "what is the default surface book 2 display scaling",
+      "intent": "q_MicrosoftStoreFAQ",
+      "entities": []
+    },
+    {
+      "text": "you can call me steve",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm lili",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "world wide pants",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "melanie",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "good morning",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "dan",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "getting tired of you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how are you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i live in london",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "yo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "dhaka",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm lauren, and i'm from madrid",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who am i speaking with",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "mumbai",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i reside in san francisco",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hello bot",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "vishwac is my name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my name is maria and i'm from sydney",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "portland",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "cook me something",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hey there",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how old are you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who is your boss",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "are you busy",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i am tired of you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "can you fly",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "are you old",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'd rather be riding my bike",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "dont you ever sleep",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "spaghetti",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "tony is my name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hey",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "her cat has no teeth",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hiya",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "do you play games",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how are you today",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "paris",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "gnocchi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "delhi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "you are boring",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my location is new york",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "what's your age",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm john from cairo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "you can assume i live in cairo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "toronto",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who am i speaking to",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who are you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "have you any dreams",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "good evening",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "what's your name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hi bot",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm from georgia",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my name is tom",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "shangai",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "call me scott",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "seattle is my current city",
+      "intent": "None",
+      "entities": []
+    }
+  ],
+  "settings": []
+}

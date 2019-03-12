@@ -128,6 +128,7 @@ namespace Microsoft.BotBuilderSamples
                                 case SearchIntent:
                                     // await dc.BeginDialogAsync(nameof(GreetingDialog));
                                     await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
+
                                     break;
 
                                 case HelpIntent:

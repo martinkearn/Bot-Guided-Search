@@ -4,6 +4,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using BasicBot.Interfaces;
+using BasicBot.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
@@ -151,6 +153,9 @@ namespace Microsoft.BotBuilderSamples
                     await context.SendActivityAsync("Sorry, it looks like something went wrong.");
                 };
             });
+
+            // Configure Repositories
+            services.AddSingleton<ITableStore, TableStore>();
         }
 
         /// <summary>

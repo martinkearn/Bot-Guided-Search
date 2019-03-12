@@ -7,6 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BasicBot.Interfaces;
+using BasicBot.Models;
+using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -41,24 +44,26 @@ namespace Microsoft.BotBuilderSamples
         private readonly IStatePropertyAccessor<DialogState> _dialogStateAccessor;
         private readonly UserState _userState;
         private readonly ConversationState _conversationState;
-        private readonly BotServices _services;
+        private readonly BotServices _botServices;
+        private readonly ITableStore _tableStore;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicBot"/> class.
         /// </summary>
         /// <param name="botServices">Bot services.</param>
         /// <param name="accessors">Bot State Accessors.</param>
-        public BasicBot(BotServices services, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory)
+        public BasicBot(BotServices botServices, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory, ITableStore tableStore)
         {
-            _services = services ?? throw new ArgumentNullException(nameof(services));
+            _botServices = botServices ?? throw new ArgumentNullException(nameof(botServices));
             _userState = userState ?? throw new ArgumentNullException(nameof(userState));
             _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
+            _tableStore = tableStore ?? throw new ArgumentNullException(nameof(tableStore));
 
             _greetingStateAccessor = _userState.CreateProperty<GreetingState>(nameof(GreetingState));
             _dialogStateAccessor = _conversationState.CreateProperty<DialogState>(nameof(DialogState));
 
             // Verify LUIS configuration.
-            if (!_services.LuisServices.ContainsKey(LuisConfiguration))
+            if (!_botServices.LuisServices.ContainsKey(LuisConfiguration))
             {
                 throw new InvalidOperationException($"The bot configuration does not contain a service type of `luis` with the id `{LuisConfiguration}`.");
             }
@@ -85,7 +90,7 @@ namespace Microsoft.BotBuilderSamples
             if (activity.Type == ActivityTypes.Message)
             {
                 // Perform a call to LUIS to retrieve results for the current activity message.
-                var luisResults = await _services.LuisServices[LuisConfiguration].RecognizeAsync(dc.Context, cancellationToken);
+                var luisResults = await _botServices.LuisServices[LuisConfiguration].RecognizeAsync(dc.Context, cancellationToken);
 
                 // If any entities were updated, treat as interruption.
                 // For example, "no my name is tony" will manifest as an update of the name to be "tony".
@@ -123,6 +128,7 @@ namespace Microsoft.BotBuilderSamples
                                 case SearchIntent:
                                     // await dc.BeginDialogAsync(nameof(GreetingDialog));
                                     await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
+
                                     break;
 
                                 case HelpIntent:

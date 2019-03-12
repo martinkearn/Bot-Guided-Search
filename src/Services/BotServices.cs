@@ -36,10 +36,10 @@ namespace BasicBot.Services
                                 throw new InvalidOperationException("The LUIS service is not configured correctly in your '.bot' file.");
                             }
 
-                            var endpoint = (luis.Region?.StartsWith("https://") ?? false) ? luis.Region : luis.GetEndpoint();
-                            var app = new LuisApplication(luis.AppId, luis.AuthoringKey, endpoint);
-                            var recognizer = new LuisRecognizer(app);
-                            this.LuisServices.Add(luis.Name, recognizer);
+                            var luisEndpoint = (luis.Region?.StartsWith("https://") ?? false) ? luis.Region : luis.GetEndpoint();
+                            var luisApp = new LuisApplication(luis.AppId, luis.AuthoringKey, luisEndpoint);
+                            var luisRecognizer = new LuisRecognizer(luisApp);
+                            LuisServices.Add(luis.Name, luisRecognizer);
                             break;
                         }
 

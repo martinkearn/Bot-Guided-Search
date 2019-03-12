@@ -42,6 +42,13 @@ namespace Microsoft.BotBuilderSamples
                             this.LuisServices.Add(luis.Name, recognizer);
                             break;
                         }
+
+                    case ServiceTypes.BlobStorage:
+                        {
+                            var blobStorage = service as BlobStorageService;
+                            this.StorageConnectionString = blobStorage.ConnectionString;
+                            break;
+                        }
                 }
             }
         }
@@ -57,5 +64,7 @@ namespace Microsoft.BotBuilderSamples
         /// A <see cref="LuisRecognizer"/> client instance created based on configuration in the .bot file.
         /// </value>
         public Dictionary<string, LuisRecognizer> LuisServices { get; } = new Dictionary<string, LuisRecognizer>();
+
+        public string StorageConnectionString { get; set; }
     }
 }

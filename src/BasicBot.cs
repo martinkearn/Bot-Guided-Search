@@ -29,6 +29,8 @@ namespace Microsoft.BotBuilderSamples
         public const string HelpIntent = "Help";
         public const string NoneIntent = "None";
         public const string SearchIntent = "Search";
+        public const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
+        public const string DispatchQNAIntent = "q_MicrosoftStoreFAQ";
 
         // Messages
         public const string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox.";
@@ -38,7 +40,7 @@ namespace Microsoft.BotBuilderSamples
         /// Key in the bot config (.bot file) for the LUIS instance.
         /// In the .bot file, multiple instances of LUIS can be configured.
         /// </summary>
-        public static readonly string LuisConfiguration = "BasicBotLuisApplication";
+        public static readonly string LuisConfiguration = "GuidedSearchBotDispatch";
 
         private readonly IStatePropertyAccessor<GreetingState> _greetingStateAccessor;
         private readonly IStatePropertyAccessor<DialogState> _dialogStateAccessor;
@@ -125,15 +127,20 @@ namespace Microsoft.BotBuilderSamples
                             switch (topIntent)
                             {
 
-                                case SearchIntent:
-                                    // await dc.BeginDialogAsync(nameof(GreetingDialog));
-                                    await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
+                                //case SearchIntent:
+                                //    // await dc.BeginDialogAsync(nameof(GreetingDialog));
+                                //    await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
 
+                                //    break;
+
+                                case DispatchLuisIntent:
+                                    await dc.Context.SendActivityAsync("This is a Luis intent.");
                                     break;
 
-                                case HelpIntent:
-                                    await dc.Context.SendActivityAsync("You want help? ... I'm not very helpful just yet, sorry.");
+                                case DispatchQNAIntent:
+                                    await dc.Context.SendActivityAsync("This is a QNA intent.");
                                     break;
+
 
                                 case NoneIntent:
                                     await dc.Context.SendActivityAsync($"You don't seem to have an intent .... {DontUnderstand}");

@@ -75,21 +75,7 @@ namespace Microsoft.BotBuilderSamples
             }
 
             // Loads .bot configuration file and adds a singleton that your Bot can access through dependency injection.
-            BotConfiguration botConfig = null;
-            try
-            {
-                botConfig = BotConfiguration.Load(botFilePath, secretKey);
-            }
-            catch
-            {
-                var msg = @"Error reading bot file. Please ensure you have valid botFilePath and botFileSecret set for your environment.
-    - You can find the botFilePath and botFileSecret in the Azure App Service application settings.
-    - If you are running this bot locally, consider adding a appsettings.json file with botFilePath and botFileSecret.
-    - See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.
-    ";
-                throw new InvalidOperationException(msg);
-            }
-
+            var botConfig = BotConfiguration.Load(botFilePath ?? @".\GuidedSearchBot.bot", secretKey);
             services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"The .bot configuration file could not be loaded. botFilePath: {botFilePath}"));
 
             // Add BotServices singleton.

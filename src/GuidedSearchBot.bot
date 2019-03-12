@@ -14,7 +14,7 @@
         },
         {
             "type": "blob",
-            "connectionString": "44MfVkyLVrIT0FaVdLcKWQ==!DmEPcBNzzYyCy6Gs0r8l+7jjR9IZvPh6jkYt8Y49/F+B7sT94crHLI6CtBPFfSbX+Lapv4xlh2GwioW04YajVxDY7vzQoa2EWWMi9btxncJ1DdVuIElxsnCwUwF/Df0XssIU6ssJr1+NgytkbSSe4PSrGJQdB4sZkNaOTgJVRU+zqtKm96WGR1Tx0HJRbvND1iuCUxahH1a8dsUW4jaWaQMU1RUHgu30Amk2VdwvpgM=",
+            "connectionString": "gGoTK0BxYRbxbhAPDqb07Q==!XPjsV5IkQy96vRAv6WCQskDcj7o+lL/IRm16rGYhme3BMRAo1qipGXc73S7BbHHgWloVu4VjKTsCL+oqOMsTbcWMvB9iipQqW7cYW0po9b0OMXAKp2M2azpLO/AHwACB5ffe1QxHfIN9aaOrvo6fxMwAzxLx/vSPSyFX8kTxCg11X18PWMeBtL1sUHjFn95M53pYT3PHiG5gYEoJyJp+U4Oh3/RtGMZM8A0n35J5TDo=",
             "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
             "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
             "resourceGroup": "GuidedSearchBot",
@@ -32,14 +32,14 @@
         {
             "type": "endpoint",
             "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
-            "appPassword": "BH112DskjTU+UI5VmT+2Kg==!OjeO59hfIsbE7z6/C38Bsn4xwDLw4MiZAyWUeu7ZNOA=",
+            "appPassword": "Uu517PO5XBlhL/M9yYzPWw==!utvRdsmH/7XsTsfzcL44hFM1aVESivgcX/3wJlD9iqQ=",
             "endpoint": "https://guidedsearchbot.azurewebsites.net/api/messages",
             "name": "production",
             "id": "4"
         },
         {
             "type": "appInsights",
-            "instrumentationKey": "X+8zRVp50Pg03Y4Gadrazg==!64Az46edYJcNNhnxQIodrJMTQcNyr+eSayZ0pJskPoxFS7aiHMCBwRXhk4Yd2LPZ",
+            "instrumentationKey": "s6B+jDOsjWcNqapp+oXz8g==!DSdOGyAjRAnaa9+ZfrbuMZAGd8+zcEgWMJIReEsEs9boNUkkI4E9zXXVPPtlr+jA",
             "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
             "apiKeys": {},
             "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
@@ -51,7 +51,7 @@
         {
             "type": "luis",
             "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
-            "authoringKey": "HIYVUn/PyqmF7VL7x/4zZQ==!aF6ZgvgC8yni7wqm+6kErXFy48NeUgtBpXPw3YGtJf1gkBb3lQissOMTXqOsohHu",
+            "authoringKey": "87qNCeNtqJ31yK/A4V+sWA==!GzrA0Y0k6tPdIrqpH5yUxfYK+vdObIlkqQdKNBqjuDHl6Opg3uzsO9x4GfBnKM+2",
             "version": "0.1",
             "region": "westeurope",
             "name": "BasicBotLuisApplication",
@@ -61,8 +61,8 @@
             "type": "qna",
             "name": "MicrosoftStoreFAQ",
             "kbId": "c6cdccd4-cd69-4b8f-afc3-a1765660aafd",
-            "subscriptionKey": "OEnBJvywePaSbawfjkiuVA==!jpQs5MaOWPjxolnv8XJSPJvnVC5j/SBmqewqAoo4uf1PuwfmI3C38uwvAGFfsSCK",
-            "endpointKey": "m7/2lKl4JEZxqQ/Z6NGLRA==!8EK7la8GSYPNhtPquko9IEq+93nJC13pbqlXWrXxJzyVsEN6C5lTZwPYTmjjw7mh",
+            "subscriptionKey": "vJOll0Ydb5/Ih6F2HPxvIQ==!J9b5W1t7zw2SmUBoaINL5ZtXpXTCuD7aTmEIyyiED+KNuQ6Fc+j0Ow63oEjQ692h",
+            "endpointKey": "JpDqqwZe5Bc/UPThE3p8Hw==!wtH7Zs74QVIONZH5wIhiUUVEoWUIq6bNTWmxjbuA1Hy9HLdLn8Li/+rebz4rpilv",
             "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
             "id": "254"
         },
@@ -70,19 +70,19 @@
             "type": "qna",
             "name": "LinkMappings",
             "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
-            "subscriptionKey": "H6++Jyb2PSWMM4HsKe/D7w==!GOyiSP0Lu/IH3rvQuNI30udz8STr6B12JlnXNE0B5Zu7SiCBEYVgZXYjqtRLxqQb",
-            "endpointKey": "1+ndLSetgdV9Nvj8f8TAoQ==!a1uKvQ44E8rooMhrFutt+Q/78gC3UhIIsnYtRR3oRyVR2nCO72vN4gG7ZSZQrkrW",
+            "subscriptionKey": "GVvrd6yWfOhfaF/bQqnF4Q==!ExSMsuxPDn2pP/Te3KTuaQIgneE1WVkb7qSsC5Si56dqE778b6Dfvcvz03ZlkUfI",
+            "endpointKey": "lnQJ8G4DLvFgN0ffKDeCmQ==!aTw4sOEJkgNDMTc5odDCUWXgDqapMV5LWokg69BBRW2jNXoxab1pZ5/PXQXFruNI",
             "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
             "id": "173"
         },
         {
-            "type": "dispatch",
+            "type": "luis",
             "name": "GuidedSearchBotDispatch",
             "appId": "de1fa160-46a7-4b22-9fc0-8bc0222474ba",
-            "authoringKey": "2q9wXzCliUBX3176JO9bSw==!QQZM4w8jPY7LhydYC3s1Oskj45G4IrJfZ8gGeLD8ryhBm1x+3S2uiybGkw4p4B3e",
             "version": "Dispatch",
-            "serviceIds": [],
-            "id": "12"
+            "authoringKey": "+3wYNvb0JGmhTEO4vLTktQ==!38LkWFp3Wvq2qqO4hDXAA82L3F1ryegImulTmV6VQd6YGTEydtpQt6GwANXvKmQM",
+            "region": "WestEurope",
+            "id": "245"
         }
     ],
     "padlock": "WOjNNBWUJB2dKZVzgtL4xA==!iSPFpgHxMaYoWCovVWNfdk5VKgp1Tuwqpq9Kw+C2cleQ4OgBcE37SWpA6npOx37b",

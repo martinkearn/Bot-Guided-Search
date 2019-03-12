@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Linq;
 using BasicBot.Interfaces;
-using BasicBot.Repositories;
+using BasicBot.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;

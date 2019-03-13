@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Bot.Builder.AI.Luis;
+using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Configuration;
 
 namespace BasicBot.Services
@@ -30,16 +31,29 @@ namespace BasicBot.Services
                 {
                     case ServiceTypes.Luis:
                         {
-                            var luis = (LuisService)service;
-                            if (luis == null)
+                            var luisService = (LuisService)service;
+                            if (luisService == null)
                             {
                                 throw new InvalidOperationException("The LUIS service is not configured correctly in your '.bot' file.");
                             }
 
-                            var luisEndpoint = (luis.Region?.StartsWith("https://") ?? false) ? luis.Region : luis.GetEndpoint();
-                            var luisApp = new LuisApplication(luis.AppId, luis.AuthoringKey, luisEndpoint);
+                            var luisEndpoint = (luisService.Region?.StartsWith("https://") ?? false) ? luisService.Region : luisService.GetEndpoint();
+                            var luisApp = new LuisApplication(luisService.AppId, luisService.AuthoringKey, luisEndpoint);
                             var luisRecognizer = new LuisRecognizer(luisApp);
-                            LuisServices.Add(luis.Name, luisRecognizer);
+                            LuisServices.Add(luisService.Name, luisRecognizer);
+                            break;
+                        }
+
+                    case ServiceTypes.QnA:
+                        {
+                            var qnaService = (QnAMakerService)service;
+                            if (qnaService == null)
+                            {
+                                throw new InvalidOperationException("The QNA Maker service is not configured correctly in your '.bot' file.");
+                            }
+
+                            var qnaMaker = new QnAMaker(qnaService);
+                            QnAServices.Add(qnaService.Name, qnaMaker);
                             break;
                         }
 
@@ -53,17 +67,9 @@ namespace BasicBot.Services
             }
         }
 
-        /// <summary>
-        /// Gets the set of LUIS Services used.
-        /// Given there can be multiple <see cref="LuisRecognizer"/> services used in a single bot,
-        /// LuisServices is represented as a dictionary.  This is also modeled in the
-        /// ".bot" file since the elements are named.
-        /// </summary>
-        /// <remarks>The LUIS services collection should not be modified while the bot is running.</remarks>
-        /// <value>
-        /// A <see cref="LuisRecognizer"/> client instance created based on configuration in the .bot file.
-        /// </value>
         public Dictionary<string, LuisRecognizer> LuisServices { get; } = new Dictionary<string, LuisRecognizer>();
+
+        public Dictionary<string, QnAMaker> QnAServices { get; } = new Dictionary<string, QnAMaker>();
 
         public string StorageConnectionString { get; set; }
     }

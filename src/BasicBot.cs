@@ -65,8 +65,6 @@ namespace Microsoft.BotBuilderSamples
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
-            var activity = turnContext.Activity;
-
             // Create a dialog context
             var dc = await _dialogSet.CreateContextAsync(turnContext, cancellationToken);
 
@@ -84,13 +82,13 @@ namespace Microsoft.BotBuilderSamples
 
                     break;
                 case ActivityTypes.ConversationUpdate:
-                    if (activity.MembersAdded != null)
+                    if (turnContext.Activity.MembersAdded != null)
                     {
                         // Iterate over all new members added to the conversation.
-                        foreach (var member in activity.MembersAdded)
+                        foreach (var member in turnContext.Activity.MembersAdded)
                         {
                             // Greet anyone that was not the target (recipient) of this message.
-                            if (member.Id != activity.Recipient.Id)
+                            if (member.Id != turnContext.Activity.Recipient.Id)
                             {
                                 await dc.Context.SendActivityAsync(Welcome);
                                 await dc.BeginDialogAsync(GuidedSearchDialogSet.StartDialogId, null, cancellationToken);

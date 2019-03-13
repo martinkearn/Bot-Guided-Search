@@ -59,7 +59,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
             // Do Dispatcher triage here and then spawn out to appropriate child dialogs
             if (result == "start luis")
             {
-                await stepContext.BeginDialogAsync(LuisIntentDialog, null, cancellationToken).ConfigureAwait(false);
+                return await stepContext.BeginDialogAsync(LuisIntentDialog, null, cancellationToken).ConfigureAwait(false);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);

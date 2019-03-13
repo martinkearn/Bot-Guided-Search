@@ -123,7 +123,7 @@ namespace Microsoft.BotBuilderSamples
 
             // Create and add conversation state.
             var conversationState = new ConversationState(dataStore);
-
+            services.AddSingleton(conversationState);
             services.AddSingleton<BotState>(conversationState);
 
             services.AddBot<BasicBot>(options =>

@@ -8,18 +8,17 @@ using Microsoft.Extensions.Logging;
 
 namespace BasicBot.Dialogs.LuisIntent
 {
-    public class LuisIntentDialog : ComponentDialog
+    internal class LuisIntentDialog : ComponentDialog
     {
-        private static readonly string BasicBotLuisApplicationLuisConfiguration = "BasicBotLuisApplication";
+        private readonly BotServices _botServices;
 
         public LuisIntentDialog(string dialogId, BotServices botServices)
              : base(dialogId)
         {
+            _botServices = botServices;
+
             // ID of the child dialog that should be started anytime the component is started.
             InitialDialogId = dialogId;
-
-            // Init bot service so we can all luis
-            //_botServices = botServices;
 
             // Define the conversation flow using the waterfall model.
             var waterfallSteps = new WaterfallStep[]
@@ -33,9 +32,10 @@ namespace BasicBot.Dialogs.LuisIntent
 
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            //var luisResults = await _botServices.LuisServices[BasicBotLuisApplicationLuisConfiguration].RecognizeAsync(stepContext.Context, cancellationToken);
+            //var luisResults = await _botServices.LuisServices["BasicBotLuisApplication"].RecognizeAsync(stepContext.Context, cancellationToken);
             //var topScoringIntent = luisResults?.GetTopScoringIntent();
             //var topIntent = topScoringIntent.Value.intent;
+
             var topIntent = "made up";
             await stepContext.Context.SendActivityAsync($"Top scoring intent was {topIntent}");
 

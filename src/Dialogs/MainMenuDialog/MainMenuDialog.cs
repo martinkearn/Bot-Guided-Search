@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using BasicBot.Dialogs.LuisIntent;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -12,8 +13,9 @@ namespace BasicBot.Dialogs.MainMenuDialog
     public class MainMenuDialog : ComponentDialog
     {
         private const string _inputPrompt = "inputPrompt";
+        const string LuisIntentDialog = "LuisIntentDialog";
 
-        public MainMenuDialog(string dialogId, BotServices services)
+        public MainMenuDialog(string dialogId, BotServices botServices)
             : base(dialogId)
         {
             // ID of the child dialog that should be started anytime the component is started.
@@ -29,6 +31,9 @@ namespace BasicBot.Dialogs.MainMenuDialog
 
             AddDialog(new WaterfallDialog(dialogId, waterfallSteps));
             AddDialog(new TextPrompt(_inputPrompt));
+
+            // Child dialogs
+            AddDialog(new LuisIntentDialog(LuisIntentDialog, botServices));
 
         }
 
@@ -52,6 +57,10 @@ namespace BasicBot.Dialogs.MainMenuDialog
             await stepContext.Context.SendActivityAsync($"You said '{result}'");
 
             // Do Dispatcher triage here and then spawn out to appropriate child dialogs
+            if (result == "start luis")
+            {
+                await stepContext.BeginDialogAsync(LuisIntentDialog, null, cancellationToken).ConfigureAwait(false);
+            }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }

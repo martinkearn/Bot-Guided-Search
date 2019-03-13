@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.WindowsAzure.Storage.Table;
 
 namespace BasicBot.Models
 {
-    public class MandatoryCategoryMapping
+    public class MandatoryCategoryMapping : TableEntity
     {
-        public string Id { get; set; }
+        public MandatoryCategoryMapping(string partitionKey, string rowKey)
+        {
+            this.PartitionKey = partitionKey;
+            this.RowKey = rowKey;
+        }
+
+        public MandatoryCategoryMapping() { }
 
         public string MappingFor { get; set; }
 

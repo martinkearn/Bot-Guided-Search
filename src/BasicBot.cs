@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BasicBot.Dialogs;
+using BasicBot.Dialogs.LuisIntent;
 using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
@@ -36,155 +38,73 @@ namespace Microsoft.BotBuilderSamples
         public const string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox.";
         public const string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";
 
-        /// <summary>
-        /// Key in the bot config (.bot file) for the LUIS instance.
-        /// In the .bot file, multiple instances of LUIS can be configured.
-        /// </summary>
-        public static readonly string LuisConfiguration = "GuidedSearchBotDispatch";
+        // Luis apps
+        public static readonly string GuidedSearchBotDispatchLuisConfiguration = "GuidedSearchBotDispatch";
 
         private readonly IStatePropertyAccessor<GreetingState> _greetingStateAccessor;
-        private readonly IStatePropertyAccessor<DialogState> _dialogStateAccessor;
-        private readonly UserState _userState;
-        private readonly ConversationState _conversationState;
-        private readonly BotServices _botServices;
-        private readonly ITableStore _tableStore;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicBot"/> class.
-        /// </summary>
-        /// <param name="botServices">Bot services.</param>
-        /// <param name="accessors">Bot State Accessors.</param>
-        public BasicBot(BotServices botServices, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory, ITableStore tableStore)
+        private readonly ILogger _logger;
+        private readonly GuidedSearchDialogSet _dialogSet;
+        private readonly BotState _botState;
+        private readonly BotServices _services;
+
+        public BasicBot(BotServices services, BotState botState, GuidedSearchDialogSet dialogSet, ILoggerFactory loggerFactory)
         {
-            _botServices = botServices ?? throw new ArgumentNullException(nameof(botServices));
-            _userState = userState ?? throw new ArgumentNullException(nameof(userState));
-            _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
-            _tableStore = tableStore ?? throw new ArgumentNullException(nameof(tableStore));
+            _botState = botState ?? throw new ArgumentNullException(nameof(botState));
+            _dialogSet = dialogSet ?? throw new ArgumentNullException(nameof(dialogSet));
+            _services = services ?? throw new ArgumentNullException(nameof(services));
 
-            _greetingStateAccessor = _userState.CreateProperty<GreetingState>(nameof(GreetingState));
-            _dialogStateAccessor = _conversationState.CreateProperty<DialogState>(nameof(DialogState));
-
-            // Verify LUIS configuration.
-            if (!_botServices.LuisServices.ContainsKey(LuisConfiguration))
+            if (loggerFactory == null)
             {
-                throw new InvalidOperationException($"The bot configuration does not contain a service type of `luis` with the id `{LuisConfiguration}`.");
+                throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            Dialogs = new DialogSet(_dialogStateAccessor);
-            Dialogs.Add(new GreetingDialog(_greetingStateAccessor, loggerFactory));
+            _logger = loggerFactory.CreateLogger<BasicBot>();
+            _logger.LogTrace("Turn start.");
         }
 
-        private DialogSet Dialogs { get; set; }
-
-        /// <summary>
-        /// Run every turn of the conversation. Handles orchestration of messages.
-        /// </summary>
-        /// <param name="turnContext">Bot Turn Context.</param>
-        /// <param name="cancellationToken">Task CancellationToken.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             var activity = turnContext.Activity;
 
             // Create a dialog context
-            var dc = await Dialogs.CreateContextAsync(turnContext);
+            var dc = await _dialogSet.CreateContextAsync(turnContext, cancellationToken);
 
-            if (activity.Type == ActivityTypes.Message)
+            switch (turnContext.Activity.Type)
             {
-                // Perform a call to LUIS to retrieve results for the current activity message.
-                var luisResults = await _botServices.LuisServices[LuisConfiguration].RecognizeAsync(dc.Context, cancellationToken);
-
-                // If any entities were updated, treat as interruption.
-                // For example, "no my name is tony" will manifest as an update of the name to be "tony".
-                var topScoringIntent = luisResults?.GetTopScoringIntent();
-
-                var topIntent = topScoringIntent.Value.intent;
-
-                // update greeting state with any entities captured
-                await UpdateGreetingState(luisResults, dc.Context);
-
-                // Handle conversation interrupts first.
-                var interrupted = await IsTurnInterruptedAsync(dc, topIntent);
-                if (interrupted)
-                {
-                    // Bypass the dialog.
-                    // Save state before the next turn.
-                    await _conversationState.SaveChangesAsync(turnContext);
-                    await _userState.SaveChangesAsync(turnContext);
-                    return;
-                }
-
-                // Continue the current dialog
-                var dialogResult = await dc.ContinueDialogAsync();
-
-                // if no one has responded,
-                if (!dc.Context.Responded)
-                {
-                    // examine results from active dialog
-                    switch (dialogResult.Status)
+                case ActivityTypes.Message:
+                    if (dc.ActiveDialog != null)
                     {
-                        case DialogTurnStatus.Empty:
-                            switch (topIntent)
-                            {
-
-                                //case SearchIntent:
-                                //    // await dc.BeginDialogAsync(nameof(GreetingDialog));
-                                //    await dc.Context.SendActivityAsync("You want to search? ... I'll soon have a dialog for that.");
-
-                                //    break;
-
-                                case DispatchLuisIntent:
-                                    await dc.Context.SendActivityAsync("This is a Luis intent.");
-                                    break;
-
-                                case DispatchQNAIntent:
-                                    await dc.Context.SendActivityAsync("This is a QNA intent.");
-                                    break;
-
-
-                                case NoneIntent:
-                                    await dc.Context.SendActivityAsync($"You don't seem to have an intent .... {DontUnderstand}");
-                                    break;
-
-                                default:
-                                    await dc.Context.SendActivityAsync(DontUnderstand);
-                                    break;
-                            }
-
-                            break;
-
-                        case DialogTurnStatus.Waiting:
-                            // The active dialog is waiting for a response from the user, so do nothing.
-                            break;
-
-                        case DialogTurnStatus.Complete:
-                            await dc.EndDialogAsync();
-                            break;
-
-                        default:
-                            await dc.CancelAllDialogsAsync();
-                            break;
+                        await dc.ContinueDialogAsync(cancellationToken);
                     }
-                }
-            }
-            else if (activity.Type == ActivityTypes.ConversationUpdate)
-            {
-                if (activity.MembersAdded != null)
-                {
-                    // Iterate over all new members added to the conversation.
-                    foreach (var member in activity.MembersAdded)
+                    else
                     {
-                        // Greet anyone that was not the target (recipient) of this message.
-                        if (member.Id != activity.Recipient.Id)
+                        await dc.BeginDialogAsync(GuidedSearchDialogSet.StartDialogId, null, cancellationToken);
+                    }
+
+                    break;
+                case ActivityTypes.ConversationUpdate:
+                    if (activity.MembersAdded != null)
+                    {
+                        // Iterate over all new members added to the conversation.
+                        foreach (var member in activity.MembersAdded)
                         {
-                            await dc.Context.SendActivityAsync(Welcome);
+                            // Greet anyone that was not the target (recipient) of this message.
+                            if (member.Id != activity.Recipient.Id)
+                            {
+                                await dc.Context.SendActivityAsync(Welcome);
+                                await dc.BeginDialogAsync(GuidedSearchDialogSet.StartDialogId, null, cancellationToken);
+                            }
                         }
                     }
-                }
+
+                    break;
+                default:
+                    await turnContext.SendActivityAsync($"{turnContext.Activity.Type} event detected");
+                    break;
             }
 
-            await _conversationState.SaveChangesAsync(turnContext);
-            await _userState.SaveChangesAsync(turnContext);
+            await _botState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
         }
 
         // Determine if an interruption has occurred before we dispatch to any active dialog.

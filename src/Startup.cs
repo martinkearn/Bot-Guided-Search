@@ -4,12 +4,14 @@
 using System;
 using System.IO;
 using System.Linq;
+using BasicBot.Dialogs;
 using BasicBot.Interfaces;
 using BasicBot.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Configuration;
 using Microsoft.Bot.Connector.Authentication;
@@ -80,7 +82,8 @@ namespace Microsoft.BotBuilderSamples
 
             // Add BotServices singleton.
             // Create the connected services from .bot file.
-            services.AddSingleton(sp => new BotServices(botConfig));
+            var botServices = new BotServices(botConfig);
+            services.AddSingleton(sp => botServices);
 
             // Retrieve current endpoint.
             var environment = _isProduction ? "production" : "development";
@@ -120,10 +123,8 @@ namespace Microsoft.BotBuilderSamples
 
             // Create and add conversation state.
             var conversationState = new ConversationState(dataStore);
-            services.AddSingleton(conversationState);
 
-            var userState = new UserState(dataStore);
-            services.AddSingleton(userState);
+            services.AddSingleton<BotState>(conversationState);
 
             services.AddBot<BasicBot>(options =>
             {
@@ -142,6 +143,9 @@ namespace Microsoft.BotBuilderSamples
 
             // Configure Repositories
             services.AddSingleton<ITableStore, TableStore>();
+
+            // Add Dialog Set
+            services.AddSingleton(sp => new GuidedSearchDialogSet(botServices, conversationState.CreateProperty<DialogState>("BASICBOTDIALOGSTATE")));
         }
 
         /// <summary>

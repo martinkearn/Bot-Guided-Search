@@ -25,41 +25,42 @@ namespace BasicBot.Services
         {
             try
             {
-                var mappingForLower = mappingFor.ToLower();
-                var table = await GetTableContainer(_mandatoryCategoriesContainerName);
+                //var mappingForLower = mappingFor.ToLower();
+                //var table = await GetTableContainer(_mandatoryCategoriesContainerName);
 
-                TableQuery<TableEntityAdapter<MandatoryCategoryMapping>> query = new TableQuery<TableEntityAdapter<MandatoryCategoryMapping>>();
-                if (!string.IsNullOrEmpty(mappingFor))
-                {
-                    query = new TableQuery<TableEntityAdapter<MandatoryCategoryMapping>>().Where(TableQuery.GenerateFilterCondition(_mappingForPropertyName, QueryComparisons.Equal, mappingForLower));
-                }
+                //TableQuery<TableEntityAdapter<MandatoryCategoryMapping>> query = new TableQuery<TableEntityAdapter<MandatoryCategoryMapping>>();
+                //if (!string.IsNullOrEmpty(mappingFor))
+                //{
+                //    query = new TableQuery<TableEntityAdapter<MandatoryCategoryMapping>>().Where(TableQuery.GenerateFilterCondition(_mappingForPropertyName, QueryComparisons.Equal, mappingForLower));
+                //}
 
-                // Initialize the continuation token to null to start from the beginning of the table.
-                TableContinuationToken continuationToken = null;
-                var entities = new List<TableEntityAdapter<MandatoryCategoryMapping>>();
-                do
-                {
-                    var queryResult = await table.ExecuteQuerySegmentedAsync(query, continuationToken);
-                    entities.AddRange(queryResult.Results);
-                    continuationToken = queryResult.ContinuationToken;
+                //// Initialize the continuation token to null to start from the beginning of the table.
+                //TableContinuationToken continuationToken = null;
+                //var entities = new List<TableEntityAdapter<MandatoryCategoryMapping>>();
+                //do
+                //{
+                //    var queryResult = await table.ExecuteQuerySegmentedAsync(query, continuationToken);
+                //    entities.AddRange(queryResult.Results);
+                //    continuationToken = queryResult.ContinuationToken;
 
-                    // Loop until a null continuation token is received, indicating the end of the table.
-                } while (continuationToken != null);
+                //    // Loop until a null continuation token is received, indicating the end of the table.
+                //} while (continuationToken != null);
 
-                // get a list of mandatory categories
-                var mandatoryCategories = new List<string>();
-                foreach (var entity in entities)
-                {
-                    var manCatsInEntity = entity.OriginalEntity.MandatoryCategories.Split(',');
+                //// get a list of mandatory categories
+                //var mandatoryCategories = new List<string>();
+                //foreach (var entity in entities)
+                //{
+                //    var manCatsInEntity = entity.OriginalEntity.MandatoryCategories.Split(',');
 
-                    foreach (var manCatInEntity in manCatsInEntity)
-                    {
-                        mandatoryCategories.Add(manCatInEntity);
-                    }
-                }
+                //    foreach (var manCatInEntity in manCatsInEntity)
+                //    {
+                //        mandatoryCategories.Add(manCatInEntity);
+                //    }
+                //}
 
-                // return
-                return mandatoryCategories;
+                //// return
+                //return mandatoryCategories;
+                return null;
             }
             catch
             {
@@ -71,15 +72,16 @@ namespace BasicBot.Services
         {
             try
             {
-                var table = await GetTableContainer(_mandatoryCategoriesContainerName);
+                //var table = await GetTableContainer(_mandatoryCategoriesContainerName);
 
-                TableEntityAdapter<MandatoryCategoryMapping> entity = new TableEntityAdapter<MandatoryCategoryMapping>(item, _mandatoryCategoriesPartitionKey, item.Id);
+                //TableEntityAdapter<MandatoryCategoryMapping> entity = new TableEntityAdapter<MandatoryCategoryMapping>(item, _mandatoryCategoriesPartitionKey, item.Id);
 
-                TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
+                //TableOperation insertOperation = TableOperation.InsertOrReplace(entity);
 
-                TableResult result = await table.ExecuteAsync(insertOperation);
+                //TableResult result = await table.ExecuteAsync(insertOperation);
 
-                return entity.OriginalEntity;
+                //return entity.OriginalEntity;
+                return null;
             }
             catch
             {
@@ -87,21 +89,21 @@ namespace BasicBot.Services
             }
         }
 
-        private async Task<CloudTable> GetTableContainer(string containerName)
-        {
-            string storageConnectionString = _botServices.StorageConnectionString;
+        //private async Task<CloudTable> GetTableContainer(string containerName)
+        //{
+        //    string storageConnectionString = _botServices.StorageConnectionString;
 
-            if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
-            {
-                CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-                var cloudTable = tableClient.GetTableReference(containerName);
-                await cloudTable.CreateIfNotExistsAsync();
-                return cloudTable;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //    if (CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
+        //    {
+        //        CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+        //        var cloudTable = tableClient.GetTableReference(containerName);
+        //        await cloudTable.CreateIfNotExistsAsync();
+        //        return cloudTable;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
     }
 }

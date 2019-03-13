@@ -4,13 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs;
-using BasicBot.Dialogs.LuisIntent;
-using BasicBot.Interfaces;
-using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -25,21 +21,11 @@ namespace Microsoft.BotBuilderSamples
     /// </summary>
     public class BasicBot : IBot
     {
-        // Supported LUIS Intents
-        public const string GreetingIntent = "Greeting";
-        public const string CancelIntent = "Cancel";
-        public const string HelpIntent = "Help";
-        public const string NoneIntent = "None";
-        public const string SearchIntent = "Search";
-        public const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
-        public const string DispatchQNAIntent = "q_MicrosoftStoreFAQ";
-
         // Messages
         public const string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox.";
-        public const string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";
 
-        // Luis apps
-        public static readonly string GuidedSearchBotDispatchLuisConfiguration = "GuidedSearchBotDispatch";
+        private const string HelpIntent = "Help";
+        private const string CancelIntent = "Cancel";
 
         private readonly IStatePropertyAccessor<GreetingState> _greetingStateAccessor;
 

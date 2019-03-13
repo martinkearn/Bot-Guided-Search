@@ -13,13 +13,21 @@ namespace BasicBot.Dialogs.MainMenuDialog
     public class MainMenuDialog : ComponentDialog
     {
         private const string _inputPrompt = "inputPrompt";
-        const string LuisIntentDialog = "LuisIntentDialog";
+        private const string LuisIntentDialog = "LuisIntentDialog";
+        private BotServices _botServices;
+        private const string HelpIntent = "Help";
+        private const string NoneIntent = "None";
+        private const string SearchIntent = "Search";
+        private const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
+        private const string DispatchQNAIntent = "q_MicrosoftStoreFAQ";
+        public const string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";
 
         public MainMenuDialog(string dialogId, BotServices botServices)
             : base(dialogId)
         {
             // ID of the child dialog that should be started anytime the component is started.
             InitialDialogId = dialogId;
+            _botServices = botServices;
 
             // Define the steps of the waterfall dialog and add it to the set.
             var waterfallSteps = new WaterfallStep[]
@@ -57,9 +65,26 @@ namespace BasicBot.Dialogs.MainMenuDialog
             await stepContext.Context.SendActivityAsync($"You said '{result}'");
 
             // Do Dispatcher triage here and then spawn out to appropriate child dialogs
-            if (result == "start luis")
+            var dispatcherResults = await _botServices.LuisServices["GuidedSearchBotDispatch"].RecognizeAsync(stepContext.Context, cancellationToken);
+            var topScoringIntent = dispatcherResults?.GetTopScoringIntent();
+            var topIntent = topScoringIntent.Value.intent;
+            switch (topIntent)
             {
-                return await stepContext.BeginDialogAsync(LuisIntentDialog, null, cancellationToken).ConfigureAwait(false);
+                case DispatchLuisIntent:
+                    await stepContext.Context.SendActivityAsync("This is a Luis intent. Starting LuisIntentDialog");
+                    return await stepContext.BeginDialogAsync(LuisIntentDialog);
+
+                case DispatchQNAIntent:
+                    await stepContext.Context.SendActivityAsync("This is a QNA intent.");
+                    break;
+
+                case NoneIntent:
+                    await stepContext.Context.SendActivityAsync($"You don't seem to have an intent .... {DontUnderstand}");
+                    break;
+
+                default:
+                    await stepContext.Context.SendActivityAsync(DontUnderstand);
+                    break;
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);

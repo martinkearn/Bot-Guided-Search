@@ -7,5 +7,7 @@ namespace BasicBot.Interfaces
     public interface ITableStore
     {
         Task<IEnumerable<string>> GetMandatoryCategories(string mappingFor);
+
+        Task<MandatoryCategoryMapping> UpsertMandatoryCategoryMapping(MandatoryCategoryMapping item);
     }
 }

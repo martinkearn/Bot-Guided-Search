@@ -67,6 +67,24 @@ namespace BasicBot.Services
             }
         }
 
+        public async Task<MandatoryCategoryMapping> UpsertMandatoryCategoryMapping(MandatoryCategoryMapping item)
+        {
+            try
+            {
+                var table = await GetTableContainer(_mandatoryCategoriesContainerName);
+
+                TableOperation insertOperation = TableOperation.InsertOrReplace(item);
+
+                TableResult result = await table.ExecuteAsync(insertOperation);
+
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private async Task<CloudTable> GetTableContainer(string containerName)
         {
             string storageConnectionString = _botServices.StorageConnectionString;

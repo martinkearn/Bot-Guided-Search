@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 using BasicBot.Dialogs.LuisIntent;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Builder.Dialogs.Choices;
-using Microsoft.Bot.Builder.AI.Luis;
-using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Schema;
 
 namespace BasicBot.Dialogs.MainMenuDialog
@@ -16,7 +12,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
     public class MainMenuDialog : ComponentDialog
     {
         private const string InputPrompt = "inputPrompt";
-        private const string LuisIntentDialog = "LuisIntentDialog";
+        //private const string LuisIntentDialog = "LuisIntentDialog";
         private const string NoneIntent = "None";
         private const string SearchIntent = "Search";
         private const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
@@ -53,7 +49,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
             AddDialog(new TextPrompt(InputPrompt));
 
             // Child dialogs
-            AddDialog(new LuisIntentDialog(LuisIntentDialog, botServices));
+            AddDialog(new LuisIntentDialog(nameof(LuisIntentDialog), botServices));
 
         }
 
@@ -78,12 +74,12 @@ namespace BasicBot.Dialogs.MainMenuDialog
             var dispatchResults = await _botServices.LuisServices[GuidedSearchBotDispatchServiceName].RecognizeAsync(stepContext.Context, cancellationToken);
             var dispatchTopScoringIntent = dispatchResults?.GetTopScoringIntent();
             var dispatchTopIntent = dispatchTopScoringIntent.Value.intent;
+
             switch (dispatchTopIntent)
             {
                 case DispatchLuisIntent:
                     var luisResult = await DispatchToLuisModelAsync(stepContext.Context, BasicBotLuisApplicationServiceName);
-                    await stepContext.Context.SendActivityAsync($"Intents detected by the BasicBotLuisApplication app:\n\n{string.Join("\n\n", luisResult.Intents)}");
-                    return await stepContext.BeginDialogAsync(LuisIntentDialog);
+                    return await stepContext.BeginDialogAsync(nameof(LuisIntentDialog), luisResult);
 
                 case DispatchQNAIntent:
                     await DispatchToQnAMakerAsync(stepContext.Context, MicrosoftStoreFAQServiceName);

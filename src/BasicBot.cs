@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs;
+using BasicBot.Dialogs.MainMenuDialog;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -59,11 +60,19 @@ namespace Microsoft.BotBuilderSamples
                 case ActivityTypes.Message:
                     if (dc.ActiveDialog != null)
                     {
-                        await dc.ContinueDialogAsync(cancellationToken);
+                        try
+                        {
+                            await dc.ContinueDialogAsync(cancellationToken);
+                        }
+                        catch (Exception e)
+                        {
+                            await turnContext.SendActivityAsync($"Error continuing dialog: {e.Message}");
+                            _logger.Log(LogLevel.Error, e.InnerException, null);
+                        }
                     }
                     else
                     {
-                        await dc.BeginDialogAsync(GuidedSearchDialogSet.StartDialogId, null, cancellationToken);
+                        await dc.BeginDialogAsync(nameof(MainMenuDialog), null, cancellationToken);
                     }
 
                     break;
@@ -77,7 +86,7 @@ namespace Microsoft.BotBuilderSamples
                             if (member.Id != turnContext.Activity.Recipient.Id)
                             {
                                 await dc.Context.SendActivityAsync(Welcome);
-                                await dc.BeginDialogAsync(GuidedSearchDialogSet.StartDialogId, null, cancellationToken);
+                                await dc.BeginDialogAsync(nameof(MainMenuDialog), null, cancellationToken);
                             }
                         }
                     }

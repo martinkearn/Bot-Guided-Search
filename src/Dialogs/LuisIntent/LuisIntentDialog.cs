@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Services;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace BasicBot.Dialogs.LuisIntent
@@ -27,7 +28,9 @@ namespace BasicBot.Dialogs.LuisIntent
 
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog which is not yet implemented so I'm gonna close.");
+            var luisResult = (RecognizerResult)stepContext.Options;
+
+            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {luisResult.Intents.Count} intents and {luisResult.Entities.Count} entities detected.");
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }

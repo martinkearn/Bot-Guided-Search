@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs.LuisIntent;
+using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -78,8 +79,8 @@ namespace BasicBot.Dialogs.MainMenuDialog
             switch (dispatchTopIntent)
             {
                 case DispatchLuisIntent:
-                    var luisResult = await DispatchToLuisModelAsync(stepContext.Context, BasicBotLuisApplicationServiceName);
-                    return await stepContext.BeginDialogAsync(nameof(LuisIntentDialog), luisResult);
+                    var luisResultModel = await _botServices.LuisServices[BasicBotLuisApplicationServiceName].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
+                    return await stepContext.BeginDialogAsync(nameof(LuisIntentDialog), luisResultModel);
 
                 case DispatchQNAIntent:
                     await DispatchToQnAMakerAsync(stepContext.Context, MicrosoftStoreFAQServiceName);
@@ -100,12 +101,6 @@ namespace BasicBot.Dialogs.MainMenuDialog
         private async Task<DialogTurnResult> ResetDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
-        }
-
-        private async Task<RecognizerResult> DispatchToLuisModelAsync(ITurnContext context, string appName, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var result = await _botServices.LuisServices[appName].RecognizeAsync(context, cancellationToken);
-            return result;
         }
 
         private async Task DispatchToQnAMakerAsync(ITurnContext context, string appName, CancellationToken cancellationToken = default(CancellationToken))

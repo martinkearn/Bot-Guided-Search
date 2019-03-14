@@ -1,0 +1,966 @@
+{
+  "luis_schema_version": "3.2.0",
+  "versionId": "0.1",
+  "name": "GuidedSearchBot-a4a3",
+  "desc": "A BotBuilder generated bot",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "Cancel"
+    },
+    {
+      "name": "Help"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "Search"
+    }
+  ],
+  "entities": [
+    {
+      "name": "Colour",
+      "roles": []
+    },
+    {
+      "name": "Connectivity",
+      "roles": []
+    },
+    {
+      "name": "CPU",
+      "roles": []
+    },
+    {
+      "name": "Gb",
+      "roles": []
+    },
+    {
+      "name": "Product",
+      "roles": []
+    },
+    {
+      "name": "ProductFamily",
+      "roles": []
+    }
+  ],
+  "composites": [
+    {
+      "name": "Memory",
+      "children": [
+        "Gb",
+        "MemoryIndicator"
+      ],
+      "roles": []
+    },
+    {
+      "name": "Storage",
+      "children": [
+        "Gb",
+        "StorageIndicator"
+      ],
+      "roles": []
+    }
+  ],
+  "closedLists": [
+    {
+      "name": "MemoryIndicator",
+      "subLists": [
+        {
+          "canonicalForm": "RAM",
+          "list": []
+        },
+        {
+          "canonicalForm": "memory",
+          "list": []
+        },
+        {
+          "canonicalForm": "Random Access Memory",
+          "list": []
+        }
+      ],
+      "roles": []
+    },
+    {
+      "name": "StorageIndicator",
+      "subLists": [
+        {
+          "canonicalForm": "disk",
+          "list": []
+        },
+        {
+          "canonicalForm": "storage",
+          "list": []
+        },
+        {
+          "canonicalForm": "drive",
+          "list": []
+        },
+        {
+          "canonicalForm": "hard disk",
+          "list": []
+        },
+        {
+          "canonicalForm": "hard drive",
+          "list": []
+        },
+        {
+          "canonicalForm": "hdd",
+          "list": []
+        }
+      ],
+      "roles": []
+    }
+  ],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [],
+  "model_features": [
+    {
+      "name": "ProductFamily",
+      "mode": true,
+      "words": "surface,xbox,office,windows mixed reality",
+      "activated": true
+    },
+    {
+      "name": "Product",
+      "mode": true,
+      "words": "surface go,surface laptop 2,surface pro 6,surface book 2,surface headphones,surface studio 2,surface hub",
+      "activated": true
+    },
+    {
+      "name": "Colour",
+      "mode": true,
+      "words": "grey,black",
+      "activated": true
+    },
+    {
+      "name": "CPU",
+      "mode": true,
+      "words": "i5,i7",
+      "activated": true
+    },
+    {
+      "name": "Connectivity",
+      "mode": true,
+      "words": "wifi,lte",
+      "activated": true
+    }
+  ],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [
+    {
+      "text": "?",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "abort",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "are you busy?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "are you old?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "call me scott",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "can you fly?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "can you help me",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "cancel",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "confused",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "cook me something",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "dan",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "delhi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "dhaka",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "do you play games?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "don't do it",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "don't do that",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "dont you ever sleep?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "frustrated",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "getting tired of you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "gnocchi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "good evening",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "good morning",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "have you any dreams?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hello bot",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "help",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "help me",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "help please",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "her cat has no teeth",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hey",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hey there",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hi bot",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "hiya",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how are you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how are you today",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how do i interact with you",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "how old are you?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i am looking for a grey surface book 2 with 256 gb disk",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Colour",
+          "startPos": 19,
+          "endPos": 22
+        },
+        {
+          "entity": "Product",
+          "startPos": 24,
+          "endPos": 37
+        },
+        {
+          "entity": "Gb",
+          "startPos": 44,
+          "endPos": 49
+        },
+        {
+          "entity": "Storage",
+          "startPos": 44,
+          "endPos": 54
+        }
+      ]
+    },
+    {
+      "text": "i am tired of you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i don't understand",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "i live in london",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i need 62gb",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Gb",
+          "startPos": 7,
+          "endPos": 10
+        }
+      ]
+    },
+    {
+      "text": "i need a machine with a 512gb hard disk",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Gb",
+          "startPos": 24,
+          "endPos": 28
+        },
+        {
+          "entity": "Storage",
+          "startPos": 24,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "i need a surface laptop 2 in black with 16gb ram",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 9,
+          "endPos": 24
+        },
+        {
+          "entity": "Colour",
+          "startPos": 29,
+          "endPos": 33
+        },
+        {
+          "entity": "Gb",
+          "startPos": 40,
+          "endPos": 43
+        },
+        {
+          "entity": "Memory",
+          "startPos": 40,
+          "endPos": 47
+        }
+      ]
+    },
+    {
+      "text": "i need an i7 computer",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "CPU",
+          "startPos": 10,
+          "endPos": 11
+        }
+      ]
+    },
+    {
+      "text": "i reside in san francisco",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i want 32gb disk",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Gb",
+          "startPos": 7,
+          "endPos": 10
+        },
+        {
+          "entity": "Storage",
+          "startPos": 7,
+          "endPos": 15
+        }
+      ]
+    },
+    {
+      "text": "i want a device with lte connectivity and 8gb ram",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Connectivity",
+          "startPos": 21,
+          "endPos": 23
+        },
+        {
+          "entity": "Gb",
+          "startPos": 42,
+          "endPos": 44
+        },
+        {
+          "entity": "Memory",
+          "startPos": 42,
+          "endPos": 48
+        }
+      ]
+    },
+    {
+      "text": "i want a machine with 512gb storage",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Gb",
+          "startPos": 22,
+          "endPos": 26
+        },
+        {
+          "entity": "Storage",
+          "startPos": 22,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "i want a surface go in grey with 64gb storage",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 9,
+          "endPos": 18
+        },
+        {
+          "entity": "Gb",
+          "startPos": 33,
+          "endPos": 36
+        },
+        {
+          "entity": "Storage",
+          "startPos": 33,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "i want a surface pro 6",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 9,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "i want a surface pro 6 with 8gb ram and a 128 gb disk",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 9,
+          "endPos": 21
+        },
+        {
+          "entity": "Gb",
+          "startPos": 28,
+          "endPos": 30
+        },
+        {
+          "entity": "Memory",
+          "startPos": 28,
+          "endPos": 34
+        },
+        {
+          "entity": "Gb",
+          "startPos": 42,
+          "endPos": 44
+        },
+        {
+          "entity": "Storage",
+          "startPos": 42,
+          "endPos": 52
+        }
+      ]
+    },
+    {
+      "text": "i want a surface pro 6 with i5 cpu",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 9,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "i want a surface with 4gb memory",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "ProductFamily",
+          "startPos": 9,
+          "endPos": 15
+        },
+        {
+          "entity": "Gb",
+          "startPos": 22,
+          "endPos": 24
+        },
+        {
+          "entity": "Memory",
+          "startPos": 22,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "i want an xbox",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "ProductFamily",
+          "startPos": 10,
+          "endPos": 13
+        }
+      ]
+    },
+    {
+      "text": "i will not give you my location or name",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i will not give you my name",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i won't give you my name",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i would like to cancel",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i'd rather be riding my bike",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm bailing",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i'm from georgia",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm john from cairo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm lauren, and i'm from madrid",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm lili",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "i'm looking for 256 storage",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Gb",
+          "startPos": 16,
+          "endPos": 18
+        },
+        {
+          "entity": "Storage",
+          "startPos": 16,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "i'm looking for a surface",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "ProductFamily",
+          "startPos": 18,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "i'm looking for an i5 laptop in black",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "CPU",
+          "startPos": 19,
+          "endPos": 20
+        },
+        {
+          "entity": "Colour",
+          "startPos": 32,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "i'm lost",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "i'm not going to tell you where i live",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "i'm stuck",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "i'n looking for a surface studio",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "Product",
+          "startPos": 18,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "ineed a surface book with 512 disk and 16gb memory",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "ProductFamily",
+          "startPos": 8,
+          "endPos": 14
+        },
+        {
+          "entity": "Product",
+          "startPos": 8,
+          "endPos": 19
+        },
+        {
+          "entity": "Gb",
+          "startPos": 26,
+          "endPos": 28
+        },
+        {
+          "entity": "Storage",
+          "startPos": 26,
+          "endPos": 33
+        },
+        {
+          "entity": "Gb",
+          "startPos": 39,
+          "endPos": 42
+        },
+        {
+          "entity": "Memory",
+          "startPos": 39,
+          "endPos": 49
+        }
+      ]
+    },
+    {
+      "text": "lost",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "melanie",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "mumbai",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my location is new york",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my name is maria and i'm from sydney",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "my name is tom",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "no way",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "no way, i won't give you my location",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "paris",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "please cancel",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "please stop",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "portland",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "quit",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "seattle is my current city",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "shangai",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "spaghetti",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "stop",
+      "intent": "Cancel",
+      "entities": []
+    },
+    {
+      "text": "tony is my name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "toronto",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "vishwac is my name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "what are your capabilities",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what can i say",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what can you do",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what can you help me with",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what do i do now",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what i7 machines do you have",
+      "intent": "Search",
+      "entities": [
+        {
+          "entity": "CPU",
+          "startPos": 5,
+          "endPos": 6
+        }
+      ]
+    },
+    {
+      "text": "what's your age?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "what's your name",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who am i speaking to",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who am i speaking with",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who are you",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "who is your boss?",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "why doesn't this work",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "world wide pants",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "yo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "you are boring",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "you can assume i live in cairo",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "you can call me steve",
+      "intent": "None",
+      "entities": []
+    }
+  ],
+  "settings": []
+}

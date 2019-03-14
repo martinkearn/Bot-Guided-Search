@@ -19,28 +19,27 @@ namespace BasicBot.Dialogs.LuisIntent
         private const string EntityMemory = "Memory";
         private const string EntityProduct = "Product";
         private const string EntityStorage = "Storage";
-        private static List<LuisEntity> result = new List<LuisEntity>();
 
         public static List<LuisEntity> GetEntities(RecognizerResult recognizerResult)
         {
-            result.Clear();
+            var result = new List<LuisEntity>();
 
             foreach (var entity in recognizerResult.Entities)
             {
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityProductFamily);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityProduct);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityMemory);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityCPU);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityColour);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityConnectivity);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityGb);
-                AddLuisEntityIfPresent(entity.Value.ToString(), EntityStorage);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityProductFamily);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityProduct);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityMemory);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityCPU);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityColour);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityConnectivity);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityGb);
+                result = AddLuisEntityIfPresent(result, entity.Value.ToString(), EntityStorage);
             }
 
             return result;
         }
 
-        private static void AddLuisEntityIfPresent(string entityValue, string entityName)
+        private static List<LuisEntity> AddLuisEntityIfPresent(List<LuisEntity> result, string entityValue, string entityName)
         {
             try
             {
@@ -54,11 +53,16 @@ namespace BasicBot.Dialogs.LuisIntent
                         Score = Convert.ToDouble(j[0]["score"]),
                     };
                     result.Add(e);
+                    return result;
+                }
+                else
+                {
+                    return result;
                 }
             }
             catch (Exception e)
             {
-                var message = e.Message;
+                return result;
             }
         }
 

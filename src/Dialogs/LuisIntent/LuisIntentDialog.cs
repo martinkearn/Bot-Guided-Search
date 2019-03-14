@@ -9,6 +9,7 @@ namespace BasicBot.Dialogs.LuisIntent
     internal class LuisIntentDialog : ComponentDialog
     {
         private readonly BotServices _botServices;
+        private RecognizerResult _luisResult;
 
         public LuisIntentDialog(string dialogId, BotServices botServices)
              : base(dialogId)
@@ -28,9 +29,16 @@ namespace BasicBot.Dialogs.LuisIntent
 
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var luisResult = (RecognizerResult)stepContext.Options;
+            _luisResult = (RecognizerResult)stepContext.Options;
 
-            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {luisResult.Intents.Count} intents and {luisResult.Entities.Count} entities detected.");
+            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {_luisResult.Intents.Count} intents and {_luisResult.Entities.Count} entities detected.");
+
+            var entities = LuisHelpers.GetEntities(_luisResult);
+
+            foreach (var entity in entities)
+            {
+                await stepContext.Context.SendActivityAsync($"{entity.Type}:{entity.Text}");
+            }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }

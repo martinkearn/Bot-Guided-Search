@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs;
 using BasicBot.Dialogs.MainMenuDialog;
+using BasicBot.Interfaces;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -31,29 +32,38 @@ namespace Microsoft.BotBuilderSamples
         private readonly IStatePropertyAccessor<GreetingState> _greetingStateAccessor;
 
         private readonly ILogger _logger;
-        private readonly GuidedSearchDialogSet _dialogSet;
-        private readonly BotState _botState;
+        private readonly ITableStore _tableStore;
+        private readonly IStatePropertyAccessor<DialogState> _dialogStateAccessor;
+        private readonly UserState _userState;
+        private readonly ConversationState _conversationState;
         private readonly BotServices _services;
 
-        public BasicBot(BotServices services, BotState botState, GuidedSearchDialogSet dialogSet, ILoggerFactory loggerFactory)
+        public BasicBot(BotServices services, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory, ITableStore tableStore)
         {
-            _botState = botState ?? throw new ArgumentNullException(nameof(botState));
-            _dialogSet = dialogSet ?? throw new ArgumentNullException(nameof(dialogSet));
+            _userState = userState ?? throw new ArgumentNullException(nameof(userState));
+            _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
             _services = services ?? throw new ArgumentNullException(nameof(services));
+            _logger = loggerFactory.CreateLogger<BasicBot>();
+            _tableStore = tableStore;
+            _dialogStateAccessor = _conversationState.CreateProperty<DialogState>(nameof(DialogState));
+
+            Dialogs = new DialogSet(_dialogStateAccessor);
+            Dialogs.Add(new MainMenuDialog(nameof(MainMenuDialog), services, _tableStore));
 
             if (loggerFactory == null)
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
 
-            _logger = loggerFactory.CreateLogger<BasicBot>();
             _logger.LogTrace("Turn start.");
         }
+
+        private DialogSet Dialogs { get; set; }
 
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             // Create a dialog context
-            var dc = await _dialogSet.CreateContextAsync(turnContext, cancellationToken);
+            var dc = await Dialogs.CreateContextAsync(turnContext, cancellationToken);
 
             switch (turnContext.Activity.Type)
             {
@@ -97,7 +107,8 @@ namespace Microsoft.BotBuilderSamples
                     break;
             }
 
-            await _botState.SaveChangesAsync(turnContext, cancellationToken: cancellationToken);
+            await _conversationState.SaveChangesAsync(turnContext);
+            await _userState.SaveChangesAsync(turnContext);
         }
 
         // Determine if an interruption has occurred before we dispatch to any active dialog.

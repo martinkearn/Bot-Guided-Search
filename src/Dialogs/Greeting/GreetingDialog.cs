@@ -67,8 +67,7 @@ namespace Microsoft.BotBuilderSamples
             var greetingState = await UserProfileAccessor.GetAsync(stepContext.Context, () => null);
             if (greetingState == null)
             {
-                var greetingStateOpt = stepContext.Options as GreetingState;
-                if (greetingStateOpt != null)
+                if (stepContext.Options is GreetingState greetingStateOpt)
                 {
                     await UserProfileAccessor.SetAsync(stepContext.Context, greetingStateOpt);
                 }

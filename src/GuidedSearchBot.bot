@@ -4,87 +4,89 @@
     "services": [
         {
             "type": "abs",
-            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
+            "id": "1",
+            "name": "GuidedSearchBot",
             "resourceGroup": "GuidedSearchBot",
             "serviceName": "GuidedSearchBot",
-            "name": "GuidedSearchBot",
-            "id": "1",
-            "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841"
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
         },
         {
             "type": "blob",
-            "connectionString": "gGoTK0BxYRbxbhAPDqb07Q==!XPjsV5IkQy96vRAv6WCQskDcj7o+lL/IRm16rGYhme3BMRAo1qipGXc73S7BbHHgWloVu4VjKTsCL+oqOMsTbcWMvB9iipQqW7cYW0po9b0OMXAKp2M2azpLO/AHwACB5ffe1QxHfIN9aaOrvo6fxMwAzxLx/vSPSyFX8kTxCg11X18PWMeBtL1sUHjFn95M53pYT3PHiG5gYEoJyJp+U4Oh3/RtGMZM8A0n35J5TDo=",
-            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "connectionString": "cA1Ob41IImxFGmvHX2ZvUQ==!ZPahOAffj+wNKlq7FNL/Mh+42JXP0k7U6C/JbC8+W+xM9fL/3CqiLO+35fMuYzcFzatoPPpWAyMi8QdHjugXxsu52uejhBjSKowowixtz8a0/NLg3tvGzABM9Xn80Z8jILrmYENvW/3/F2uo3cdQsSp26NLHZ6hE7S3/9wUEK/6NlhPuoqzeKPUnvkvB3byDjnIdinO788B2WcUQEEyfMVbmQZBSU0Zz9DeO4kDoBSU=",
+            "id": "2",
             "resourceGroup": "GuidedSearchBot",
             "serviceName": "guidedsearchbotstorage",
-            "id": "2"
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
         },
         {
             "type": "endpoint",
             "appId": "",
             "appPassword": "",
             "endpoint": "http://localhost:3978/api/messages",
-            "name": "development",
-            "id": "3"
+            "id": "3",
+            "name": "development"
         },
         {
             "type": "endpoint",
             "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
-            "appPassword": "Uu517PO5XBlhL/M9yYzPWw==!utvRdsmH/7XsTsfzcL44hFM1aVESivgcX/3wJlD9iqQ=",
+            "appPassword": "+ov9kOka5xGtZlj7t0g53w==!LAGp2zd58wayiHEqD2aA7+AlDMiIrqZiieU/qeS9AW4=",
             "endpoint": "https://guidedsearchbot.azurewebsites.net/api/messages",
-            "name": "production",
-            "id": "4"
+            "id": "4",
+            "name": "production"
         },
         {
             "type": "appInsights",
-            "instrumentationKey": "s6B+jDOsjWcNqapp+oXz8g==!DSdOGyAjRAnaa9+ZfrbuMZAGd8+zcEgWMJIReEsEs9boNUkkI4E9zXXVPPtlr+jA",
-            "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
             "apiKeys": {},
-            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
-            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
+            "id": "5",
+            "instrumentationKey": "yJAtXVb23I7gFIRh5NqhGw==!datxW/fvwC8rC2mygbrEO5xrIrBS4ao1HqwhbmW3oqnKY44PzBY1TxceKApcZugN",
             "resourceGroup": "GuidedSearchBot",
             "serviceName": "GuidedSearchBoth6hd2s",
-            "id": "5"
+            "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
+            "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
         },
         {
             "type": "luis",
             "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
-            "authoringKey": "87qNCeNtqJ31yK/A4V+sWA==!GzrA0Y0k6tPdIrqpH5yUxfYK+vdObIlkqQdKNBqjuDHl6Opg3uzsO9x4GfBnKM+2",
-            "version": "0.1",
-            "region": "westeurope",
+            "authoringKey": "dTpdfo6QTKqeluM7ZwDMRw==!ruJBRg2FwIEFpsWntVAnHSylo5smm7SGiC04pJw8BRpxTo56pdOvpFtBKKuD2Hn9",
+            "id": "6",
             "name": "BasicBotLuisApplication",
-            "id": "6"
+            "region": "westeurope",
+            "version": "0.1"
         },
         {
             "type": "qna",
-            "name": "MicrosoftStoreFAQ",
+            "endpointKey": "r/+EXCwvwWgzvKgLyIpPDA==!SNHvLUxAIY+yQG003iqhEORP4Jr9PzG6SsMsjw04T33ePcOJBkgVXy4KyyaUJxDb",
+            "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
+            "id": "254",
             "kbId": "c6cdccd4-cd69-4b8f-afc3-a1765660aafd",
-            "subscriptionKey": "vJOll0Ydb5/Ih6F2HPxvIQ==!J9b5W1t7zw2SmUBoaINL5ZtXpXTCuD7aTmEIyyiED+KNuQ6Fc+j0Ow63oEjQ692h",
-            "endpointKey": "JpDqqwZe5Bc/UPThE3p8Hw==!wtH7Zs74QVIONZH5wIhiUUVEoWUIq6bNTWmxjbuA1Hy9HLdLn8Li/+rebz4rpilv",
-            "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
-            "id": "254"
+            "name": "MicrosoftStoreFAQ",
+            "subscriptionKey": "LhvJcRnjVThTAZ5ukfsOnQ==!/hwN6dcd9Yw2ywJAISsj+7tnZRTi5PnCKFWYRoAD8N0Cc+Z6BpQwnPO6XNXBq/UO"
         },
         {
             "type": "qna",
-            "name": "LinkMappings",
-            "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
-            "subscriptionKey": "GVvrd6yWfOhfaF/bQqnF4Q==!ExSMsuxPDn2pP/Te3KTuaQIgneE1WVkb7qSsC5Si56dqE778b6Dfvcvz03ZlkUfI",
-            "endpointKey": "lnQJ8G4DLvFgN0ffKDeCmQ==!aTw4sOEJkgNDMTc5odDCUWXgDqapMV5LWokg69BBRW2jNXoxab1pZ5/PXQXFruNI",
+            "endpointKey": "Wsfa4ulT7pdt2NNVPXiQWg==!wm7PUtTIeS7n9yuHrqmrDauRm6uSjvk/SelNSM/7at8xSA/7KUvG+q6UxGw0KCAS",
             "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
-            "id": "173"
+            "id": "173",
+            "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
+            "name": "LinkMappings",
+            "subscriptionKey": "kDk1YmjVkhjAmcs4NTHkNA==!pGjUbA0OK4r78RwSUQgpMXs9PClngCvVK1wxf9BkboSTzO90kgCZHflZDsTgr/6z"
         },
         {
             "type": "luis",
-            "name": "GuidedSearchBotDispatch",
             "appId": "de1fa160-46a7-4b22-9fc0-8bc0222474ba",
-            "version": "Dispatch",
-            "authoringKey": "+3wYNvb0JGmhTEO4vLTktQ==!38LkWFp3Wvq2qqO4hDXAA82L3F1ryegImulTmV6VQd6YGTEydtpQt6GwANXvKmQM",
+            "authoringKey": "3CRtaG/0rzndAhBlloQ0mg==!TtHSiKXW0QiskJjpVqFjDi6X+pBNGdwhs7bOOS0Cy0eRocguCBtB703cN/6S9b/X",
+            "id": "245",
+            "name": "GuidedSearchBotDispatch",
             "region": "WestEurope",
-            "id": "245"
+            "version": "Dispatch"
         }
     ],
     "padlock": "WOjNNBWUJB2dKZVzgtL4xA==!iSPFpgHxMaYoWCovVWNfdk5VKgp1Tuwqpq9Kw+C2cleQ4OgBcE37SWpA6npOx37b",
-    "version": "2.0"
+    "version": "2.0",
+    "path": "C:\\Users\\mkearn\\Documents\\GitHub\\Bot-Guided-Search\\src\\GuidedSearchBot.bot",
+    "overrides": null
 }

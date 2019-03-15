@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
@@ -10,12 +11,14 @@ namespace BasicBot.Dialogs.LuisIntent
     internal class LuisIntentDialog : ComponentDialog
     {
         private readonly BotServices _botServices;
-        private RecognizerResult _luisResult;
+        private readonly ITableStore _tableStore;
+        private LuisModel _luisModel;
 
-        public LuisIntentDialog(string dialogId, BotServices botServices)
+        public LuisIntentDialog(string dialogId, BotServices botServices, ITableStore tableStore)
              : base(dialogId)
         {
             _botServices = botServices;
+            _tableStore = tableStore;
             InitialDialogId = dialogId;
 
             // Define the conversation flow using the waterfall model.
@@ -30,13 +33,20 @@ namespace BasicBot.Dialogs.LuisIntent
 
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            var luisModel = (LuisModel)stepContext.Options;
+            _luisModel = (LuisModel)stepContext.Options;
 
-            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {luisModel.Intents.Count} intents.");
+            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {_luisModel.Intents.Count} intents.");
 
-            if (luisModel.Entities.Product != null)
+            if (_luisModel.Entities.Product != null)
             {
-                await stepContext.Context.SendActivityAsync($"Product: {luisModel.Entities.Product[0]}");
+                await stepContext.Context.SendActivityAsync($"Product: {_luisModel.Entities.Product[0]}");
+                var manCatsForProduct = await _tableStore.GetMandatoryCategories(nameof(_luisModel.Entities.Product));
+                await stepContext.Context.SendActivityAsync($"Mandatory categories for Product: {string.Join(",", manCatsForProduct)}");
+            }
+
+            if (_luisModel.Entities.Memory != null)
+            {
+                await stepContext.Context.SendActivityAsync($"Memory: {_luisModel.Entities.Memory[0].Gb[0]}");
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);

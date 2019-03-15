@@ -27,8 +27,7 @@ namespace Microsoft.BotBuilderSamples
     public class Startup
     {
         private ILoggerFactory _loggerFactory;
-        private bool _isProduction = false;
-
+        private readonly bool _isProduction = false;
 
         public Startup(IHostingEnvironment env)
         {
@@ -89,7 +88,10 @@ namespace Microsoft.BotBuilderSamples
             // Create and add conversation state.
             var conversationState = new ConversationState(dataStore);
             services.AddSingleton(conversationState);
-            services.AddSingleton<BotState>(conversationState);
+
+            // Create and add user state.
+            var userState = new UserState(dataStore);
+            services.AddSingleton(userState);
 
             services.AddBot<BasicBot>(options =>
             {
@@ -107,9 +109,6 @@ namespace Microsoft.BotBuilderSamples
 
             // Configure Repositories
             services.AddSingleton<ITableStore, TableStore>();
-
-            // Add Dialog Set
-            services.AddSingleton(sp => new GuidedSearchDialogSet(botServices, conversationState.CreateProperty<DialogState>("BASICBOTDIALOGSTATE")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

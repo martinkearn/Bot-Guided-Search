@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs.LuisIntent;
+using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
@@ -12,15 +13,13 @@ namespace BasicBot.Dialogs.MainMenuDialog
 {
     public class MainMenuDialog : ComponentDialog
     {
-        private const string InputPrompt = "inputPrompt";
-        //private const string LuisIntentDialog = "LuisIntentDialog";
+        private const string TextPromptName = "inputPrompt";
         private const string NoneIntent = "None";
-        private const string SearchIntent = "Search";
         private const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
         private const string DispatchQNAIntent = "q_MicrosoftStoreFAQ";
-        private const string MicrosoftStoreFAQServiceName = "MicrosoftStoreFAQ";
-        private const string GuidedSearchBotDispatchServiceName = "GuidedSearchBotDispatch";
-        private const string BasicBotLuisApplicationServiceName = "BasicBotLuisApplication";
+        private const string QNAServiceName = "MicrosoftStoreFAQ";
+        private const string LuisDispatchServiceName = "GuidedSearchBotDispatch";
+        private const string LuisModelServiceName = "BasicBotLuisApplication";
 
         // Messages
         private const string WhatAreYouLookingFor = "Please tell me what you are looking for?";
@@ -29,14 +28,16 @@ namespace BasicBot.Dialogs.MainMenuDialog
         private const string NoAnswerInQNAKB = "Couldn't find an answer in the QNA Knowledge Base";
         private const string QNADone = "Thats all I have, I'll pass you back to the top menu now";
 
+        private readonly ITableStore _tableStore;
         private BotServices _botServices;
 
-        public MainMenuDialog(string dialogId, BotServices botServices)
+        public MainMenuDialog(string dialogId, BotServices botServices, ITableStore tableStore)
             : base(dialogId)
         {
             // ID of the child dialog that should be started anytime the component is started.
             InitialDialogId = dialogId;
             _botServices = botServices;
+            _tableStore = tableStore;
 
             // Define the steps of the waterfall dialog and add it to the set.
             var waterfallSteps = new WaterfallStep[]
@@ -47,10 +48,10 @@ namespace BasicBot.Dialogs.MainMenuDialog
             };
 
             AddDialog(new WaterfallDialog(dialogId, waterfallSteps));
-            AddDialog(new TextPrompt(InputPrompt));
+            AddDialog(new TextPrompt(TextPromptName));
 
             // Child dialogs
-            AddDialog(new LuisIntentDialog(nameof(LuisIntentDialog), botServices));
+            AddDialog(new LuisIntentDialog(nameof(LuisIntentDialog), botServices, _tableStore));
 
         }
 
@@ -64,7 +65,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
                     Text = WhatAreYouLookingFor,
                 },
             };
-            return await stepContext.PromptAsync(InputPrompt, opts);
+            return await stepContext.PromptAsync(TextPromptName, opts);
         }
 
         private async Task<DialogTurnResult> HandleInputResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -72,18 +73,18 @@ namespace BasicBot.Dialogs.MainMenuDialog
             var result = stepContext.Result as string;
 
             // Do Dispatcher triage here and then spawn out to appropriate child dialogs
-            var dispatchResults = await _botServices.LuisServices[GuidedSearchBotDispatchServiceName].RecognizeAsync(stepContext.Context, cancellationToken);
+            var dispatchResults = await _botServices.LuisServices[LuisDispatchServiceName].RecognizeAsync(stepContext.Context, cancellationToken);
             var dispatchTopScoringIntent = dispatchResults?.GetTopScoringIntent();
             var dispatchTopIntent = dispatchTopScoringIntent.Value.intent;
 
             switch (dispatchTopIntent)
             {
                 case DispatchLuisIntent:
-                    var luisResultModel = await _botServices.LuisServices[BasicBotLuisApplicationServiceName].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
+                    var luisResultModel = await _botServices.LuisServices[LuisModelServiceName].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
                     return await stepContext.BeginDialogAsync(nameof(LuisIntentDialog), luisResultModel);
 
                 case DispatchQNAIntent:
-                    await DispatchToQnAMakerAsync(stepContext.Context, MicrosoftStoreFAQServiceName);
+                    await DispatchToQnAMakerAsync(stepContext.Context, QNAServiceName);
                     break;
 
                 case NoneIntent:

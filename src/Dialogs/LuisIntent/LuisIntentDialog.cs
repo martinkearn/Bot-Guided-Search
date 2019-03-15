@@ -38,24 +38,45 @@ namespace BasicBot.Dialogs.LuisIntent
 
             var entityValues = new List<string>();
 
-            if (_luisModel.Entities.ProductFamily != null)
+            if (_luisModel.Entities.CPU != null)
             {
-                var value = _luisModel.Entities.ProductFamily[0];
-                await stepContext.Context.SendActivityAsync($"ProductFamily: {value}");
+                var value = _luisModel.Entities.CPU[0];
                 entityValues.Add(value);
             }
 
-            if (_luisModel.Entities.Product != null)
+            if (_luisModel.Entities.Colour != null)
             {
-                var value = _luisModel.Entities.Product[0];
-                await stepContext.Context.SendActivityAsync($"Product: {value}");
+                var value = _luisModel.Entities.Colour[0];
+                entityValues.Add(value);
+            }
+
+            if (_luisModel.Entities.Connectivity != null)
+            {
+                var value = _luisModel.Entities.Connectivity[0];
                 entityValues.Add(value);
             }
 
             if (_luisModel.Entities.Memory != null)
             {
                 var value = _luisModel.Entities.Memory[0].Gb[0];
-                await stepContext.Context.SendActivityAsync($"Memory: {value}");
+                entityValues.Add(value);
+            }
+
+            if (_luisModel.Entities.Product != null)
+            {
+                var value = _luisModel.Entities.Product[0];
+                entityValues.Add(value);
+            }
+
+            if (_luisModel.Entities.ProductFamily != null)
+            {
+                var value = _luisModel.Entities.ProductFamily[0];
+                entityValues.Add(value);
+            }
+
+            if (_luisModel.Entities.Storage != null)
+            {
+                var value = _luisModel.Entities.Storage[0].Gb[0];
                 entityValues.Add(value);
             }
 

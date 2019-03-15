@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Interfaces;
 using BasicBot.Models;
@@ -35,19 +36,42 @@ namespace BasicBot.Dialogs.LuisIntent
         {
             _luisModel = (LuisModel)stepContext.Options;
 
-            await stepContext.Context.SendActivityAsync($"You've landed in LuisIntentDialog with {_luisModel.Intents.Count} intents.");
+            var entityValues = new List<string>();
+
+            if (_luisModel.Entities.ProductFamily != null)
+            {
+                var value = _luisModel.Entities.ProductFamily[0];
+                await stepContext.Context.SendActivityAsync($"ProductFamily: {value}");
+                entityValues.Add(value);
+            }
 
             if (_luisModel.Entities.Product != null)
             {
-                await stepContext.Context.SendActivityAsync($"Product: {_luisModel.Entities.Product[0]}");
-                var manCatsForProduct = await _tableStore.GetMandatoryCategories(nameof(_luisModel.Entities.Product));
-                await stepContext.Context.SendActivityAsync($"Mandatory categories for Product: {string.Join(",", manCatsForProduct)}");
+                var value = _luisModel.Entities.Product[0];
+                await stepContext.Context.SendActivityAsync($"Product: {value}");
+                entityValues.Add(value);
             }
 
             if (_luisModel.Entities.Memory != null)
             {
-                await stepContext.Context.SendActivityAsync($"Memory: {_luisModel.Entities.Memory[0].Gb[0]}");
+                var value = _luisModel.Entities.Memory[0].Gb[0];
+                await stepContext.Context.SendActivityAsync($"Memory: {value}");
+                entityValues.Add(value);
             }
+
+            await stepContext.Context.SendActivityAsync($"All entity values: {string.Join(",", entityValues)}");
+
+            var mandatoryCategories = new List<string>();
+            foreach (var entityValue in entityValues)
+            {
+                var mandCats = await _tableStore.GetMandatoryCategories(entityValue);
+                foreach (var mandCat in mandCats)
+                {
+                    mandatoryCategories.Add(mandCat);
+                }
+            }
+
+            await stepContext.Context.SendActivityAsync($"All mandatory categories: {string.Join(",", mandatoryCategories)}");
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }

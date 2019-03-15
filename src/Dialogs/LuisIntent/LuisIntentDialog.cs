@@ -36,56 +36,56 @@ namespace BasicBot.Dialogs.LuisIntent
         {
             _luisModel = (LuisModel)stepContext.Options;
 
-            var entityValues = new List<string>();
+            var filters = new Dictionary<string, string>();
 
             if (_luisModel.Entities.CPU != null)
             {
                 var value = _luisModel.Entities.CPU[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.CPU), value);
             }
 
             if (_luisModel.Entities.Colour != null)
             {
                 var value = _luisModel.Entities.Colour[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.Colour), value);
             }
 
             if (_luisModel.Entities.Connectivity != null)
             {
                 var value = _luisModel.Entities.Connectivity[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.Connectivity), value);
             }
 
             if (_luisModel.Entities.Memory != null)
             {
                 var value = _luisModel.Entities.Memory[0].Gb[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.Memory), value);
             }
 
             if (_luisModel.Entities.Product != null)
             {
                 var value = _luisModel.Entities.Product[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.Product), value);
             }
 
             if (_luisModel.Entities.ProductFamily != null)
             {
                 var value = _luisModel.Entities.ProductFamily[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.ProductFamily), value);
             }
 
             if (_luisModel.Entities.Storage != null)
             {
                 var value = _luisModel.Entities.Storage[0].Gb[0];
-                entityValues.Add(value);
+                filters.Add(nameof(_luisModel.Entities.Storage), value);
             }
 
-            await stepContext.Context.SendActivityAsync($"All entity values: {string.Join(",", entityValues)}");
-
             var mandatoryCategories = new List<string>();
-            foreach (var entityValue in entityValues)
+            foreach (var filter in filters)
             {
-                var mandCats = await _tableStore.GetMandatoryCategories(entityValue);
+                await stepContext.Context.SendActivityAsync($"Filter: {filter.Key}:{filter.Value}");
+
+                var mandCats = await _tableStore.GetMandatoryCategories(filter.Value);
                 foreach (var mandCat in mandCats)
                 {
                     mandatoryCategories.Add(mandCat);

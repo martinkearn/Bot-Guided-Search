@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Interfaces;
@@ -12,11 +13,17 @@ namespace BasicBot.Dialogs.LuisDialog
 {
     internal class LuisDialog : ComponentDialog
     {
+        private const string StateKeyCpuEntity = "cpu";
+        private const string StateKeyColourEntity = "colour";
+        private const string StateKeyConnectivityEntity = "connectivity";
+        private const string StateKeyMemoryEntity = "memory";
+        private const string StateKeyProductEntity = "product";
+        private const string StateKeyProductFamilyEntity = "productfamily";
+        private const string StateKeyStorageEntity = "storage";
+
         private readonly BotServices _botServices;
         private readonly ITableStore _tableStore;
         private LuisModel _luisModel;
-        //private List<string> _mandatoryCategories;
-        //private Dictionary<string, string> _entities;
 
         public LuisDialog(IStatePropertyAccessor<LuisDialogState> userProfileStateAccessor, string dialogId, BotServices botServices, ITableStore tableStore)
              : base(dialogId)
@@ -80,43 +87,43 @@ namespace BasicBot.Dialogs.LuisDialog
             if (_luisModel.Entities.CPU != null)
             {
                 var value = _luisModel.Entities.CPU[0];
-                state.Entities.Add(nameof(_luisModel.Entities.CPU), value);
+                state.Entities.Add(StateKeyCpuEntity, value);
             }
 
             if (_luisModel.Entities.Colour != null)
             {
                 var value = _luisModel.Entities.Colour[0];
-                state.Entities.Add(nameof(_luisModel.Entities.Colour), value);
+                state.Entities.Add(StateKeyColourEntity, value);
             }
 
             if (_luisModel.Entities.Connectivity != null)
             {
                 var value = _luisModel.Entities.Connectivity[0];
-                state.Entities.Add(nameof(_luisModel.Entities.Connectivity), value);
+                state.Entities.Add(StateKeyConnectivityEntity, value);
             }
 
             if (_luisModel.Entities.Memory != null)
             {
                 var value = _luisModel.Entities.Memory[0].Gb[0];
-                state.Entities.Add(nameof(_luisModel.Entities.Memory), value);
+                state.Entities.Add(StateKeyMemoryEntity, value);
             }
 
             if (_luisModel.Entities.Product != null)
             {
                 var value = _luisModel.Entities.Product[0];
-                state.Entities.Add(nameof(_luisModel.Entities.Product), value);
+                state.Entities.Add(StateKeyProductEntity, value);
             }
 
             if (_luisModel.Entities.ProductFamily != null)
             {
                 var value = _luisModel.Entities.ProductFamily[0];
-                state.Entities.Add(nameof(_luisModel.Entities.ProductFamily), value);
+                state.Entities.Add(StateKeyProductFamilyEntity, value);
             }
 
             if (_luisModel.Entities.Storage != null)
             {
                 var value = _luisModel.Entities.Storage[0].Gb[0];
-                state.Entities.Add(nameof(_luisModel.Entities.Storage), value);
+                state.Entities.Add(StateKeyStorageEntity, value);
             }
 
             // Get mandatory categories
@@ -133,7 +140,7 @@ namespace BasicBot.Dialogs.LuisDialog
             // Save state
             await UserProfileAccessor.SetAsync(stepContext.Context, state);
 
-            await stepContext.Context.SendActivityAsync($"We need some more information to help you find the right product, specifically {string.Join(", ", state.MandatoryCategories)}");
+            await stepContext.Context.SendActivityAsync($"We need some more information to help you find the right product.");
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
@@ -141,8 +148,7 @@ namespace BasicBot.Dialogs.LuisDialog
         {
             var state = await UserProfileAccessor.GetAsync(stepContext.Context);
 
-            // Check if Memory is a mandaory category
-            if (state.MandatoryCategories.Contains(nameof(_luisModel.Entities.Memory).ToLower()))
+            if (PromptForCategory(state, StateKeyMemoryEntity))
             {
                 return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How much memory would you like?");
             }
@@ -154,30 +160,71 @@ namespace BasicBot.Dialogs.LuisDialog
         {
             var state = await UserProfileAccessor.GetAsync(stepContext.Context);
 
-            if (stepContext.Result != null)
+            if (PromptForCategory(state, StateKeyMemoryEntity))
             {
-                var result = (string)stepContext.Result;
-                //_entities.Add(nameof(_luisModel.Entities.Memory), result);
-                // BUG _entities gets lost between urns - need to use state and acessors to store it
-                return await stepContext.NextAsync(result, cancellationToken: cancellationToken);
+                // We dont already have Memory. This result should be the value for Memory
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyMemoryEntity, result);
+                }
             }
-            else
-            {
-                // HACK This is jus a hack to check that we are receiving eth result before state is implemented
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
         private async Task<DialogTurnResult> EndDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // HACK This is jus a hack to check that we are receiving eth result before state is implemented
-            if (stepContext.Result != null)
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            // Construct a string to summarise the search
+            var textInfo = new CultureInfo("en-GB", false).TextInfo;
+            var entityString = string.Empty;
+            foreach (var entity in state.Entities)
             {
-                var result = (string)stepContext.Result;
-                await stepContext.Context.SendActivityAsync($"You would like {result} memory");
+                if (entity.Key == StateKeyMemoryEntity)
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key},");
+                }
+                else if (entity.Key == StateKeyStorageEntity)
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key},");
+                }
+                else
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value},");
+                }
             }
 
+            entityString = entityString.TrimEnd(',');
+
+            await stepContext.Context.SendActivityAsync($"You would like to search for {entityString}");
+
             return await stepContext.EndDialogAsync().ConfigureAwait(false);
+        }
+
+        private bool PromptForCategory(LuisDialogState state, string catKey)
+        {
+            // Check if categry is a mandatory category
+            if (state.MandatoryCategories.Contains(catKey))
+            {
+                // Check if we already have category
+                if (state.Entities.ContainsKey(catKey))
+                {
+                    // Already have category, dont need to prompt for it
+                    return false;
+                }
+                else
+                {
+                    // Do not have category, need to prompt for it
+                    return true;
+                }
+            }
+            else
+            {
+                // Dont require category, dont need to prompt for it
+                return false;
+            }
         }
     }
 }

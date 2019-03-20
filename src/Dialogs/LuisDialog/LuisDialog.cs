@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
+using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace BasicBot.Dialogs.LuisDialog
@@ -13,12 +15,14 @@ namespace BasicBot.Dialogs.LuisDialog
         private readonly BotServices _botServices;
         private readonly ITableStore _tableStore;
         private LuisModel _luisModel;
-        private List<string> _mandatoryCategories;
-        private Dictionary<string, string> _entities;
+        //private List<string> _mandatoryCategories;
+        //private Dictionary<string, string> _entities;
 
-        public LuisDialog(string dialogId, BotServices botServices, ITableStore tableStore)
+        public LuisDialog(IStatePropertyAccessor<LuisDialogState> userProfileStateAccessor, string dialogId, BotServices botServices, ITableStore tableStore)
              : base(dialogId)
         {
+            UserProfileAccessor = userProfileStateAccessor ?? throw new ArgumentNullException(nameof(userProfileStateAccessor));
+
             _botServices = botServices;
             _tableStore = tableStore;
             InitialDialogId = dialogId;
@@ -26,6 +30,7 @@ namespace BasicBot.Dialogs.LuisDialog
             // Define the conversation flow using the waterfall model.
             var waterfallSteps = new WaterfallStep[]
             {
+                InitializeStateStepAsync,
                 GetLuisResultAsync,
                 EstablishMandatoryCategoriesAsync,
                 PromptMemoryCategoryAsync,
@@ -39,6 +44,26 @@ namespace BasicBot.Dialogs.LuisDialog
             AddDialog(new EntityCompletionDialog.EntityCompletionDialog(nameof(EntityCompletionDialog.EntityCompletionDialog)));
         }
 
+        public IStatePropertyAccessor<LuisDialogState> UserProfileAccessor { get; }
+
+        private async Task<DialogTurnResult> InitializeStateStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context, () => null);
+            if (state == null)
+            {
+                if (stepContext.Options is LuisDialogState luisDialogStateOpt)
+                {
+                    await UserProfileAccessor.SetAsync(stepContext.Context, luisDialogStateOpt);
+                }
+                else
+                {
+                    await UserProfileAccessor.SetAsync(stepContext.Context, new LuisDialogState());
+                }
+            }
+
+            return await stepContext.NextAsync();
+        }
+
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             _luisModel = (LuisModel)stepContext.Options;
@@ -48,67 +73,76 @@ namespace BasicBot.Dialogs.LuisDialog
 
         private async Task<DialogTurnResult> EstablishMandatoryCategoriesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            _entities = new Dictionary<string, string>();
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
 
+            // Store the entities that Luis has provided
+            state.Entities = new Dictionary<string, string>();
             if (_luisModel.Entities.CPU != null)
             {
                 var value = _luisModel.Entities.CPU[0];
-                _entities.Add(nameof(_luisModel.Entities.CPU), value);
+                state.Entities.Add(nameof(_luisModel.Entities.CPU), value);
             }
 
             if (_luisModel.Entities.Colour != null)
             {
                 var value = _luisModel.Entities.Colour[0];
-                _entities.Add(nameof(_luisModel.Entities.Colour), value);
+                state.Entities.Add(nameof(_luisModel.Entities.Colour), value);
             }
 
             if (_luisModel.Entities.Connectivity != null)
             {
                 var value = _luisModel.Entities.Connectivity[0];
-                _entities.Add(nameof(_luisModel.Entities.Connectivity), value);
+                state.Entities.Add(nameof(_luisModel.Entities.Connectivity), value);
             }
 
             if (_luisModel.Entities.Memory != null)
             {
                 var value = _luisModel.Entities.Memory[0].Gb[0];
-                _entities.Add(nameof(_luisModel.Entities.Memory), value);
+                state.Entities.Add(nameof(_luisModel.Entities.Memory), value);
             }
 
             if (_luisModel.Entities.Product != null)
             {
                 var value = _luisModel.Entities.Product[0];
-                _entities.Add(nameof(_luisModel.Entities.Product), value);
+                state.Entities.Add(nameof(_luisModel.Entities.Product), value);
             }
 
             if (_luisModel.Entities.ProductFamily != null)
             {
                 var value = _luisModel.Entities.ProductFamily[0];
-                _entities.Add(nameof(_luisModel.Entities.ProductFamily), value);
+                state.Entities.Add(nameof(_luisModel.Entities.ProductFamily), value);
             }
 
             if (_luisModel.Entities.Storage != null)
             {
                 var value = _luisModel.Entities.Storage[0].Gb[0];
-                _entities.Add(nameof(_luisModel.Entities.Storage), value);
+                state.Entities.Add(nameof(_luisModel.Entities.Storage), value);
             }
 
-            _mandatoryCategories = new List<string>();
-            foreach (var entity in _entities)
+            // Get mandatory categories
+            state.MandatoryCategories = new List<string>();
+            foreach (var entity in state.Entities)
             {
                 var mandCats = await _tableStore.GetMandatoryCategories(entity.Value);
                 foreach (var mandCat in mandCats)
                 {
-                    _mandatoryCategories.Add(mandCat);
+                    state.MandatoryCategories.Add(mandCat);
                 }
             }
 
-            await stepContext.Context.SendActivityAsync($"We need some more information to help you find the right product, specifically {string.Join(", ", _mandatoryCategories)}");
+            // Save state
+            await UserProfileAccessor.SetAsync(stepContext.Context, state);
+
+            await stepContext.Context.SendActivityAsync($"We need some more information to help you find the right product, specifically {string.Join(", ", state.MandatoryCategories)}");
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
         private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            if (_mandatoryCategories.Contains(nameof(_luisModel.Entities.Memory).ToLower()))
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            // Check if Memory is a mandaory category
+            if (state.MandatoryCategories.Contains(nameof(_luisModel.Entities.Memory).ToLower()))
             {
                 return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How much memory would you like?");
             }
@@ -118,6 +152,8 @@ namespace BasicBot.Dialogs.LuisDialog
 
         private async Task<DialogTurnResult> HandleMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
             if (stepContext.Result != null)
             {
                 var result = (string)stepContext.Result;

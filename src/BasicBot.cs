@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs;
+using BasicBot.Dialogs.LuisDialog;
 using BasicBot.Dialogs.MainMenuDialog;
 using BasicBot.Interfaces;
 using BasicBot.Services;
@@ -30,6 +31,7 @@ namespace Microsoft.BotBuilderSamples
         private const string CancelIntent = "Cancel";
 
         private readonly IStatePropertyAccessor<GreetingState> _greetingStateAccessor;
+        private readonly IStatePropertyAccessor<LuisDialogState> _LuisDialogStateAccessor;
 
         private readonly ILogger _logger;
         private readonly ITableStore _tableStore;
@@ -45,10 +47,11 @@ namespace Microsoft.BotBuilderSamples
             _services = services ?? throw new ArgumentNullException(nameof(services));
             _logger = loggerFactory.CreateLogger<BasicBot>();
             _tableStore = tableStore;
+            _LuisDialogStateAccessor = _userState.CreateProperty<LuisDialogState>(nameof(LuisDialogState));
             _dialogStateAccessor = _conversationState.CreateProperty<DialogState>(nameof(DialogState));
 
             Dialogs = new DialogSet(_dialogStateAccessor);
-            Dialogs.Add(new MainMenuDialog(nameof(MainMenuDialog), services, _tableStore));
+            Dialogs.Add(new MainMenuDialog(_LuisDialogStateAccessor, nameof(MainMenuDialog), services, _tableStore));
 
             if (loggerFactory == null)
             {

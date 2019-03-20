@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BasicBot.Dialogs.LuisDialog;
@@ -31,7 +32,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
         private readonly ITableStore _tableStore;
         private BotServices _botServices;
 
-        public MainMenuDialog(string dialogId, BotServices botServices, ITableStore tableStore)
+        public MainMenuDialog(IStatePropertyAccessor<LuisDialogState> userProfileStateAccessor, string dialogId, BotServices botServices, ITableStore tableStore)
             : base(dialogId)
         {
             // ID of the child dialog that should be started anytime the component is started.
@@ -51,8 +52,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
             AddDialog(new TextPrompt(TextPromptName));
 
             // Child dialogs
-            AddDialog(new LuisDialog.LuisDialog(nameof(LuisDialog), botServices, _tableStore));
-
+            AddDialog(new LuisDialog.LuisDialog(userProfileStateAccessor, nameof(LuisDialog), botServices, _tableStore));
         }
 
         private async Task<DialogTurnResult> PromptForInputAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

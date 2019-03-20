@@ -40,8 +40,20 @@ namespace BasicBot.Dialogs.LuisDialog
                 InitializeStateStepAsync,
                 GetLuisResultAsync,
                 EstablishMandatoryCategoriesAsync,
+                PromptCpuCategoryAsync,
+                HandleCpuCategoryAsync,
+                PromptColourCategoryAsync,
+                HandleColourCategoryAsync,
+                PromptConnectivityCategoryAsync,
+                HandleConnectivityCategoryAsync,
                 PromptMemoryCategoryAsync,
                 HandleMemoryCategoryAsync,
+                PromptProductCategoryAsync,
+                HandleProductCategoryAsync,
+                PromptProductFamilyCategoryAsync,
+                HandleProductFamilyCategoryAsync,
+                PromptStorageCategoryAsync,
+                HandleStorageCategoryAsync,
                 EndDialogAsync,
             };
 
@@ -144,6 +156,93 @@ namespace BasicBot.Dialogs.LuisDialog
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
+        private async Task<DialogTurnResult> PromptCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyCpuEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which CPU would you like? You can say I3, I5 or I7");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyCpuEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyCpuEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> PromptColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyColourEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which Colour would you like? You can say Silver or Black");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyColourEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyColourEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> PromptConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyConnectivityEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How will you like ot get online? You can say WiFi or LTE");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyConnectivityEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyConnectivityEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
         private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var state = await UserProfileAccessor.GetAsync(stepContext.Context);
@@ -162,11 +261,98 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyMemoryEntity))
             {
-                // We dont already have Memory. This result should be the value for Memory
+                // We dont already have this category. This result should be the value for it
                 if (stepContext.Result != null)
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyMemoryEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> PromptProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyProductEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which specific product would you like?");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyProductEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyProductEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> PromptProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyProductFamilyEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which type of product would you like? You can say Xbox, Surface, Office etc");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyProductFamilyEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyProductFamilyEntity, result);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> PromptStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyStorageEntity))
+            {
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How much storage would you like?");
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> HandleStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyStorageEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyStorageEntity, result);
                 }
             }
 

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BasicBot.Dialogs.LuisIntent;
+using BasicBot.Dialogs.LuisDialog;
 using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
@@ -51,7 +51,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
             AddDialog(new TextPrompt(TextPromptName));
 
             // Child dialogs
-            AddDialog(new LuisIntentDialog(nameof(LuisIntentDialog), botServices, _tableStore));
+            AddDialog(new LuisDialog.LuisDialog(nameof(LuisDialog), botServices, _tableStore));
 
         }
 
@@ -81,7 +81,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
             {
                 case DispatchLuisIntent:
                     var luisResultModel = await _botServices.LuisServices[LuisModelServiceName].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
-                    return await stepContext.BeginDialogAsync(nameof(LuisIntentDialog), luisResultModel);
+                    return await stepContext.BeginDialogAsync(nameof(LuisDialog), luisResultModel);
 
                 case DispatchQNAIntent:
                     await DispatchToQnAMakerAsync(stepContext.Context, QNAServiceName);

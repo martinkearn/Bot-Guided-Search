@@ -6,9 +6,9 @@ using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder.Dialogs;
 
-namespace BasicBot.Dialogs.LuisIntent
+namespace BasicBot.Dialogs.LuisDialog
 {
-    internal class LuisIntentDialog : ComponentDialog
+    internal class LuisDialog : ComponentDialog
     {
         private readonly BotServices _botServices;
         private readonly ITableStore _tableStore;
@@ -16,7 +16,7 @@ namespace BasicBot.Dialogs.LuisIntent
         private List<string> _mandatoryCategories;
         private Dictionary<string, string> _entities;
 
-        public LuisIntentDialog(string dialogId, BotServices botServices, ITableStore tableStore)
+        public LuisDialog(string dialogId, BotServices botServices, ITableStore tableStore)
              : base(dialogId)
         {
             _botServices = botServices;

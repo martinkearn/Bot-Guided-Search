@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
         private const string NoIntent = "You don't seem to have an intent ....";
         private const string NoAnswerInQNAKB = "Couldn't find an answer in the QNA Knowledge Base";
         private const string QNADone = "Thats all I have, I'll pass you back to the top menu now";
+        private const string WhatNext = "We are done now, what would you like to do next?";
 
         private readonly ITableStore _tableStore;
         private BotServices _botServices;
@@ -45,7 +47,8 @@ namespace BasicBot.Dialogs.MainMenuDialog
             {
                 PromptForInputAsync,
                 HandleInputResultAsync,
-                ResetDialogAsync,
+                PromptForWhatNextAsync,
+                HandleWhatNextAsync,
             };
 
             AddDialog(new WaterfallDialog(dialogId, waterfallSteps));
@@ -99,9 +102,31 @@ namespace BasicBot.Dialogs.MainMenuDialog
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> ResetDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> PromptForWhatNextAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
+            var opts = new PromptOptions
+            {
+                Prompt = new Activity
+                {
+                    Type = ActivityTypes.Message,
+                    Text = WhatNext,
+                },
+            };
+            return await stepContext.PromptAsync(TextPromptName, opts);
+        }
+
+        private async Task<DialogTurnResult> HandleWhatNextAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var result = stepContext.Result as string;
+
+            switch (result)
+            {
+                case "start again":
+                    return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
+
+                default:
+                    return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
+            }
         }
 
         private async Task DispatchToQnAMakerAsync(ITurnContext context, string appName, CancellationToken cancellationToken = default(CancellationToken))

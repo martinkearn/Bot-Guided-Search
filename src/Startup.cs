@@ -91,7 +91,7 @@ namespace GuidedSearchBot
             var userState = new UserState(dataStore);
             services.AddSingleton(userState);
 
-            services.AddBot<BasicBot>(options =>
+            services.AddBot<MainBot>(options =>
             {
                 options.CredentialProvider = new SimpleCredentialProvider(endpointService.AppId, endpointService.AppPassword);
                 options.ChannelProvider = new ConfigurationChannelProvider(Configuration);
@@ -101,7 +101,7 @@ namespace GuidedSearchBot
                 options.Middleware.Add(typingMiddleware);
 
                 // Catches any errors that occur during a conversation turn and logs them to currently configured ILogger.
-                ILogger logger = _loggerFactory.CreateLogger<BasicBot>();
+                ILogger logger = _loggerFactory.CreateLogger<MainBot>();
                 options.OnTurnError = async (context, exception) =>
                 {
                     logger.LogError($"{exception}");

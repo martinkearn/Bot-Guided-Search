@@ -19,7 +19,7 @@ namespace GuidedSearchBot.Bots
     /// <summary>
     /// Main entry point and orchestration for bot.
     /// </summary>
-    public class BasicBot : IBot
+    public class MainBot : IBot
     {
         private readonly IStatePropertyAccessor<LuisDialogState> _luisDialogStateAccessor;
         private readonly ILogger _logger;
@@ -29,12 +29,12 @@ namespace GuidedSearchBot.Bots
         private readonly ConversationState _conversationState;
         private readonly BotServices _services;
 
-        public BasicBot(BotServices services, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory, ITableStore tableStore)
+        public MainBot(BotServices services, UserState userState, ConversationState conversationState, ILoggerFactory loggerFactory, ITableStore tableStore)
         {
             _userState = userState ?? throw new ArgumentNullException(nameof(userState));
             _conversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
             _services = services ?? throw new ArgumentNullException(nameof(services));
-            _logger = loggerFactory.CreateLogger<BasicBot>();
+            _logger = loggerFactory.CreateLogger<MainBot>();
             _tableStore = tableStore;
             _luisDialogStateAccessor = _userState.CreateProperty<LuisDialogState>(nameof(LuisDialogState));
             _dialogStateAccessor = _conversationState.CreateProperty<DialogState>(nameof(DialogState));

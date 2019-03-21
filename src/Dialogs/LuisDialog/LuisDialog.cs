@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
@@ -56,6 +57,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 PromptStorageCategoryAsync,
                 HandleStorageCategoryAsync,
                 GetLinkMappingsAsync,
+                HandleLinkMappingsResultAsync,
                 EndDialogAsync,
             };
 
@@ -181,6 +183,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyCpuEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -210,6 +213,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyColourEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -239,6 +243,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyConnectivityEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -268,6 +273,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyMemoryEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -297,6 +303,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyProductEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -326,6 +333,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyProductFamilyEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -355,6 +363,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 {
                     var result = (string)stepContext.Result;
                     state.Entities.Add(StateKeyStorageEntity, result);
+                    await UserProfileAccessor.SetAsync(stepContext.Context, state);
                 }
             }
 
@@ -366,6 +375,32 @@ namespace BasicBot.Dialogs.LuisDialog
             var state = await UserProfileAccessor.GetAsync(stepContext.Context);
 
             return await stepContext.BeginDialogAsync(nameof(LinkMappingDialog.LinkMappingDialog), state.Entities);
+        }
+
+        private async Task<DialogTurnResult> HandleLinkMappingsResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await UserProfileAccessor.GetAsync(stepContext.Context);
+
+            // Was a link offered?
+            if (stepContext.Result != null)
+            {
+                var result = (bool)stepContext.Result;
+                if (result)
+                {
+                    // Link was offered, contnue
+                    return await stepContext.NextAsync(cancellationToken: cancellationToken);
+                }
+                else
+                {
+                    // Link was not offered, do a search
+                    var entityString = CreatEntityString(state.Entities);
+                    var entityStringEncoded = HttpUtility.UrlEncode(entityString);
+                    await stepContext.Context.SendActivityAsync($"Lets try a search https://www.microsoft.com/en-gb/search?q={entityStringEncoded}", cancellationToken: cancellationToken);
+                    return await stepContext.NextAsync(cancellationToken: cancellationToken);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
         private async Task<DialogTurnResult> EndDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -395,6 +430,32 @@ namespace BasicBot.Dialogs.LuisDialog
                 // Dont require category, dont need to prompt for it
                 return false;
             }
+        }
+
+        // TO DO make this a static helper method
+        private string CreatEntityString(Dictionary<string, string> entities)
+        {
+            var textInfo = new CultureInfo("en-GB", false).TextInfo;
+            var entityString = string.Empty;
+            foreach (var entity in entities)
+            {
+                if (entity.Key == StateKeyMemoryEntity)
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
+                }
+                else if (entity.Key == StateKeyStorageEntity)
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
+                }
+                else
+                {
+                    entityString += textInfo.ToTitleCase($"{entity.Value}, ");
+                }
+            }
+
+            entityString = entityString.TrimEnd(' ');
+            entityString = entityString.TrimEnd(',');
+            return entityString;
         }
     }
 }

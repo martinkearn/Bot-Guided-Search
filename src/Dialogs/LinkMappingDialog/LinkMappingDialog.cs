@@ -17,6 +17,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 
         private readonly BotServices _botServices;
         private Dictionary<string, string> _entities;
+        private bool _result;
 
         public LinkMappingDialog(string dialogId, BotServices botServices)
              : base(dialogId)
@@ -39,6 +40,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
         {
             _entities = (Dictionary<string,string>)stepContext.Options;
 
+            // TO DO make this a static helper method
             // Construct a string to summarise the search
             var textInfo = new CultureInfo("en-GB", false).TextInfo;
             var entityString = string.Empty;
@@ -60,7 +62,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 
             entityString = entityString.TrimEnd(' ');
             entityString = entityString.TrimEnd(',');
-            await stepContext.Context.SendActivityAsync($"I'll see what i can find for {entityString}");
+            await stepContext.Context.SendActivityAsync($"I'll see what I can find for {entityString}");
 
             // Get Link Mapping
             var options = new QnAMakerOptions();
@@ -79,6 +81,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 
                 if (results.Length > 0)
                 {
+                    _result = true;
                     var reply = stepContext.Context.Activity.CreateReply($"I found a link which may be useful {results[0].Answer}");
                     reply.SuggestedActions = new SuggestedActions()
                     {
@@ -91,12 +94,12 @@ namespace BasicBot.Dialogs.LinkMappingDialog
                 }
                 else
                 {
-                    await stepContext.Context.SendActivityAsync($"No links matching that criteria, lets try a search", cancellationToken: cancellationToken);
+                    _result = false;
                 }
             }
             catch (Exception e)
             {
-                await stepContext.Context.SendActivityAsync($"Could not find a link, lets try a search", cancellationToken: cancellationToken);
+                _result = false;
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -104,7 +107,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 
         private async Task<DialogTurnResult> EndDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.EndDialogAsync().ConfigureAwait(false);
+            return await stepContext.EndDialogAsync(_result).ConfigureAwait(false);
         }
     }
 }

@@ -98,6 +98,10 @@ namespace Microsoft.BotBuilderSamples
                 options.CredentialProvider = new SimpleCredentialProvider(endpointService.AppId, endpointService.AppPassword);
                 options.ChannelProvider = new ConfigurationChannelProvider(Configuration);
 
+                // Add automatic typing middleware
+                var typingMiddleware = new ShowTypingMiddleware(100, 2000);
+                options.Middleware.Add(typingMiddleware);
+
                 // Catches any errors that occur during a conversation turn and logs them to currently configured ILogger.
                 ILogger logger = _loggerFactory.CreateLogger<BasicBot>();
                 options.OnTurnError = async (context, exception) =>

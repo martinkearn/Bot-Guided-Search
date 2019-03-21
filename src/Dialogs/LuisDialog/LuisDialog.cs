@@ -7,6 +7,7 @@ using BasicBot.Interfaces;
 using BasicBot.Models;
 using BasicBot.Services;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Builder.Dialogs;
 
 namespace BasicBot.Dialogs.LuisDialog
@@ -54,6 +55,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 HandleProductFamilyCategoryAsync,
                 PromptStorageCategoryAsync,
                 HandleStorageCategoryAsync,
+                GetLinkMappingsAsync,
                 EndDialogAsync,
             };
 
@@ -151,8 +153,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             // Save state
             await UserProfileAccessor.SetAsync(stepContext.Context, state);
-
-            await stepContext.Context.SendActivityAsync($"We need some more information to help you find the right product.");
+            
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
@@ -359,7 +360,7 @@ namespace BasicBot.Dialogs.LuisDialog
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> EndDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> GetLinkMappingsAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var state = await UserProfileAccessor.GetAsync(stepContext.Context);
 
@@ -383,9 +384,27 @@ namespace BasicBot.Dialogs.LuisDialog
             }
 
             entityString = entityString.TrimEnd(',');
-
             await stepContext.Context.SendActivityAsync($"You would like to search for {entityString}");
 
+            // Get Link Mapping
+            var options = new QnAMakerOptions();
+            var metadata = new List<Metadata>();
+            foreach (var entity in state.Entities)
+            {
+                metadata.Add(new Metadata() { Name = entity.Key, Value = entity.Value });
+            }
+
+            options.StrictFilters = metadata.ToArray();
+            //var tc = new TurnContext(stepContext.Context.Adapter, new Microsoft.Bot.Schema.Activity() { Text = "entityString" });
+            var results = await _botServices.QnAServices["LinkMappings"].GetAnswersAsync(stepContext.Context, options);
+
+            await stepContext.Context.SendActivityAsync($"I have this link {results[0].Answer}", cancellationToken: cancellationToken);
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
+        private async Task<DialogTurnResult> EndDialogAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
             return await stepContext.EndDialogAsync().ConfigureAwait(false);
         }
 

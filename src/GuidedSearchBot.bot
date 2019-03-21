@@ -14,7 +14,7 @@
         },
         {
             "type": "blob",
-            "connectionString": "cA1Ob41IImxFGmvHX2ZvUQ==!ZPahOAffj+wNKlq7FNL/Mh+42JXP0k7U6C/JbC8+W+xM9fL/3CqiLO+35fMuYzcFzatoPPpWAyMi8QdHjugXxsu52uejhBjSKowowixtz8a0/NLg3tvGzABM9Xn80Z8jILrmYENvW/3/F2uo3cdQsSp26NLHZ6hE7S3/9wUEK/6NlhPuoqzeKPUnvkvB3byDjnIdinO788B2WcUQEEyfMVbmQZBSU0Zz9DeO4kDoBSU=",
+            "connectionString": "z2uSiSZByuvxixPQs0awYw==!f16tArGWTUDP3HPwsYEJTKnP/xMItmMJbFmEbM6QKxa7SkDZUJzTMMFMtK60KC8RerutIzdE6+1VpPCD8j8fk9J+mlgJ5FRc1jUxCl6V68IbVqjBL6Vwe5fHtgfUJN69uvYrfEJmayIwxMXOi4BYEkdKR2Tex951Htt2f34pSYJVGxvS+dh28Qn6B7Yj2virk1g13Y1DgxBUoGruK4poSRguJ+5zH8u2VyzcHRHVXZI=",
             "id": "2",
             "resourceGroup": "GuidedSearchBot",
             "serviceName": "guidedsearchbotstorage",
@@ -32,7 +32,7 @@
         {
             "type": "endpoint",
             "appId": "fc01bfb1-6110-4faa-bd47-3c57bb174841",
-            "appPassword": "+ov9kOka5xGtZlj7t0g53w==!LAGp2zd58wayiHEqD2aA7+AlDMiIrqZiieU/qeS9AW4=",
+            "appPassword": "LZK1ptCttKmD/m4nCRltLA==!bNrS9Vhjbs8u5biAvNkXCpQ1ammwKj3jikZU6o30YpY=",
             "endpoint": "https://guidedsearchbot.azurewebsites.net/api/messages",
             "id": "4",
             "name": "production"
@@ -42,7 +42,7 @@
             "apiKeys": {},
             "applicationId": "2a7e9574-5201-4884-84a1-2c686ebeff71",
             "id": "5",
-            "instrumentationKey": "yJAtXVb23I7gFIRh5NqhGw==!datxW/fvwC8rC2mygbrEO5xrIrBS4ao1HqwhbmW3oqnKY44PzBY1TxceKApcZugN",
+            "instrumentationKey": "yEr6qJita3TVaE6gVTWFPQ==!y9mTgNUcFugeiiqPAVrsRkLBwwVZYFEexrhUR0sXIxR0+pI1ei4lY0ZFJiEywMly",
             "resourceGroup": "GuidedSearchBot",
             "serviceName": "GuidedSearchBoth6hd2s",
             "subscriptionId": "1fcbb1ab-1178-46fc-8c5d-f0e20b65610d",
@@ -51,7 +51,7 @@
         {
             "type": "luis",
             "appId": "6acac6ea-3e5a-4544-8dc7-ef2edee5f889",
-            "authoringKey": "dTpdfo6QTKqeluM7ZwDMRw==!ruJBRg2FwIEFpsWntVAnHSylo5smm7SGiC04pJw8BRpxTo56pdOvpFtBKKuD2Hn9",
+            "authoringKey": "BH/+2gU6lAWOt93PeQI/bA==!VrixFK2dM+9QTCOdxvgJuzNeJSVYns+bat8MabcfYVbS05XPuDojbZ/WlpCq83x7",
             "id": "6",
             "name": "BasicBotLuisApplication",
             "region": "westeurope",
@@ -59,30 +59,30 @@
         },
         {
             "type": "qna",
-            "endpointKey": "r/+EXCwvwWgzvKgLyIpPDA==!SNHvLUxAIY+yQG003iqhEORP4Jr9PzG6SsMsjw04T33ePcOJBkgVXy4KyyaUJxDb",
+            "endpointKey": "ieGnaw3tIvr8JB78BRbaQQ==!07xGS3t08JUUxCbbAZfIXa7CmDsW4RRl1522fCK21focrspNdceCk/FY/oHHDC6T",
             "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
             "id": "254",
             "kbId": "c6cdccd4-cd69-4b8f-afc3-a1765660aafd",
             "name": "MicrosoftStoreFAQ",
-            "subscriptionKey": "LhvJcRnjVThTAZ5ukfsOnQ==!/hwN6dcd9Yw2ywJAISsj+7tnZRTi5PnCKFWYRoAD8N0Cc+Z6BpQwnPO6XNXBq/UO"
-        },
-        {
-            "type": "qna",
-            "endpointKey": "Wsfa4ulT7pdt2NNVPXiQWg==!wm7PUtTIeS7n9yuHrqmrDauRm6uSjvk/SelNSM/7at8xSA/7KUvG+q6UxGw0KCAS",
-            "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
-            "id": "173",
-            "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
-            "name": "LinkMappings",
-            "subscriptionKey": "kDk1YmjVkhjAmcs4NTHkNA==!pGjUbA0OK4r78RwSUQgpMXs9PClngCvVK1wxf9BkboSTzO90kgCZHflZDsTgr/6z"
+            "subscriptionKey": "4yZQyzFAL9HCXwWj/TWKhg==!o4qWC1jzO5188nmDI8xw9hOdBvQsw3ujJN3YtVW9PWlNzq/Y8//Z1YTKMZE6hjtJ"
         },
         {
             "type": "luis",
             "appId": "de1fa160-46a7-4b22-9fc0-8bc0222474ba",
-            "authoringKey": "3CRtaG/0rzndAhBlloQ0mg==!TtHSiKXW0QiskJjpVqFjDi6X+pBNGdwhs7bOOS0Cy0eRocguCBtB703cN/6S9b/X",
+            "authoringKey": "4f7rwN6VE2wI7xbuWIOtkg==!bUJ4mgeS1GvNBcqUno9fiY200qOWNgs9PMi+qgRNe4D3gBgHxEz3+2BM+PMu8hni",
             "id": "245",
             "name": "GuidedSearchBotDispatch",
             "region": "WestEurope",
             "version": "Dispatch"
+        },
+        {
+            "type": "qna",
+            "name": "LinkMappings",
+            "kbId": "75bf54dc-dc7f-4d1d-bc83-ec7c27ff6c6e",
+            "subscriptionKey": "XGTs11YHXHvtlAmM2tLtsA==!wKoT+NhTk+dot/EK05ncWLHbFfutI7g6Y75afSmWPA+/MMvMBlByGYiV53wTaf8m",
+            "endpointKey": "fVigsGuK9zrYcodATj9JHw==!mJ/6biG6BkZyJq3POE74k4DFAdGFFYZrbI2MXBoi/ozJFqiTGGx5s0QFyqPP6VjL",
+            "hostname": "https://guidedsearchbotqna.azurewebsites.net/qnamaker",
+            "id": "0"
         }
     ],
     "padlock": "WOjNNBWUJB2dKZVzgtL4xA==!iSPFpgHxMaYoWCovVWNfdk5VKgp1Tuwqpq9Kw+C2cleQ4OgBcE37SWpA6npOx37b",

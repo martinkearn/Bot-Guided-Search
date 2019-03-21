@@ -393,7 +393,7 @@ namespace BasicBot.Dialogs.LuisDialog
                 else
                 {
                     // Link was not offered, do a search
-                    var entityString = CreatEntityString(state.Entities);
+                    var entityString = Helpers.Helpers.GetEntityString(state.Entities);
                     var entityStringEncoded = HttpUtility.UrlEncode(entityString);
                     await stepContext.Context.SendActivityAsync($"{Constants.Constants.TryASearch} https://www.microsoft.com/en-gb/search?q={entityStringEncoded}", cancellationToken: cancellationToken);
                     return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -430,32 +430,6 @@ namespace BasicBot.Dialogs.LuisDialog
                 // Dont require category, dont need to prompt for it
                 return false;
             }
-        }
-
-        // TO DO make this a static helper method
-        private string CreatEntityString(Dictionary<string, string> entities)
-        {
-            var textInfo = new CultureInfo("en-GB", false).TextInfo;
-            var entityString = string.Empty;
-            foreach (var entity in entities)
-            {
-                if (entity.Key == StateKeyMemoryEntity)
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
-                }
-                else if (entity.Key == StateKeyStorageEntity)
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
-                }
-                else
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value}, ");
-                }
-            }
-
-            entityString = entityString.TrimEnd(' ');
-            entityString = entityString.TrimEnd(',');
-            return entityString;
         }
     }
 }

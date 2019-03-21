@@ -38,7 +38,6 @@
 
  <ItemGroup>
    <Folder Include="LuisModel\" />
-   <Folder Include="NewFolder\" />
    <Folder Include="Validators\" />
  </ItemGroup> 
 

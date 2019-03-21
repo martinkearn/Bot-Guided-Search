@@ -12,9 +12,6 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 {
     public class LinkMappingDialog : ComponentDialog
     {
-        private const string StateKeyMemoryEntity = "memory";
-        private const string StateKeyStorageEntity = "storage";
-
         private readonly BotServices _botServices;
         private Dictionary<string, string> _entities;
         private bool _result;
@@ -40,28 +37,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
         {
             _entities = (Dictionary<string,string>)stepContext.Options;
 
-            // TO DO make this a static helper method
-            // Construct a string to summarise the search
-            var textInfo = new CultureInfo("en-GB", false).TextInfo;
-            var entityString = string.Empty;
-            foreach (var entity in _entities)
-            {
-                if (entity.Key == StateKeyMemoryEntity)
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
-                }
-                else if (entity.Key == StateKeyStorageEntity)
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value} {entity.Key}, ");
-                }
-                else
-                {
-                    entityString += textInfo.ToTitleCase($"{entity.Value}, ");
-                }
-            }
-
-            entityString = entityString.TrimEnd(' ');
-            entityString = entityString.TrimEnd(',');
+            var entityString = Helpers.Helpers.GetEntityString(_entities);
             await stepContext.Context.SendActivityAsync($"{Constants.Constants.IllSeeWhatICanFind} {entityString}");
 
             // Get Link Mapping

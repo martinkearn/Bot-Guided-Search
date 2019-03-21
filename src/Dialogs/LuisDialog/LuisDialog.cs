@@ -166,7 +166,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyCpuEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which CPU would you like? You can say I3, I5 or I7");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichCpu);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -196,7 +196,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyColourEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which Colour would you like? You can say Silver or Black");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichColour);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -226,7 +226,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyConnectivityEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How will you like ot get online? You can say WiFi or LTE");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichConnectivity);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -256,7 +256,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyMemoryEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How much memory would you like?");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichMemory);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -286,7 +286,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyProductEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which specific product would you like?");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichProduct);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -316,7 +316,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyProductFamilyEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"Which type of product would you like? You can say Xbox, Surface, Office etc");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichProductFamily);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -346,7 +346,7 @@ namespace BasicBot.Dialogs.LuisDialog
 
             if (PromptForCategory(state, StateKeyStorageEntity))
             {
-                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), $"How much storage would you like?");
+                return await stepContext.BeginDialogAsync(nameof(EntityCompletionDialog.EntityCompletionDialog), Constants.Constants.WhichStorage);
             }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
@@ -395,7 +395,7 @@ namespace BasicBot.Dialogs.LuisDialog
                     // Link was not offered, do a search
                     var entityString = CreatEntityString(state.Entities);
                     var entityStringEncoded = HttpUtility.UrlEncode(entityString);
-                    await stepContext.Context.SendActivityAsync($"Lets try a search https://www.microsoft.com/en-gb/search?q={entityStringEncoded}", cancellationToken: cancellationToken);
+                    await stepContext.Context.SendActivityAsync($"{Constants.Constants.TryASearch} https://www.microsoft.com/en-gb/search?q={entityStringEncoded}", cancellationToken: cancellationToken);
                     return await stepContext.NextAsync(cancellationToken: cancellationToken);
                 }
             }

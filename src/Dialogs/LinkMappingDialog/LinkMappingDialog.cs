@@ -62,7 +62,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
 
             entityString = entityString.TrimEnd(' ');
             entityString = entityString.TrimEnd(',');
-            await stepContext.Context.SendActivityAsync($"I'll see what I can find for {entityString}");
+            await stepContext.Context.SendActivityAsync($"{Constants.Constants.IllSeeWhatICanFind} {entityString}");
 
             // Get Link Mapping
             var options = new QnAMakerOptions();
@@ -82,7 +82,7 @@ namespace BasicBot.Dialogs.LinkMappingDialog
                 if (results.Length > 0)
                 {
                     _result = true;
-                    var reply = stepContext.Context.Activity.CreateReply($"I found a link which may be useful {results[0].Answer}");
+                    var reply = stepContext.Context.Activity.CreateReply($"{Constants.Constants.IFoundALink} {results[0].Answer}");
                     reply.SuggestedActions = new SuggestedActions()
                     {
                         Actions = new List<CardAction>()

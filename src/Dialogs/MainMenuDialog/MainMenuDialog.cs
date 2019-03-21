@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BasicBot.Constants;
 using BasicBot.Dialogs.LuisDialog;
 using BasicBot.Interfaces;
 using BasicBot.Models;
@@ -15,22 +14,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
 {
     public class MainMenuDialog : ComponentDialog
     {
-        private const string TextPromptName = "inputPrompt";
-        private const string NoneIntent = "None";
-        private const string DispatchLuisIntent = "l_GuidedSearchBot-a4a3";
-        private const string DispatchQNAIntent = "q_MicrosoftStoreFAQ";
-        private const string QNAServiceName = "MicrosoftStoreFAQ";
-        private const string LuisDispatchServiceName = "GuidedSearchBotDispatch";
-        private const string LuisModelServiceName = "BasicBotLuisApplication";
-
-        // Messages
-        private const string WhatAreYouLookingFor = "Please tell me what you are looking for?";
-        private const string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";
-        private const string NoIntent = "You don't seem to have an intent ....";
-        private const string NoAnswerInQNAKB = "Couldn't find an answer in the QNA Knowledge Base";
-        private const string QNADone = "Thats all I have, I'll pass you back to the top menu now";
-        private const string WhatNext = "We are done now, what would you like to do next?";
-
+        private const string TextPromptName = "textprompt";
         private readonly ITableStore _tableStore;
         private BotServices _botServices;
 
@@ -65,7 +49,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
                 Prompt = new Activity
                 {
                     Type = ActivityTypes.Message,
-                    Text = WhatAreYouLookingFor,
+                    Text = Constants.Constants.WhatAreYouLookingFor,
                 },
             };
             return await stepContext.PromptAsync(TextPromptName, opts);
@@ -76,26 +60,26 @@ namespace BasicBot.Dialogs.MainMenuDialog
             var result = stepContext.Result as string;
 
             // Do Dispatcher triage here and then spawn out to appropriate child dialogs
-            var dispatchResults = await _botServices.LuisServices[LuisDispatchServiceName].RecognizeAsync(stepContext.Context, cancellationToken);
+            var dispatchResults = await _botServices.LuisServices["GuidedSearchBotDispatch"].RecognizeAsync(stepContext.Context, cancellationToken);
             var dispatchTopScoringIntent = dispatchResults?.GetTopScoringIntent();
             var dispatchTopIntent = dispatchTopScoringIntent.Value.intent;
 
             switch (dispatchTopIntent)
             {
-                case DispatchLuisIntent:
-                    var luisResultModel = await _botServices.LuisServices[LuisModelServiceName].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
+                case "l_GuidedSearchBot-a4a3":
+                    var luisResultModel = await _botServices.LuisServices["BasicBotLuisApplication"].RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
                     return await stepContext.BeginDialogAsync(nameof(LuisDialog), luisResultModel);
 
-                case DispatchQNAIntent:
-                    await DispatchToQnAMakerAsync(stepContext.Context, QNAServiceName);
+                case "q_MicrosoftStoreFAQ":
+                    await DispatchToQnAMakerAsync(stepContext.Context, "MicrosoftStoreFAQ");
                     break;
 
-                case NoneIntent:
-                    await stepContext.Context.SendActivityAsync($"{NoIntent}{DontUnderstand}");
+                case "None":
+                    await stepContext.Context.SendActivityAsync($"{Constants.Constants.NoIntent}{Constants.Constants.DontUnderstand}");
                     break;
 
                 default:
-                    await stepContext.Context.SendActivityAsync(DontUnderstand);
+                    await stepContext.Context.SendActivityAsync(Constants.Constants.DontUnderstand);
                     break;
             }
 
@@ -109,7 +93,7 @@ namespace BasicBot.Dialogs.MainMenuDialog
                 Prompt = new Activity
                 {
                     Type = ActivityTypes.Message,
-                    Text = WhatNext,
+                    Text = Constants.Constants.WhatNext,
                 },
             };
             return await stepContext.PromptAsync(TextPromptName, opts);
@@ -137,11 +121,11 @@ namespace BasicBot.Dialogs.MainMenuDialog
                 if (results.Any())
                 {
                     await context.SendActivityAsync(results.First().Answer, cancellationToken: cancellationToken);
-                    await context.SendActivityAsync(QNADone);
+                    await context.SendActivityAsync(Constants.Constants.QNADone);
                 }
                 else
                 {
-                    await context.SendActivityAsync(NoAnswerInQNAKB);
+                    await context.SendActivityAsync(Constants.Constants.NoAnswerInQNAKB);
                 }
             }
         }

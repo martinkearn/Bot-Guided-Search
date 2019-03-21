@@ -7,7 +7,7 @@ namespace BasicBot.Dialogs.EntityCompletionDialog
 {
     internal class EntityCompletionDialog : ComponentDialog
     {
-        private const string TextPromptName = "inputPrompt";
+        private const string TextPromptName = "textprompt";
         private string _prompt;
         private string _result;
 

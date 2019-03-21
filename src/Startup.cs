@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using BasicBot.Constants;
 using BasicBot.Dialogs;
 using BasicBot.Interfaces;
 using BasicBot.Services;
@@ -26,8 +27,8 @@ namespace Microsoft.BotBuilderSamples
     /// </summary>
     public class Startup
     {
-        private ILoggerFactory _loggerFactory;
         private readonly bool _isProduction = false;
+        private ILoggerFactory _loggerFactory;
 
         public Startup(IHostingEnvironment env)
         {
@@ -57,12 +58,12 @@ namespace Microsoft.BotBuilderSamples
             var botFilePath = Configuration.GetSection("botFilePath")?.Value;
             if (!File.Exists(botFilePath))
             {
-                throw new FileNotFoundException($"The .bot configuration file was not found. botFilePath: {botFilePath}");
+                throw new FileNotFoundException($"{Constants.BotFileNotFound} {botFilePath}");
             }
 
             // Loads .bot configuration file and adds a singleton that your Bot can access through dependency injection.
             var botConfig = BotConfiguration.Load(botFilePath ?? @".\GuidedSearchBot.bot", secretKey);
-            services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"The .bot configuration file could not be loaded. botFilePath: {botFilePath}"));
+            services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"{Constants.BotFileNotLoaded} {botFilePath}"));
 
             // Add BotServices singleton. Create the connected services from .bot file.
             var botServices = new BotServices(botConfig);
@@ -79,7 +80,7 @@ namespace Microsoft.BotBuilderSamples
 
             if (!(service is EndpointService endpointService))
             {
-                throw new InvalidOperationException($"The .bot file does not contain an endpoint with name '{environment}'.");
+                throw new InvalidOperationException($"{Constants.BotFileNoEndpoint} '{environment}'.");
             }
 
             // Memory Storage is for local bot debugging only. When the bot is restarted, everything stored in memory will be gone.
@@ -93,7 +94,7 @@ namespace Microsoft.BotBuilderSamples
             var userState = new UserState(dataStore);
             services.AddSingleton(userState);
 
-            services.AddBot<BasicBot>(options =>
+            services.AddBot<BasicBot.BasicBot>(options =>
             {
                 options.CredentialProvider = new SimpleCredentialProvider(endpointService.AppId, endpointService.AppPassword);
                 options.ChannelProvider = new ConfigurationChannelProvider(Configuration);
@@ -103,11 +104,11 @@ namespace Microsoft.BotBuilderSamples
                 options.Middleware.Add(typingMiddleware);
 
                 // Catches any errors that occur during a conversation turn and logs them to currently configured ILogger.
-                ILogger logger = _loggerFactory.CreateLogger<BasicBot>();
+                ILogger logger = _loggerFactory.CreateLogger<BasicBot.BasicBot>();
                 options.OnTurnError = async (context, exception) =>
                 {
-                    logger.LogError($"Exception caught : {exception}");
-                    await context.SendActivityAsync("Sorry, it looks like something went wrong.");
+                    logger.LogError($"{exception}");
+                    await context.SendActivityAsync(Constants.SomethingWentWrong);
                 };
             });
 

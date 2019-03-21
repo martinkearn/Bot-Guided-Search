@@ -4,17 +4,17 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using BasicBot.Constants;
-using BasicBot.Dialogs.LuisDialog;
-using BasicBot.Dialogs.MainMenuDialog;
-using BasicBot.Interfaces;
-using BasicBot.Services;
+using GuidedSearchBot.Constants;
+using GuidedSearchBot.Dialogs.LuisDialog;
+using GuidedSearchBot.Dialogs.MainMenuDialog;
+using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
 
-namespace BasicBot
+namespace GuidedSearchBot
 {
     /// <summary>
     /// Main entry point and orchestration for bot.

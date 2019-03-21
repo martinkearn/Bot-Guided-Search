@@ -4,15 +4,13 @@
 using System;
 using System.IO;
 using System.Linq;
-using BasicBot.Constants;
-using BasicBot.Dialogs;
-using BasicBot.Interfaces;
-using BasicBot.Services;
+using GuidedSearchBot.Constants;
+using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.BotFramework;
-using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Configuration;
 using Microsoft.Bot.Connector.Authentication;
@@ -20,7 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.BotBuilderSamples
+namespace GuidedSearchBot
 {
     /// <summary>
     /// The Startup class configures services and the app's request pipeline.
@@ -51,19 +49,18 @@ namespace Microsoft.BotBuilderSamples
 
         public IConfiguration Configuration { get; }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             var secretKey = Configuration.GetSection("botFileSecret")?.Value;
             var botFilePath = Configuration.GetSection("botFilePath")?.Value;
             if (!File.Exists(botFilePath))
             {
-                throw new FileNotFoundException($"{Constants.BotFileNotFound} {botFilePath}");
+                throw new FileNotFoundException($"{Constants.Constants.BotFileNotFound} {botFilePath}");
             }
 
             // Loads .bot configuration file and adds a singleton that your Bot can access through dependency injection.
             var botConfig = BotConfiguration.Load(botFilePath ?? @".\GuidedSearchBot.bot", secretKey);
-            services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"{Constants.BotFileNotLoaded} {botFilePath}"));
+            services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"{Constants.Constants.BotFileNotLoaded} {botFilePath}"));
 
             // Add BotServices singleton. Create the connected services from .bot file.
             var botServices = new BotServices(botConfig);
@@ -80,7 +77,7 @@ namespace Microsoft.BotBuilderSamples
 
             if (!(service is EndpointService endpointService))
             {
-                throw new InvalidOperationException($"{Constants.BotFileNoEndpoint} '{environment}'.");
+                throw new InvalidOperationException($"{Constants.Constants.BotFileNoEndpoint} '{environment}'.");
             }
 
             // Memory Storage is for local bot debugging only. When the bot is restarted, everything stored in memory will be gone.
@@ -94,7 +91,7 @@ namespace Microsoft.BotBuilderSamples
             var userState = new UserState(dataStore);
             services.AddSingleton(userState);
 
-            services.AddBot<BasicBot.BasicBot>(options =>
+            services.AddBot<BasicBot>(options =>
             {
                 options.CredentialProvider = new SimpleCredentialProvider(endpointService.AppId, endpointService.AppPassword);
                 options.ChannelProvider = new ConfigurationChannelProvider(Configuration);
@@ -104,11 +101,11 @@ namespace Microsoft.BotBuilderSamples
                 options.Middleware.Add(typingMiddleware);
 
                 // Catches any errors that occur during a conversation turn and logs them to currently configured ILogger.
-                ILogger logger = _loggerFactory.CreateLogger<BasicBot.BasicBot>();
+                ILogger logger = _loggerFactory.CreateLogger<BasicBot>();
                 options.OnTurnError = async (context, exception) =>
                 {
                     logger.LogError($"{exception}");
-                    await context.SendActivityAsync(Constants.SomethingWentWrong);
+                    await context.SendActivityAsync(Constants.Constants.SomethingWentWrong);
                 };
             });
 

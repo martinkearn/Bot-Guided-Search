@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using BasicBot.Services;
+using GuidedSearchBot.Services;
 using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 
-namespace BasicBot.Dialogs.LinkMappingDialog
+namespace GuidedSearchBot.Dialogs.LinkMappingDialog
 {
     public class LinkMappingDialog : ComponentDialog
     {

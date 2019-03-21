@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BasicBot.Helpers
+namespace GuidedSearchBot.Helpers
 {
     public static class Helpers
     {

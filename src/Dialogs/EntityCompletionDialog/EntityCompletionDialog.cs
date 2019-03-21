@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 
-namespace BasicBot.Dialogs.EntityCompletionDialog
+namespace GuidedSearchBot.Dialogs.EntityCompletionDialog
 {
     internal class EntityCompletionDialog : ComponentDialog
     {

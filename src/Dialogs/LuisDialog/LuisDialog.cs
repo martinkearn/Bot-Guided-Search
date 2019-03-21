@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using BasicBot.Interfaces;
-using BasicBot.Models;
-using BasicBot.Services;
+using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Models;
+using GuidedSearchBot.Services;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Builder.Dialogs;
 
-namespace BasicBot.Dialogs.LuisDialog
+namespace GuidedSearchBot.Dialogs.LuisDialog
 {
     internal class LuisDialog : ComponentDialog
     {

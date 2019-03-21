@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BasicBot.Constants
+namespace GuidedSearchBot.Constants
 {
     public static class Constants
     {
@@ -26,7 +26,7 @@ namespace BasicBot.Constants
         public static string WhichProduct = "Which specific product would you like?";
         public static string WhichProductFamily = "Which type of product would you like? You can say Xbox, Surface, Office etc";
         public static string WhichStorage = "How much storage would you like?";
-        public static string TryASearch = "Lets try a search";
+        public static string TryASearch = "I cannot find any links, lets try a search";
         public static string IllSeeWhatICanFind = "I'll see what I can find for";
         public static string IFoundALink = "I found a link which may be useful";
     }

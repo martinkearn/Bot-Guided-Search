@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BasicBot.Interfaces;
-using BasicBot.Models;
+using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace BasicBot.Services
+namespace GuidedSearchBot.Services
 {
     public class TableStore : ITableStore
     {

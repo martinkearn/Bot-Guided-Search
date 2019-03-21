@@ -7,7 +7,7 @@ using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Bot.Configuration;
 
-namespace BasicBot.Services
+namespace GuidedSearchBot.Services
 {
     /// <summary>
     /// Represents references to external services.

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BasicBot.Models;
+using GuidedSearchBot.Models;
 
-namespace BasicBot.Interfaces
+namespace GuidedSearchBot.Interfaces
 {
     public interface ITableStore
     {

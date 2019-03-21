@@ -1,6 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 
-namespace BasicBot.Models
+namespace GuidedSearchBot.Models
 {
     public class MandatoryCategoryMapping : TableEntity
     {

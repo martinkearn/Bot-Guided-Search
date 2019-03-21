@@ -1,16 +1,15 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BasicBot.Constants;
-using BasicBot.Dialogs.LuisDialog;
-using BasicBot.Interfaces;
-using BasicBot.Models;
-using BasicBot.Services;
+using GuidedSearchBot.Dialogs.LuisDialog;
+using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Models;
+using GuidedSearchBot.Services;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
 
-namespace BasicBot.Dialogs.MainMenuDialog
+namespace GuidedSearchBot.Dialogs.MainMenuDialog
 {
     public class MainMenuDialog : ComponentDialog
     {

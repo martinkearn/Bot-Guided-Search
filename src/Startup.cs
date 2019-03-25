@@ -63,10 +63,10 @@ namespace GuidedSearchBot
         /// <seealso cref="https://docs.microsoft.com/en-us/azure/bot-service/bot-service-manage-channels?view=azure-bot-service-4.0"/>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddBot<EchoWithCounterBot>(options =>
+            services.AddBot<MainBot>(options =>
             {
                 // Creates a logger for the application to use.
-                ILogger logger = _loggerFactory.CreateLogger<EchoWithCounterBot>();
+                ILogger logger = _loggerFactory.CreateLogger<MainBot>();
 
                 var secretKey = Configuration.GetSection("botFileSecret")?.Value;
                 var botFilePath = Configuration.GetSection("botFilePath")?.Value;

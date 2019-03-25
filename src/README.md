@@ -1,67 +1,61 @@
-# Echo Bot template
-This template demonstrates a simple echo bot with state with ASP.Net Core 2. The bot maintains a simple counter that increases with each message from the user.
+﻿This sample creates an echo bot that welcomes user when they join the conversation. The welcoming pattern shown in this bot is applicable for personal (1:1) conversation with bots.
 
-# Prerequisite to run this bot locally
-- Download the bot code from the Build blade in the Azure Portal
-- Update the `appsettings.json` file in the root of the bot project with the botFilePath and botFileSecret 
-- You can find the botFilePath and botFileSecret in the Azure App Service application settings.
-
-Your appsettings.json file should look like this
+## To try this sample
+- Clone the repository
 ```bash
-{
-    "botFilePath": "<copy value from App settings>",
-    "botFileSecret": "<copy value from App settings>"
-}
+git clone https://github.com/Microsoft/botbuilder-samples.git
 ```
+- [Optional] Update the `appsettings.json` file under `botbuilder-samples/samples/csharp_dotnetcore/WelcomeUser.csproj` with your botFileSecret.  For Azure Bot Service bots, you can find the botFileSecret under application settings.
 
+# Running Locally
 
-## Run in Visual Studio
-- Open the .sln file with Visual Studio.
-- Press F5.
-## Run in Visual Studio Code
-- Open the bot project folder with Visual Studio Code.
-- Bring up a terminal.
-- Type 'dotnet run'.
-## Testing the bot using Bot Framework Emulator
-[Microsoft Bot Framework Emulator](https://aka.ms/botframework-emulator) is a desktop application that allows bot developers to test and debug
-their bots on localhost or running remotely through a tunnel.
-- Install the Bot Framework Emulator from [here](https://aka.ms/botframework-emulator).
-### Connect to bot using Bot Framework Emulator
-- Launch the Bot Framework Emulator
-- File -> Open bot and navigate to the bot project folder
-- Select `<your-bot-name>.bot` file
+## Visual Studio
+- Navigate to the samples folder (`botbuilder-samples/samples/csharp_dotnetcore/03.welcome-user`) and open WelcomeUser.csproj in Visual Studio
+- Run the project (press `F5` key).
 
-# Bot state
-A key to good bot design is to track the context of a conversation, so that your bot remembers things like the answers to previous questions. Depending on what your bot is used for, you may even need to keep track of conversation state or store user related information for longer than the lifetime of one given conversation.
-
-In this example, the bot's state is used to track number of messages.
-
- A bot's state is information it remembers in order to respond appropriately to incoming messages. The Bot Builder SDK provides classes for [storing and retrieving state data](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=js) as an object associated with a user or a conversation.
-
-    - Conversation properties help your bot keep track of the current conversation the bot is having with the user. If your bot needs to complete a sequence of steps or switch between conversation topics, you can use conversation properties to manage steps in a sequence or track the current topic. Since conversation properties reflect the state of the current conversation, you typically clear them at the end of a session, when the bot receives an end of conversation activity.
-    
-    - User properties can be used for many purposes, such as determining where the user's prior conversation left off or simply greeting a returning user by name. If you store a user's preferences, you can use that information to customize the conversation the next time you chat. For example, you might alert the user to a news article about a topic that interests her, or alert a user when an appointment becomes available. You should clear them if the bot receives a delete user data activity.
-
+## .NET Core CLI
+- Install the [.NET Core CLI tools](https://docs.microsoft.com/dotnet/core/tools/?tabs=netcore2x).
+- Using the command line, navigate to `botbuilder-samples/samples/csharp_dotnetcore/03.welcome-user`
+- Type `dotnet run`.
 
 # Deploy this bot to Azure
-## Publish from Visual Studio
-- Open the .PublishSettings file you find in the PostDeployScripts folder
-- Copy the userPWD value
-- Right click on the Project and click on "Publish..."
-- Paste the password you just copied and publish
+You can use the [MSBot](https://github.com/microsoft/botbuilder-tools) Bot Builder CLI tool to clone and configure any services this sample depends on. In order to install this and other tools, you can read [Installing CLI Tools](../../../Installing_CLI_tools.md).
 
-## Publish using the CLI tools
-You can use the [MSBot](https://github.com/microsoft/botbuilder-tools) Bot Builder CLI tool to clone and configure any services this sample depends on. 
-To install all Bot Builder tools - 
-```bash
-npm i -g msbot chatdown ludown qnamaker luis-apis botdispatch luisgen
-```
 To clone this bot, run
+
+```bash
+msbot clone services -f deploymentScripts/msbotClone -n <BOT-NAME> -l <Azure-location> --subscriptionId <Azure-subscription-id> --appId <YOUR APP ID> --appSecret <YOUR APP SECRET PASSWORD>
 ```
-msbot clone services -f deploymentScripts/msbotClone -n <BOT-NAME> -l <Azure-location> --subscriptionId <Azure-subscription-id>
-```
+
+**NOTE**: You can obtain your `appId` and `appSecret` at the Microsoft's [Application Registration Portal](https://apps.dev.microsoft.com/)
+
+
+# Testing the bot using Bot Framework Emulator V4
+Microsoft Bot Framework Emulator is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
+
+- Install the Bot Framework Emulator from [here](https://aka.ms/botframework-emulator)
+
+## Connect to bot using Bot Framework Emulator V4
+Launch Bot Framework Emulator
+File -> Open Bot Configuration and navigate to botbuilder-samples/samples/csharp_dotnetcore/03.welcome-user folder
+Select welcome-user.bot file
+
+# ConversationUpdate Activity Type
+The [ConversationUpdate](https://docs.microsoft.com/azure/bot-service/bot-service-activity-spec?view=azure-bot-service-4.0#conversation-update-activity) Activity type describes a change in conversation members, for example when a new user (and/or) a bot joins the conversation. The channel sends this activity when a user (and/or) bot joins the conversation. It is recommended that you test your bot behavior on the target channel.
+
+Bots that are added directly by a user, are mostly personal (1:1) conversation bots. It is a best practice to send a welcome message to introduce the bot tell a bit about its functionality. To do this, ensure that your bot responds to the `ConversationUpdate` message. Use the `membersAdded` field to identify the list of channel participants (bots or users) that were added to the conversation.
+
+Your bot may proactively send a welcome message to a personal chat the first time a user initiates a personal chat with your bot. Use `UserState` to persist a flag indicating first user interaction with a bot.
+
+## A note about Bot Framework Emulator and Web Test in Azure Bot Service
+The Bot Framework Emulator is following standard [Activity protocol](https://docs.microsoft.com/azure/bot-service/bot-service-activity-spec) for Activity messages sent to your bot. With that said, the emulator has unique behavior that is useful for testing and debugging your bot. For example, pressing the `Start Over` button sends a `ConversationUpdate` Activity with a fresh set of identifiers (conversation, from, recipient) to which your bot may reply.
+
+The Web Test in Azure Bot Service is where you may test your bot using the Web Chat control. When testing your bot in Azure Bot Service Web Test, your bot receives a `ConversationUpdate` Activity only after the first time the user sends a message. Your bot will receive two activities for `ConversationUpdate` (one for the new user and one for the bot) and also a `Message` Activity containing the utterance (text) the user sent.
+
+In other channels such as Teams, Skype, or Slack, you can expect to receive the `ConversationUpdate` just once in the lifetime of the bot for a given user, and it may arrive as soon as the user joins the channel or sent when the user first interacts with the bot.
+​
 # Further reading
-- [Azure Bot Service Introduction](https://docs.microsoft.com/en-us/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
-- [Bot State](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-storage-concept?view=azure-bot-service-4.0)
-- [Write directly to storage](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-storage?view=azure-bot-service-4.0&tabs=jsechoproperty%2Ccsetagoverwrite%2Ccsetag)
-- [Managing conversation and user state](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-howto-v4-state?view=azure-bot-service-4.0&tabs=js)
+- [Azure Bot Service](https://docs.microsoft.com/azure/bot-service/bot-service-overview-introduction?view=azure-bot-service-4.0)
+- [Bot Basics](https://docs.microsoft.com/azure/bot-service/bot-builder-basics?view=azure-bot-service-4.0)
+- [Channels and Bot Connector Service](https://docs.microsoft.com/azure/bot-service/bot-concepts?view=azure-bot-service-4.0)
+- [Activity Processing](https://docs.microsoft.com/azure/bot-service/bot-builder-concept-activity-processing?view=azure-bot-service-4.0)

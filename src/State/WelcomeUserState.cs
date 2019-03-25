@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-namespace Microsoft.BotBuilderSamples
+namespace GuidedSearchBot.State
 {
     // Stores User Welcome state for the conversation.
     // Stored in "Microsoft.Bot.Builder.ConversationState" and

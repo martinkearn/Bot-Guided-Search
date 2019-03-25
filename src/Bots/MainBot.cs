@@ -4,10 +4,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GuidedSearchBot.State;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 
-namespace Microsoft.BotBuilderSamples
+namespace GuidedSearchBot.Bots
 {
     // Represents a bot that processes incoming activities.
     // For each user interaction, an instance of this class is created and the OnTurnAsync method is called.

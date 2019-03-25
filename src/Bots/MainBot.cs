@@ -38,14 +38,22 @@ namespace GuidedSearchBot.Bots
         //send this activity. 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
+            var welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
+            var didBotWelcomeUser = await welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
+
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
+                    didBotWelcomeUser.DidBotWelcomeUser = true;
+
                     var name = member.Name ?? string.Empty;
                     await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage}", cancellationToken: cancellationToken);
                 }
             }
+
+            // Save any state changes.
+            await _userState.SaveChangesAsync(turnContext);
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)

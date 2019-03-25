@@ -17,7 +17,7 @@ namespace Microsoft.BotBuilderSamples
     // beyond the single turn, should be carefully managed.
     // For example, the "MemoryStorage" object and associated
     // IStatePropertyAccessor{T} object are created with a singleton lifetime.
-    public class WelcomeUserBot : ActivityHandler
+    public class MainBot : ActivityHandler
     {
         // Messages sent to the user.
         private const string WelcomeMessage = @"This is a simple Welcome Bot sample.This bot will introduce you
@@ -41,7 +41,7 @@ namespace Microsoft.BotBuilderSamples
         private BotState _userState;
     
         // Initializes a new instance of the "WelcomeUserBot" class. 
-        public WelcomeUserBot(UserState userState)
+        public MainBot(UserState userState)
         {
             _userState = userState;
         }

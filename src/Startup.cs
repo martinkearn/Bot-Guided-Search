@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.BotBuilderSamples
+namespace GuidedSearchBot
 {
     /// <summary>
     /// The Startup class configures services and the request pipeline.

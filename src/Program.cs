@@ -1,19 +1,32 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
+// <copyright file="Program.cs" company="Microsoft">
+// Copyright (c) Microsoft. All rights reserved.
+// </copyright>
 
 namespace GuidedSearchBot
 {
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>
+    /// Main program.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="args">args.</param>
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
         }
 
+        /// <summary>
+        /// Build web host.
+        /// </summary>
+        /// <param name="args">args.</param>
+        /// <returns>IWebHost.</returns>
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging((hostingContext, logging) =>

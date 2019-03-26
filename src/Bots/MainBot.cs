@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GuidedSearchBot.Interfaces;
 using GuidedSearchBot.State;
+using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -99,25 +101,47 @@ namespace GuidedSearchBot.Bots
         private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
         {
 
+            await turnContext.SendActivityAsync($"Top Intent is {intent}", cancellationToken: cancellationToken);
+            switch (intent)
+            {
+                case "l_GuidedSearchBot-a4a3":
+                    await ProcessMainLuisAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
+                    break;
+
+                case "q_MicrosoftStoreFAQ":
+                    await ProcessMainQnAAsync(turnContext, cancellationToken);
+                    break;
+
+                case "None":
+                    await turnContext.SendActivityAsync($"{Constants.Constants.NoIntent}{Constants.Constants.DontUnderstand}");
+                    break;
+
+                default:
+                    await turnContext.SendActivityAsync(Constants.Constants.DontUnderstand);
+                    break;
+            }
+        }
+
+        private async Task ProcessMainLuisAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
+        {
+            await turnContext.SendActivityAsync("Landed in ProcessMainLuisAsync");
+
             //await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
 
-            await turnContext.SendActivityAsync($"Top Intent is {intent}", cancellationToken: cancellationToken);
-            //switch (intent)
-            //{
-            //    case "l_HomeAutomation":
-            //        await ProcessHomeAutomationAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
-            //        break;
-            //    case "l_Weather":
-            //        await ProcessWeatherAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
-            //        break;
-            //    case "q_sample-qna":
-            //        await ProcessSampleQnAAsync(turnContext, cancellationToken);
-            //        break;
-            //    default:
-            //        _logger.LogInformation($"Dispatch unrecognized intent: {intent}.");
-            //        await turnContext.SendActivityAsync(MessageFactory.Text($"Dispatch unrecognized intent: {intent}."), cancellationToken);
-            //        break;
-            //}
+        }
+
+        private async Task ProcessMainQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        {
+            var results = await _botServices.MainQnA.GetAnswersAsync(turnContext);
+            if (results.Any())
+            {
+                await turnContext.SendActivityAsync(results.First().Answer, cancellationToken: cancellationToken);
+                await turnContext.SendActivityAsync(Constants.Constants.QNADone);
+            }
+            else
+            {
+                await turnContext.SendActivityAsync(Constants.Constants.NoAnswerInQNAKB);
+            }
         }
 
     }

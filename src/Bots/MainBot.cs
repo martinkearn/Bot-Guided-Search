@@ -24,31 +24,29 @@ namespace GuidedSearchBot.Bots
         private const string WelcomeMessage = @"Welcome to the guided search bot.";
 
         private BotState _userState;
-    
+
+        private IStatePropertyAccessor<WelcomeUserState> _welcomeUserStateAccessor;
+
         // Initializes a new instance of the "WelcomeUserBot" class. 
         public MainBot(UserState userState)
         {
             _userState = userState;
+            _welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
         }
 
-        //Greet when users are added to the conversation.
-        //Note that all channels do not send the conversation update activity.
-        //If you find that this bot works in the emulator, but does not in
-        //another channel the reason is most likely that the channel does not
-        //send this activity. 
+        // Greet when users are added to the conversation.
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
-            var didBotWelcomeUser = await welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
-
             foreach (var member in membersAdded)
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    didBotWelcomeUser.DidBotWelcomeUser = true;
-
-                    var name = member.Name ?? string.Empty;
-                    await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage}", cancellationToken: cancellationToken);
+                    var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
+                    if (welcomeUserState.DidBotWelcomeUser == false)
+                    {
+                        welcomeUserState.DidBotWelcomeUser = true;
+                        await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage} - from MemberAdded", cancellationToken: cancellationToken);
+                    }
                 }
             }
 
@@ -56,18 +54,18 @@ namespace GuidedSearchBot.Bots
             await _userState.SaveChangesAsync(turnContext);
         }
 
+        // Process incoming message
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
-            var didBotWelcomeUser = await welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
+            var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
 
-            if (didBotWelcomeUser.DidBotWelcomeUser == false)
+            if (welcomeUserState.DidBotWelcomeUser == false)
             {
-                didBotWelcomeUser.DidBotWelcomeUser = true;
+                welcomeUserState.DidBotWelcomeUser = true;
 
                 // the channel should sends the user name in the 'From' object
                 var name = turnContext.Activity.From.Name ?? string.Empty;
-                await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage}", cancellationToken: cancellationToken);
+                await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage} - from MessageReceived", cancellationToken: cancellationToken);
             }
             else
             {
@@ -79,6 +77,8 @@ namespace GuidedSearchBot.Bots
             // Save any state changes.
             await _userState.SaveChangesAsync(turnContext);
         }
+
+
 
     }
 }

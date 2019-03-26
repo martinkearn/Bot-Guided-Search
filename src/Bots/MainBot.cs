@@ -41,11 +41,15 @@ namespace GuidedSearchBot.Bots
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
-                    if (welcomeUserState.DidBotWelcomeUser == false)
+                    // Look for web chat channel because it sends this event when a user messages so we want to only do this if not webchat.
+                    if (turnContext.Activity.ChannelId.ToLower() != "webchat")
                     {
-                        welcomeUserState.DidBotWelcomeUser = true;
-                        await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage} - from MemberAdded", cancellationToken: cancellationToken);
+                        var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
+                        if (welcomeUserState.DidBotWelcomeUser == false)
+                        {
+                            welcomeUserState.DidBotWelcomeUser = true;
+                            await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage} - from MemberAdded", cancellationToken: cancellationToken);
+                        }
                     }
                 }
             }

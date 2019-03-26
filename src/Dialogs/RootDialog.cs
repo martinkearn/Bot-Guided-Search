@@ -1,69 +1,103 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
+﻿using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Models;
+using GuidedSearchBot.Services;
+using GuidedSearchBot.State;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GuidedSearchBot.Interfaces;
-using GuidedSearchBot.Models;
-using GuidedSearchBot.Services;
-using GuidedSearchBot.State;
-using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
-using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Schema;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Recognizers.Text;
-using Newtonsoft.Json.Linq;
 
 namespace GuidedSearchBot.Dialogs
 {
-    /// <summary>
-    /// This is an example root dialog. Replace this with your applications.
-    /// </summary>
     public class RootDialog : ComponentDialog
     {
-        protected readonly IConfiguration _configuration;
-        private string _utterance;
+        private const string TextPromptName = "textprompt";
         private readonly ITableStore _tableStore;
-        private LuisModel _luisModel;
+        private IBotServices _botServices;
 
-        public RootDialog(IConfiguration configuration, ITableStore tableStore)
-            : base(nameof(RootDialog))
+        public RootDialog(IBotServices botServices, ITableStore tableStore, IConfiguration configuration)
+            : base(nameof(LuisRootDialog))
         {
-            _configuration = configuration;
+
+            InitialDialogId = nameof(RootDialog);
+            _botServices = botServices;
             _tableStore = tableStore;
 
-            AddDialog(new TextPrompt(nameof(TextPrompt)));
-
-            AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
+            // Define the steps of the waterfall dialog and add it to the set.
+            var waterfallSteps = new WaterfallStep[]
             {
-                GetLuisResultAsync,
-                FinalStepAsync,
-            }));
-            
-            // Logical Steps
-            //1 Extract model from step optipns
-            //3 Whole entity extraction and completion bit which can probably be done using prompts or that non-waterfall sample in the new samples
-            
-            // The initial child Dialog to run.
-            InitialDialogId = nameof(WaterfallDialog);
+                HandleUtteranceAsync,
+                PromptForNextQuestionAsync,
+                HandleWhatNextAsync,
+            };
+
+            AddDialog(new WaterfallDialog(InitialDialogId, waterfallSteps));
+            AddDialog(new TextPrompt(TextPromptName));
+
+            // Child dialogs
+            AddDialog(new LuisRootDialog(_tableStore));
         }
 
-        private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> HandleUtteranceAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            _luisModel = (LuisModel)stepContext.Options;
+            var utterance = (string)stepContext.Options;
 
-            await stepContext.Context.SendActivityAsync($"Luis Model Top Intent: {_luisModel.TopIntent()}");
+            // Do Dispatcher triage here and then spawn out to appropriate child dialogs
+            var dispatchResults = await _botServices.Dispatch.RecognizeAsync(stepContext.Context, cancellationToken);
+            var dispatchTopScoringIntent = dispatchResults?.GetTopScoringIntent();
+            var dispatchTopIntent = dispatchTopScoringIntent.Value.intent;
+
+            switch (dispatchTopIntent)
+            {
+                case "l_GuidedSearchBot-a4a3":
+                    var luisResultModel = await _botServices.MainLuis.RecognizeAsync<LuisModel>(stepContext.Context, CancellationToken.None);
+                    return await stepContext.BeginDialogAsync(nameof(LuisRootDialog), luisResultModel);
+
+                case "q_MicrosoftStoreFAQ":
+                    var results = await _botServices.MainQnA.GetAnswersAsync(stepContext.Context);
+                    if (results.Any())
+                    {
+                        await stepContext.Context.SendActivityAsync(results.First().Answer, cancellationToken: cancellationToken);
+                    }
+                    else
+                    {
+                        await stepContext.Context.SendActivityAsync(Constants.Constants.NoAnswerInQNAKB);
+                    }
+                    break;
+
+                case "None":
+                    await stepContext.Context.SendActivityAsync($"{Constants.Constants.NoIntent}{Constants.Constants.DontUnderstand}");
+                    break;
+
+                default:
+                    await stepContext.Context.SendActivityAsync(Constants.Constants.DontUnderstand);
+                    break;
+            }
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> PromptForNextQuestionAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.EndDialogAsync();
+            var opts = new PromptOptions
+            {
+                Prompt = new Activity
+                {
+                    Type = ActivityTypes.Message,
+                    Text = Constants.Constants.WhatNext,
+                },
+            };
+            return await stepContext.PromptAsync(TextPromptName, opts);
+        }
+
+        private async Task<DialogTurnResult> HandleWhatNextAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
         }
 
     }

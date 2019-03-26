@@ -93,54 +93,11 @@ namespace GuidedSearchBot.Bots
             }
             else
             {
-                var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
-                var topIntent = recognizerResult.GetTopScoringIntent();
-                await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
+                // Run the root dialog, passing in the LuisModel via the options object
+                var utterance = turnContext.Activity.Text;
+                await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken, utterance);
             }
-        }
 
-        private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
-        {
-            switch (intent)
-            {
-                case "l_GuidedSearchBot-a4a3":
-                    await ProcessMainLuisAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
-                    break;
-
-                case "q_MicrosoftStoreFAQ":
-                    await ProcessMainQnAAsync(turnContext, cancellationToken);
-                    break;
-
-                case "None":
-                    await turnContext.SendActivityAsync($"{Constants.Constants.NoIntent}{Constants.Constants.DontUnderstand}");
-                    break;
-
-                default:
-                    await turnContext.SendActivityAsync(Constants.Constants.DontUnderstand);
-                    break;
-            }
-        }
-
-        private async Task ProcessMainLuisAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
-        {
-            var recognizerResult = await _botServices.MainLuis.RecognizeAsync<LuisModel>(turnContext, cancellationToken);
-
-            // Run the root dialog, passing in the LuisModel via the options object
-            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken, recognizerResult);
-        }
-
-        private async Task ProcessMainQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
-        {
-            var results = await _botServices.MainQnA.GetAnswersAsync(turnContext);
-            if (results.Any())
-            {
-                await turnContext.SendActivityAsync(results.First().Answer, cancellationToken: cancellationToken);
-                await turnContext.SendActivityAsync(Constants.Constants.QNADone);
-            }
-            else
-            {
-                await turnContext.SendActivityAsync(Constants.Constants.NoAnswerInQNAKB);
-            }
         }
 
     }

@@ -39,16 +39,17 @@ namespace GuidedSearchBot.Bots
         {
             foreach (var member in membersAdded)
             {
+                // The bot itself is a conversation member too ... this check makes sure this is not the bot joining
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    // Look for web chat channel because it sends this event when a user messages so we want to only do this if not webchat.
+                    // Look for web chat channel because it sends this event when a user messages so we want to only do this if not webchat. Webchat welcome is handled on receipt of first message
                     if (turnContext.Activity.ChannelId.ToLower() != "webchat")
                     {
                         var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
                         if (welcomeUserState.DidBotWelcomeUser == false)
                         {
                             welcomeUserState.DidBotWelcomeUser = true;
-                            await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage} - from MemberAdded", cancellationToken: cancellationToken);
+                            await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage}", cancellationToken: cancellationToken);
                         }
                     }
                 }
@@ -69,7 +70,7 @@ namespace GuidedSearchBot.Bots
 
                 // the channel should sends the user name in the 'From' object
                 var name = turnContext.Activity.From.Name ?? string.Empty;
-                await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage} - from MessageReceived", cancellationToken: cancellationToken);
+                await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage}", cancellationToken: cancellationToken);
             }
             else
             {

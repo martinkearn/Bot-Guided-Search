@@ -27,37 +27,36 @@ namespace GuidedSearchBot.Dialogs
     {
         protected readonly IConfiguration _configuration;
         private string _utterance;
+        private readonly ITableStore _tableStore;
+        private LuisModel _luisModel;
 
-        public RootDialog(IConfiguration configuration)
+        public RootDialog(IConfiguration configuration, ITableStore tableStore)
             : base(nameof(RootDialog))
         {
             _configuration = configuration;
+            _tableStore = tableStore;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                IntroStepAsync,
-                ActStepAsync,
+                GetLuisResultAsync,
                 FinalStepAsync,
             }));
-
+            
+            // Logical Steps
+            //1 Extract model from step optipns
+            //3 Whole entity extraction and completion bit which can probably be done using prompts or that non-waterfall sample in the new samples
+            
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-        private async Task<DialogTurnResult> IntroStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            _utterance = (string)stepContext.Options;
-            await stepContext.Context.SendActivityAsync($"you said {_utterance} to the dispatch");
+            _luisModel = (LuisModel)stepContext.Options;
 
-            return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text("What can I help you with today?") }, cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var result = stepContext.Result as string;
-            await stepContext.Context.SendActivityAsync($"you said {result}");
+            await stepContext.Context.SendActivityAsync($"Luis Model Top Intent: {_luisModel.TopIntent()}");
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }

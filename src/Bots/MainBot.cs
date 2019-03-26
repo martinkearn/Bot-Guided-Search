@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GuidedSearchBot.Interfaces;
+using GuidedSearchBot.Models;
 using GuidedSearchBot.State;
 using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime.Models;
 using Microsoft.Bot.Builder;
@@ -122,10 +123,10 @@ namespace GuidedSearchBot.Bots
 
         private async Task ProcessMainLuisAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
         {
-            var utterance = turnContext.Activity.Text;
+            var recognizerResult = await _botServices.MainLuis.RecognizeAsync<LuisModel>(turnContext, cancellationToken);
 
-            // Run the root dialog, passing in the original utterance sent to Dispatch via the options object
-            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken, utterance);
+            // Run the root dialog, passing in the LuisModel via the options object
+            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken, recognizerResult);
         }
 
         private async Task ProcessMainQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)

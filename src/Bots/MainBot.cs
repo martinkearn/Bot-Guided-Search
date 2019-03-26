@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using GuidedSearchBot.State;
 using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Logging;
 
 namespace GuidedSearchBot.Bots
 {
@@ -18,25 +20,37 @@ namespace GuidedSearchBot.Bots
     // beyond the single turn, should be carefully managed.
     // For example, the "MemoryStorage" object and associated
     // IStatePropertyAccessor{T} object are created with a singleton lifetime.
-    public class MainBot : ActivityHandler
+    public class MainBot<T> : ActivityHandler where T: Dialog
     {
         // Messages sent to the user.
-        private const string WelcomeMessage = @"Welcome to the guided search bot.";
-
+        protected readonly Dialog _dialog;
+        protected readonly BotState _conversationState;
         private BotState _userState;
-
         private IStatePropertyAccessor<WelcomeUserState> _welcomeUserStateAccessor;
 
         // Initializes a new instance of the "WelcomeUserBot" class. 
-        public MainBot(UserState userState)
+        public MainBot(ConversationState conversationState, UserState userState, T dialog)
         {
+            _dialog = dialog;
+            _conversationState = conversationState;
             _userState = userState;
             _welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
+        }
+
+        public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
+        {
+            await base.OnTurnAsync(turnContext, cancellationToken);
+
+            // Save any state changes that might have occured during the turn.
+            await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+            await _userState.SaveChangesAsync(turnContext, false, cancellationToken);
         }
 
         // Greet when users are added to the conversation.
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
+            var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
+
             foreach (var member in membersAdded)
             {
                 // The bot itself is a conversation member too ... this check makes sure this is not the bot joining
@@ -45,18 +59,13 @@ namespace GuidedSearchBot.Bots
                     // Look for web chat channel because it sends this event when a user messages so we want to only do this if not webchat. Webchat welcome is handled on receipt of first message
                     if (turnContext.Activity.ChannelId.ToLower() != "webchat")
                     {
-                        var welcomeUserState = await _welcomeUserStateAccessor.GetAsync(turnContext, () => new WelcomeUserState());
-                        if (welcomeUserState.DidBotWelcomeUser == false)
-                        {
-                            welcomeUserState.DidBotWelcomeUser = true;
-                            await turnContext.SendActivityAsync($"Hi {member.Name}! {WelcomeMessage}", cancellationToken: cancellationToken);
-                        }
+                        welcomeUserState.DidBotWelcomeUser = true;
+                        await turnContext.SendActivityAsync($"Hi {member.Name}! {Constants.Constants.Welcome} - from OnMembersAddedAsync", cancellationToken: cancellationToken);
+                        // Save any state changes.
+                        await _userState.SaveChangesAsync(turnContext);
                     }
                 }
             }
-
-            // Save any state changes.
-            await _userState.SaveChangesAsync(turnContext);
         }
 
         // Process incoming message
@@ -70,28 +79,14 @@ namespace GuidedSearchBot.Bots
 
                 // the channel should sends the user name in the 'From' object
                 var name = turnContext.Activity.From.Name ?? string.Empty;
-                await turnContext.SendActivityAsync($"Hi {name}! {WelcomeMessage}", cancellationToken: cancellationToken);
+                await turnContext.SendActivityAsync($"Hi {name}! {Constants.Constants.Welcome} - from OnMessageActivityAsync", cancellationToken: cancellationToken);
+                // Save any state changes.
+                await _userState.SaveChangesAsync(turnContext);
             }
             else
             {
-                // This example hardcodes specific utterances. You should use LUIS or QnA for more advance language understanding.           
-                var text = turnContext.Activity.Text.ToLowerInvariant();
-
-                switch (text)
-                {
-                    case "start again":
-                        // Clear state
-                        await _userState.ClearStateAsync(turnContext, cancellationToken: cancellationToken);
-                        break;
-                    default:
-                        // Start root rialog here
-                        await turnContext.SendActivityAsync($"You said {text}.", cancellationToken: cancellationToken);
-                        break;
-                }
+                await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
             }
-
-            // Save any state changes.
-            await _userState.SaveChangesAsync(turnContext);
         }
 
 

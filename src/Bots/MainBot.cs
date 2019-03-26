@@ -76,7 +76,18 @@ namespace GuidedSearchBot.Bots
             {
                 // This example hardcodes specific utterances. You should use LUIS or QnA for more advance language understanding.           
                 var text = turnContext.Activity.Text.ToLowerInvariant();
-                await turnContext.SendActivityAsync($"You said {text}.", cancellationToken: cancellationToken);
+
+                switch (text)
+                {
+                    case "start again":
+                        // Clear state
+                        await _userState.ClearStateAsync(turnContext, cancellationToken: cancellationToken);
+                        break;
+                    default:
+                        // Start root rialog here
+                        await turnContext.SendActivityAsync($"You said {text}.", cancellationToken: cancellationToken);
+                        break;
+                }
             }
 
             // Save any state changes.

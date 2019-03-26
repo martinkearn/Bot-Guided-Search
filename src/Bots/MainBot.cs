@@ -100,8 +100,6 @@ namespace GuidedSearchBot.Bots
 
         private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
         {
-
-            await turnContext.SendActivityAsync($"Top Intent is {intent}", cancellationToken: cancellationToken);
             switch (intent)
             {
                 case "l_GuidedSearchBot-a4a3":
@@ -124,10 +122,10 @@ namespace GuidedSearchBot.Bots
 
         private async Task ProcessMainLuisAsync(ITurnContext<IMessageActivity> turnContext, LuisResult luisResult, CancellationToken cancellationToken)
         {
-            await turnContext.SendActivityAsync("Landed in ProcessMainLuisAsync");
+            var utterance = turnContext.Activity.Text;
 
-            //await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
-
+            // Run the root dialog, passing in the original utterance sent to Dispatch via the options object
+            await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken, utterance);
         }
 
         private async Task ProcessMainQnAAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)

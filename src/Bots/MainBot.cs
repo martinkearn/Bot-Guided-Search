@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using GuidedSearchBot.Interfaces;
 using GuidedSearchBot.State;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
@@ -27,10 +28,12 @@ namespace GuidedSearchBot.Bots
         protected readonly BotState _conversationState;
         private BotState _userState;
         private IStatePropertyAccessor<WelcomeUserState> _welcomeUserStateAccessor;
+        private IBotServices _botServices;
 
         // Initializes a new instance of the "WelcomeUserBot" class. 
-        public MainBot(ConversationState conversationState, UserState userState, T dialog)
+        public MainBot(IBotServices botServices, ConversationState conversationState, UserState userState, T dialog)
         {
+            _botServices = botServices;
             _dialog = dialog;
             _conversationState = conversationState;
             _userState = userState;
@@ -60,7 +63,8 @@ namespace GuidedSearchBot.Bots
                     if (turnContext.Activity.ChannelId.ToLower() != "webchat")
                     {
                         welcomeUserState.DidBotWelcomeUser = true;
-                        await turnContext.SendActivityAsync($"Hi {member.Name}! {Constants.Constants.Welcome} - from OnMembersAddedAsync", cancellationToken: cancellationToken);
+                        await turnContext.SendActivityAsync($"Hi {member.Name}! {Constants.Constants.Welcome}", cancellationToken: cancellationToken);
+                        
                         // Save any state changes.
                         await _userState.SaveChangesAsync(turnContext);
                     }
@@ -79,17 +83,42 @@ namespace GuidedSearchBot.Bots
 
                 // the channel should sends the user name in the 'From' object
                 var name = turnContext.Activity.From.Name ?? string.Empty;
-                await turnContext.SendActivityAsync($"Hi {name}! {Constants.Constants.Welcome} - from OnMessageActivityAsync", cancellationToken: cancellationToken);
+                await turnContext.SendActivityAsync($"Hi {name}! {Constants.Constants.Welcome}", cancellationToken: cancellationToken);
+                
                 // Save any state changes.
                 await _userState.SaveChangesAsync(turnContext);
             }
             else
             {
-                await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
+                var recognizerResult = await _botServices.Dispatch.RecognizeAsync(turnContext, cancellationToken);
+                var topIntent = recognizerResult.GetTopScoringIntent();
+                await DispatchToTopIntentAsync(turnContext, topIntent.intent, recognizerResult, cancellationToken);
             }
         }
 
+        private async Task DispatchToTopIntentAsync(ITurnContext<IMessageActivity> turnContext, string intent, RecognizerResult recognizerResult, CancellationToken cancellationToken)
+        {
 
+            //await _dialog.Run(turnContext, _conversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
+
+            await turnContext.SendActivityAsync($"Top Intent is {intent}", cancellationToken: cancellationToken);
+            //switch (intent)
+            //{
+            //    case "l_HomeAutomation":
+            //        await ProcessHomeAutomationAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
+            //        break;
+            //    case "l_Weather":
+            //        await ProcessWeatherAsync(turnContext, recognizerResult.Properties["luisResult"] as LuisResult, cancellationToken);
+            //        break;
+            //    case "q_sample-qna":
+            //        await ProcessSampleQnAAsync(turnContext, cancellationToken);
+            //        break;
+            //    default:
+            //        _logger.LogInformation($"Dispatch unrecognized intent: {intent}.");
+            //        await turnContext.SendActivityAsync(MessageFactory.Text($"Dispatch unrecognized intent: {intent}."), cancellationToken);
+            //        break;
+            //}
+        }
 
     }
 }

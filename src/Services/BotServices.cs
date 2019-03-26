@@ -28,12 +28,12 @@ namespace GuidedSearchBot.Services
         {
             try
             {
-                var services = configuration.GetSection("BotServices");
+                //var services = configuration.GetSection("BotServices");
                 var luisService = new LuisService
                 {
-                    AppId = services.GetValue<string>($"Luis-{name}-AppId"),
-                    AuthoringKey = services.GetValue<string>($"Luis-{name}-Authoringkey"),
-                    Region = services.GetValue<string>($"Luis-{name}-Region")
+                    AppId = configuration[$"Luis-{name}-AppId"],
+                    AuthoringKey = configuration[$"Luis-{name}-Authoringkey"],
+                    Region = configuration[$"Luis-{name}-Region"]
                 };
                 return new LuisRecognizer(new LuisApplication(
                     luisService.AppId,
@@ -52,12 +52,11 @@ namespace GuidedSearchBot.Services
         {
             try
             {
-                var services = configuration.GetSection("BotServices");
                 return new QnAMaker(new QnAMakerEndpoint
                 {
-                    KnowledgeBaseId = services.GetValue<string>($"QnA-{name}-KBId"),
-                    EndpointKey = services.GetValue<string>($"QnA-{name}-EndpointKey"),
-                    Host = services.GetValue<string>($"QnA-{name}-HostName")
+                    KnowledgeBaseId = configuration[$"QnA-{name}-KBId"],
+                    EndpointKey = configuration[$"QnA-{name}-EndpointKey"],
+                    Host = configuration[$"QnA-{name}-HostName"]
                 });
             }
             catch (Exception)

@@ -11,7 +11,7 @@ namespace GuidedSearchBot.Constants
         public static string BotFileNotLoaded = "The .bot configuration file could not be loaded. botFilePath:";
         public static string BotFileNoEndpoint = "The .bot file does not contain an endpoint with name";
         public static string SomethingWentWrong = "Sorry, it looks like something went wrong.";
-        public static string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox.";
+        public static string Welcome = "Welcome, I can help you find Microsoft devices such as the Surface or Xbox. What are you looking for? you can say things like \"Surface pro 6 with 8Gb memory\"";
         public static string ErrorContinuingDialog = "Error continuing dialog:";
         public static string WhatAreYouLookingFor = "Please tell me what you are looking for?";
         public static string DontUnderstand = "Sorry, I dont understand, please rephrase or ask for Help";

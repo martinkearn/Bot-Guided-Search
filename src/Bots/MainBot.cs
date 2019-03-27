@@ -31,6 +31,7 @@ namespace GuidedSearchBot.Bots
         protected readonly BotState _conversationState;
         private BotState _userState;
         private IStatePropertyAccessor<WelcomeUserState> _welcomeUserStateAccessor;
+        private IStatePropertyAccessor<LuisRootDialogState> _luisRootDialogStateAccessor;
         private IBotServices _botServices;
 
         // Initializes a new instance of the "WelcomeUserBot" class. 
@@ -41,6 +42,7 @@ namespace GuidedSearchBot.Bots
             _conversationState = conversationState;
             _userState = userState;
             _welcomeUserStateAccessor = _userState.CreateProperty<WelcomeUserState>(nameof(WelcomeUserState));
+            _luisRootDialogStateAccessor = _userState.CreateProperty<LuisRootDialogState>(nameof(LuisRootDialogState));
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)

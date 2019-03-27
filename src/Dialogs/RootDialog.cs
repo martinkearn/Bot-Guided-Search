@@ -20,7 +20,7 @@ namespace GuidedSearchBot.Dialogs
         private readonly ITableStore _tableStore;
         private IBotServices _botServices;
 
-        public RootDialog(IBotServices botServices, ITableStore tableStore, IConfiguration configuration)
+        public RootDialog(UserState userState, IBotServices botServices, ITableStore tableStore, IConfiguration configuration)
             : base(nameof(LuisRootDialog))
         {
 
@@ -40,7 +40,7 @@ namespace GuidedSearchBot.Dialogs
             AddDialog(new TextPrompt(TextPromptName));
 
             // Child dialogs
-            AddDialog(new LuisRootDialog(_tableStore));
+            AddDialog(new LuisRootDialog(userState, _tableStore));
         }
 
         private async Task<DialogTurnResult> HandleUtteranceAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)

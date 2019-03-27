@@ -42,16 +42,18 @@ namespace GuidedSearchBot.Dialogs
             _luisRootDialogStateAccessor = userState.CreateProperty<LuisRootDialogState>(nameof(LuisRootDialogState));
             _tableStore = tableStore;
 
-            AddDialog(new TextPrompt(nameof(TextPrompt)));
-
+            // Add child dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 GetLuisResultAsync,
                 GetEntitiesAsync,
                 EstablishMandatoryCategoriesAsync,
+                PromptMemoryCategoryAsync,
+                HandleMemoryCategoryAsync,
                 FinalStepAsync,
             }));
-            
+            AddDialog(new TextPrompt(nameof(TextPrompt)));
+
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
         }
@@ -107,6 +109,39 @@ namespace GuidedSearchBot.Dialogs
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
+        private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyMemoryEntity))
+            {
+                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(Constants.Constants.WhichMemory) }, cancellationToken);
+            }
+            else
+            {
+                return await stepContext.NextAsync(cancellationToken: cancellationToken);
+            }
+
+        }
+
+        private async Task<DialogTurnResult> HandleMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, StateKeyMemoryEntity))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(StateKeyMemoryEntity, result);
+                    await _luisRootDialogStateAccessor.SetAsync(stepContext.Context, state);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
+
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context, () => new LuisRootDialogState());
@@ -122,6 +157,30 @@ namespace GuidedSearchBot.Dialogs
             }
 
             return await stepContext.EndDialogAsync();
+        }
+
+        private bool PromptForCategory(LuisRootDialogState state, string catKey)
+        {
+            // Check if categry is a mandatory category
+            if (state.MandatoryCategories.Contains(catKey))
+            {
+                // Check if we already have category
+                if (state.Entities.ContainsKey(catKey))
+                {
+                    // Already have category, dont need to prompt for it
+                    return false;
+                }
+                else
+                {
+                    // Do not have category, need to prompt for it
+                    return true;
+                }
+            }
+            else
+            {
+                // Dont require category, dont need to prompt for it
+                return false;
+            }
         }
 
     }

@@ -48,8 +48,20 @@ namespace GuidedSearchBot.Dialogs
                 GetLuisResultAsync,
                 GetEntitiesAsync,
                 EstablishMandatoryCategoriesAsync,
+                PromptCpuCategoryAsync,
+                HandleCpuCategoryAsync,
+                PromptColourCategoryAsync,
+                HandleColourCategoryAsync,
+                PromptConnectivityCategoryAsync,
+                HandleConnectivityCategoryAsync,
                 PromptMemoryCategoryAsync,
                 HandleMemoryCategoryAsync,
+                PromptProductCategoryAsync,
+                HandleProductCategoryAsync,
+                PromptProductFamilyCategoryAsync,
+                HandleProductFamilyCategoryAsync,
+                PromptStorageCategoryAsync,
+                HandleStorageCategoryAsync,
                 FinalStepAsync,
             }));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
@@ -109,38 +121,26 @@ namespace GuidedSearchBot.Dialogs
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
-        private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+        private async Task<DialogTurnResult> PromptCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyCpuEntity, Constants.Constants.WhichCpu);
+        private async Task<DialogTurnResult> HandleCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyCpuEntity);
 
-            if (PromptForCategory(state, StateKeyMemoryEntity))
-            {
-                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(Constants.Constants.WhichMemory) }, cancellationToken);
-            }
-            else
-            {
-                return await stepContext.NextAsync(cancellationToken: cancellationToken);
-            }
+        private async Task<DialogTurnResult> PromptColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyColourEntity, Constants.Constants.WhichColour);
+        private async Task<DialogTurnResult> HandleColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyColourEntity);
 
-        }
+        private async Task<DialogTurnResult> PromptConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyConnectivityEntity, Constants.Constants.WhichConnectivity);
+        private async Task<DialogTurnResult> HandleConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyConnectivityEntity);
 
-        private async Task<DialogTurnResult> HandleMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+        private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyMemoryEntity, Constants.Constants.WhichMemory);
+        private async Task<DialogTurnResult> HandleMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyMemoryEntity);
 
-            if (PromptForCategory(state, StateKeyMemoryEntity))
-            {
-                // We dont already have this category. This result should be the value for it
-                if (stepContext.Result != null)
-                {
-                    var result = (string)stepContext.Result;
-                    state.Entities.Add(StateKeyMemoryEntity, result);
-                    await _luisRootDialogStateAccessor.SetAsync(stepContext.Context, state);
-                }
-            }
+        private async Task<DialogTurnResult> PromptProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyProductEntity, Constants.Constants.WhichProduct);
+        private async Task<DialogTurnResult> HandleProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyProductEntity);
 
-            return await stepContext.NextAsync(cancellationToken: cancellationToken);
-        }
+        private async Task<DialogTurnResult> PromptProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyProductFamilyEntity, Constants.Constants.WhichProductFamily);
+        private async Task<DialogTurnResult> HandleProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyProductFamilyEntity);
+
+        private async Task<DialogTurnResult> PromptStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyStorageEntity, Constants.Constants.WhichStorage);
+        private async Task<DialogTurnResult> HandleStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyStorageEntity);
 
         private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
@@ -181,6 +181,37 @@ namespace GuidedSearchBot.Dialogs
                 // Dont require category, dont need to prompt for it
                 return false;
             }
+        }
+
+        private async Task<DialogTurnResult> PromptForEntityIfRequired(WaterfallStepContext stepContext, CancellationToken cancellationToken, string key, string promptText)
+        {
+            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, key))
+            {
+                return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = MessageFactory.Text(promptText) }, cancellationToken);
+            }
+            else
+            {
+                return await stepContext.NextAsync(cancellationToken: cancellationToken);
+            }
+        }
+        private async Task<DialogTurnResult> HandlePromptResultIfRequired(WaterfallStepContext stepContext, CancellationToken cancellationToken, string key)
+        {
+            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context);
+
+            if (PromptForCategory(state, key))
+            {
+                // We dont already have this category. This result should be the value for it
+                if (stepContext.Result != null)
+                {
+                    var result = (string)stepContext.Result;
+                    state.Entities.Add(key, result);
+                    await _luisRootDialogStateAccessor.SetAsync(stepContext.Context, state);
+                }
+            }
+
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
     }

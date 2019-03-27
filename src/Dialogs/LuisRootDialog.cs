@@ -47,13 +47,10 @@ namespace GuidedSearchBot.Dialogs
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
                 GetLuisResultAsync,
+                GetEntitiesAsync,
                 EstablishMandatoryCategoriesAsync,
                 FinalStepAsync,
             }));
-            
-            // Logical Steps
-            //1 Extract model from step optipns
-            //3 Whole entity extraction and completion bit which can probably be done using prompts or that non-waterfall sample in the new samples
             
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
@@ -63,8 +60,28 @@ namespace GuidedSearchBot.Dialogs
         {
             _luisModel = (LuisModel)stepContext.Options;
 
-            await stepContext.Context.SendActivityAsync($"Luis Model Top Intent: {_luisModel.TopIntent()}");
+            return await stepContext.NextAsync(cancellationToken: cancellationToken);
+        }
 
+
+        private async Task<DialogTurnResult> GetEntitiesAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
+            var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context, () => new LuisRootDialogState());
+
+            // Store the entities that Luis has provided
+            state.Entities = new Dictionary<string, string>();
+            if (_luisModel.Entities.CPU != null) state.Entities.Add(StateKeyCpuEntity, _luisModel.Entities.CPU[0]);
+            if (_luisModel.Entities.Colour != null) state.Entities.Add(StateKeyColourEntity, _luisModel.Entities.Colour[0]);
+            if (_luisModel.Entities.Connectivity != null) state.Entities.Add(StateKeyConnectivityEntity, _luisModel.Entities.Connectivity[0]);
+            if (_luisModel.Entities.Memory != null) state.Entities.Add(StateKeyMemoryEntity, _luisModel.Entities.Memory[0].Gb[0]);
+            if (_luisModel.Entities.Product != null) state.Entities.Add(StateKeyProductEntity, _luisModel.Entities.Product[0]);
+            if (_luisModel.Entities.ProductFamily != null) state.Entities.Add(StateKeyProductFamilyEntity, _luisModel.Entities.ProductFamily[0]);
+            if (_luisModel.Entities.Storage != null) state.Entities.Add(StateKeyStorageEntity, _luisModel.Entities.Storage[0].Gb[0]);
+
+            // Save state
+            await _luisRootDialogStateAccessor.SetAsync(stepContext.Context, state);
+
+            // Next waterfall step
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
@@ -72,66 +89,21 @@ namespace GuidedSearchBot.Dialogs
         {
             var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context, () => new LuisRootDialogState());
 
-            // Store the entities that Luis has provided
-            state.Entities = new Dictionary<string, string>();
-            state.Entities.Add("test", "fibble");
-
-            if (_luisModel.Entities.CPU != null)
+            // Get mandatory categories
+            state.MandatoryCategories = new List<string>();
+            foreach (var entity in state.Entities)
             {
-                var value = _luisModel.Entities.CPU[0];
-                state.Entities.Add(StateKeyCpuEntity, value);
+                var mandCats = await _tableStore.GetMandatoryCategories(entity.Value);
+                foreach (var mandCat in mandCats)
+                {
+                    state.MandatoryCategories.Add(mandCat);
+                }
             }
 
-            //if (_luisModel.Entities.Colour != null)
-            //{
-            //    var value = _luisModel.Entities.Colour[0];
-            //    state.Entities.Add(StateKeyColourEntity, value);
-            //}
+            // Save state
+            await _luisRootDialogStateAccessor.SetAsync(stepContext.Context, state);
 
-            //if (_luisModel.Entities.Connectivity != null)
-            //{
-            //    var value = _luisModel.Entities.Connectivity[0];
-            //    state.Entities.Add(StateKeyConnectivityEntity, value);
-            //}
-
-            //if (_luisModel.Entities.Memory != null)
-            //{
-            //    var value = _luisModel.Entities.Memory[0].Gb[0];
-            //    state.Entities.Add(StateKeyMemoryEntity, value);
-            //}
-
-            //if (_luisModel.Entities.Product != null)
-            //{
-            //    var value = _luisModel.Entities.Product[0];
-            //    state.Entities.Add(StateKeyProductEntity, value);
-            //}
-
-            //if (_luisModel.Entities.ProductFamily != null)
-            //{
-            //    var value = _luisModel.Entities.ProductFamily[0];
-            //    state.Entities.Add(StateKeyProductFamilyEntity, value);
-            //}
-
-            //if (_luisModel.Entities.Storage != null)
-            //{
-            //    var value = _luisModel.Entities.Storage[0].Gb[0];
-            //    state.Entities.Add(StateKeyStorageEntity, value);
-            //}
-
-            //// Get mandatory categories
-            //state.MandatoryCategories = new List<string>();
-            //foreach (var entity in state.Entities)
-            //{
-            //    var mandCats = await _tableStore.GetMandatoryCategories(entity.Value);
-            //    foreach (var mandCat in mandCats)
-            //    {
-            //        state.MandatoryCategories.Add(mandCat);
-            //    }
-            //}
-
-            //// Save state
-            //await UserProfileAccessor.SetAsync(stepContext.Context, state);
-
+            // Next waterfall step
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
@@ -139,7 +111,15 @@ namespace GuidedSearchBot.Dialogs
         {
             var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context, () => new LuisRootDialogState());
 
-            await stepContext.Context.SendActivityAsync($"Test state: {state.Entities["test"]}");
+            foreach (var entity in state.Entities)
+            {
+                await stepContext.Context.SendActivityAsync($"Entity: {entity.Key}-{entity.Value}");
+            }
+
+            foreach (var mandCat in state.MandatoryCategories)
+            {
+                await stepContext.Context.SendActivityAsync($"Mand Cat: {mandCat}");
+            }
 
             return await stepContext.EndDialogAsync();
         }

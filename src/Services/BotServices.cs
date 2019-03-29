@@ -18,11 +18,13 @@ namespace GuidedSearchBot.Services
             Dispatch = ReadLuisRecognizer(configuration, "Dispatch");
             MainLuis = ReadLuisRecognizer(configuration, "MainLuis");
             MainQnA = ReadQnAMaker(configuration, "MainQnA");
+            LinksQnA = ReadQnAMaker(configuration, "LinksQnA");
         }
 
         public LuisRecognizer Dispatch { get; private set; }
         public LuisRecognizer MainLuis { get; private set; }
         public QnAMaker MainQnA { get; private set; }
+        public QnAMaker LinksQnA { get; private set; }
 
         private LuisRecognizer ReadLuisRecognizer(IConfiguration configuration, string name)
         {

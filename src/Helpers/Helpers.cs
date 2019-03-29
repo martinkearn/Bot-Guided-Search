@@ -30,5 +30,6 @@ namespace GuidedSearchBot.Helpers
 
             return entityString;
         }
+       
     }
 }

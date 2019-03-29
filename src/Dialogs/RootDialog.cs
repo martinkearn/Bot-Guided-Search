@@ -40,7 +40,7 @@ namespace GuidedSearchBot.Dialogs
             AddDialog(new TextPrompt(TextPromptName));
 
             // Child dialogs
-            AddDialog(new LuisRootDialog(userState, _tableStore));
+            AddDialog(new LuisRootDialog(userState, _tableStore, botServices));
         }
 
         private async Task<DialogTurnResult> HandleUtteranceAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -89,7 +89,7 @@ namespace GuidedSearchBot.Dialogs
                 Prompt = new Activity
                 {
                     Type = ActivityTypes.Message,
-                    Text = Constants.Constants.WhatNext,
+                    Text = Constants.Constants.WeAreDoneWhatNext,
                 },
             };
             return await stepContext.PromptAsync(TextPromptName, opts);
@@ -97,7 +97,13 @@ namespace GuidedSearchBot.Dialogs
 
         private async Task<DialogTurnResult> HandleWhatNextAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            return await stepContext.ReplaceDialogAsync(InitialDialogId, null, cancellationToken).ConfigureAwait(false);
+            var result = string.Empty;
+            if (stepContext.Result != null)
+            {
+                result = (string)stepContext.Result;
+            }
+
+            return await stepContext.ReplaceDialogAsync(InitialDialogId, result, cancellationToken).ConfigureAwait(false);
         }
 
     }

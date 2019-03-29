@@ -31,8 +31,8 @@ namespace GuidedSearchBot.Bots
         protected readonly BotState _conversationState;
         private BotState _userState;
         private IStatePropertyAccessor<WelcomeUserState> _welcomeUserStateAccessor;
-        private IStatePropertyAccessor<LuisRootDialogState> _luisRootDialogStateAccessor;
-        private IBotServices _botServices;
+        private readonly IStatePropertyAccessor<LuisRootDialogState> _luisRootDialogStateAccessor;
+        private readonly IBotServices _botServices;
 
         // Initializes a new instance of the "WelcomeUserBot" class. 
         public MainBot(IBotServices botServices, ConversationState conversationState, UserState userState, T dialog)

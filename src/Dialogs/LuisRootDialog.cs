@@ -36,7 +36,7 @@ namespace GuidedSearchBot.Dialogs
         private LuisModel _luisModel;
         public IStatePropertyAccessor<LuisRootDialogState> _luisRootDialogStateAccessor { get; }
 
-        public LuisRootDialog(UserState userState, ITableStore tableStore)
+        public LuisRootDialog(UserState userState, ITableStore tableStore, IBotServices botServices)
             : base(nameof(LuisRootDialog))
         {
             _luisRootDialogStateAccessor = userState.CreateProperty<LuisRootDialogState>(nameof(LuisRootDialogState));
@@ -62,12 +62,14 @@ namespace GuidedSearchBot.Dialogs
                 HandleProductFamilyCategoryAsync,
                 PromptStorageCategoryAsync,
                 HandleStorageCategoryAsync,
+                ShowLinkAsync,
                 FinalStepAsync,
             }));
             AddDialog(new TextPrompt(nameof(TextPrompt)));
 
             // The initial child Dialog to run.
             InitialDialogId = nameof(WaterfallDialog);
+            AddDialog(new ShowLinkDialog(nameof(ShowLinkDialog), botServices));
         }
 
         private async Task<DialogTurnResult> GetLuisResultAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -123,42 +125,33 @@ namespace GuidedSearchBot.Dialogs
 
         private async Task<DialogTurnResult> PromptCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyCpuEntity, Constants.Constants.WhichCpu);
         private async Task<DialogTurnResult> HandleCpuCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyCpuEntity);
-
         private async Task<DialogTurnResult> PromptColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyColourEntity, Constants.Constants.WhichColour);
         private async Task<DialogTurnResult> HandleColourCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyColourEntity);
-
         private async Task<DialogTurnResult> PromptConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyConnectivityEntity, Constants.Constants.WhichConnectivity);
         private async Task<DialogTurnResult> HandleConnectivityCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyConnectivityEntity);
-
         private async Task<DialogTurnResult> PromptMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyMemoryEntity, Constants.Constants.WhichMemory);
         private async Task<DialogTurnResult> HandleMemoryCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyMemoryEntity);
-
         private async Task<DialogTurnResult> PromptProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyProductEntity, Constants.Constants.WhichProduct);
         private async Task<DialogTurnResult> HandleProductCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyProductEntity);
-
         private async Task<DialogTurnResult> PromptProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyProductFamilyEntity, Constants.Constants.WhichProductFamily);
         private async Task<DialogTurnResult> HandleProductFamilyCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyProductFamilyEntity);
-
         private async Task<DialogTurnResult> PromptStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await PromptForEntityIfRequired(stepContext, cancellationToken, StateKeyStorageEntity, Constants.Constants.WhichStorage);
         private async Task<DialogTurnResult> HandleStorageCategoryAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken) => await HandlePromptResultIfRequired(stepContext, cancellationToken, StateKeyStorageEntity);
 
-        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        private async Task<DialogTurnResult> ShowLinkAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
             var state = await _luisRootDialogStateAccessor.GetAsync(stepContext.Context, () => new LuisRootDialogState());
 
-            foreach (var entity in state.Entities)
-            {
-                await stepContext.Context.SendActivityAsync($"Entity: {entity.Key}-{entity.Value}");
-            }
+            // Start the dialog to show either a link mapping(s) or search link
+            return await stepContext.BeginDialogAsync(nameof(ShowLinkDialog), state.Entities);
+        }
 
-            foreach (var mandCat in state.MandatoryCategories)
-            {
-                await stepContext.Context.SendActivityAsync($"Mand Cat: {mandCat}");
-            }
-
+        private async Task<DialogTurnResult> FinalStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        {
             return await stepContext.EndDialogAsync();
         }
 
+        #region Private Functions
         private bool PromptForCategory(LuisRootDialogState state, string catKey)
         {
             // Check if categry is a mandatory category
@@ -213,6 +206,7 @@ namespace GuidedSearchBot.Dialogs
 
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
+        #endregion
 
     }
 }

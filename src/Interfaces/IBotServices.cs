@@ -13,6 +13,8 @@ namespace GuidedSearchBot.Interfaces
 
         QnAMaker MainQnA { get; }
 
+        QnAMaker LinksQnA { get; }
+
         LuisRecognizer MainLuis { get; }
     }
 }

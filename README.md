@@ -47,3 +47,26 @@ To try it out ask these questions on the [published version of the bot](https://
 * *"Does Surface Go include a pen?"*
 * *"Can I charge just the base of my Surface Book 2?"*
 
+## **Search flow with all mandatory categories in initial utterance**
+
+To Do
+
+## **Search flow drilling into mandatory categories**
+
+To Do
+
+## Search flow with no links
+
+To Do
+
+## To run locally
+
+In order to run locally, follow these high level steps:
+
+1. Create an Azure Bot Service using the `EchoBot` template with C#
+2. Create a Luis model by importing `GuidedSearchBot-a4a3.json`
+3. Create a QNAMaker model by importing `MicrosoftStoreFAQ-KB.tsv`
+4. Create a Dispatch model. Refer to the `Readme.md` in the `Dispatch` folder
+5. Create a Table container called `MandatoryCategories` beneath the Azure Storage Account that was created as part of step 1
+6. Add all the relevant values from steps 1-5 to `AppSettings.json` or `Secrets.json` if you are using open source and want to protect your secrets.
+7. Run and debug the bot as usual

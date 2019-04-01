@@ -63,7 +63,18 @@ Mandatory categories are maintained in an Azure Storage Table Container called `
 
 ### Link Mappings
 
-To Do
+Link mappings are used to map a set of specific values to certain categories to a link. 
+
+The link could be any URL addressable resource, such as website, search query or SharePoint Url.
+
+For example, if the user defines these categories:
+
+* `Product` = "Surface Pro 6"
+* `Memory` = "16Gb"
+* `Storage` = "512Gb"
+* Then the link mapping system would provide the following link: https://www.microsoft.com/en-gb/store/d/surface-pro-6/8zcnc665slq5/06rv
+
+Link mappings are maintained using a QNAMaker knowledge base where the metadata tags are used to define category values for a specific link. The link is the answer as stored in the knowledge base.
 
 ## User Flows
 
@@ -77,7 +88,6 @@ For this flow, we've used the following websites as a source of content for a QN
 
 - <https://surfacetip.com/surface-go-faq> 
 - <https://surfacetip.com/surface-book-2-faq> 
-- <https://surfacetip.com/surface-book-2-faq> 
 
 To try it out ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
 
@@ -88,6 +98,8 @@ To try it out ask these questions on the [published version of the bot](https://
 ### Search flow with all mandatory categories in initial utterance
 
 This flow is for when the user asks something that is not answerable by QNAMaker but have provided all mandatory categories in the initial question.
+
+Trigger this flow by asking "I want a Surface Pro 6 with 16gb Memory"
 
 ### Search flow drilling into mandatory categories
 
@@ -103,8 +115,9 @@ In order to run locally, follow these high level steps:
 
 1. Create an Azure Bot Service using the `EchoBot` template with C#
 2. Create a Luis model by importing `GuidedSearchBot-a4a3.json`
-3. Create a QNAMaker model by importing `MicrosoftStoreFAQ-KB.tsv`
-4. Create a Dispatch model. Refer to the `Readme.md` in the `Dispatch` folder
-5. Create a Table container called `MandatoryCategories` beneath the Azure Storage Account that was created as part of step 1
-6. Add all the relevant values from steps 1-5 to `AppSettings.json` or `Secrets.json` if you are using open source and want to protect your secrets.
-7. Run and debug the bot as usual
+3. Create a QNAMaker model for FAQ's by importing `MicrosoftStoreFAQ-KB.tsv`
+4. Create a QNAMaker model by for link mapping importing `LinkMappings-KB.tsv.tsv`
+5. Create a Dispatch model which includes the main Luis model and the FAQ QNAMaker model. Refer to the `Readme.md` in the `Dispatch` folder
+6. Create a Table container called `MandatoryCategories` beneath the Azure Storage Account that was created as part of step 1
+7. Add all the relevant values from steps 1-6 to `AppSettings.json` or `Secrets.json` if you are using open source and want to protect your secrets.
+8. Run and debug the bot as usual

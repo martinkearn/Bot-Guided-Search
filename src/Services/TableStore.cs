@@ -10,15 +10,16 @@ namespace GuidedSearchBot.Services
 {
     public class TableStore : ITableStore
     {
-        // Container names
-        public const string _mandatoryCategoriesContainerName = "mandatorycategories";
-        public const string _mandatoryCategoriesPartitionKey = "mandatorycategorymapping";
-        public const string _mappingForPropertyName = "MappingFor";
-
+        public readonly string _mandatoryCategoriesContainerName ;
+        public readonly string _mandatoryCategoriesPartitionKey;
+        public readonly string _mappingForPropertyName;
         private readonly string _storageConnectionString;
 
         public TableStore(IConfiguration configuration)
         {
+            _mandatoryCategoriesContainerName = configuration["MandatoryCategoriesContainer"];
+            _mandatoryCategoriesPartitionKey = configuration["MandatoryCategoriesPartitionKey"];
+            _mappingForPropertyName = configuration["MandatoryCategoriesMappingForProperty"];
             _storageConnectionString = configuration["StorageConnectionString"];
         }
 

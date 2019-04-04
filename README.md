@@ -13,7 +13,7 @@ The bot makes use of several online services:
 * Microsoft Azure Table Storage
 * Microsoft Dispatch Bot CLI tool
 
-In terms of bot code, this sample is a good example of the following (all based on v4.3 patterns):
+In terms of bot code, this is a good example of the following (all based on v4.3 patterns):
 
 * General v4.3 patterns and practices
 * Using Dispatch
@@ -35,18 +35,18 @@ This bot uses several invented concepts which help control the flow and data req
 
 ### Microsoft Store Scenario
 
-The scenario this bot is built around is the [Microsoft store](https://www.microsoft.com/en-gb/store/b/home), but could be applied to any scenario that requires a bot that guides users to an online location either on the internet or internal locations such as SharePoint.
+This bot is built around helping users find items on the [Microsoft store](https://www.microsoft.com/en-gb/store/b/home), but could be applied to any scenario that requires a bot that guides users to an online location either on the internet or internal locations such as SharePoint.
 
 This bot will help users locate and learn about items on the Microsoft store by providing values to categories via natural language. 
 
 ### Categories
 
-A category is analogous to a piece of metadata for a search result and are used to determine which link mappings (if any) are shown to the user.
+A category is analogous to a piece of metadata for a search result and are used to determine which links (if any) are shown to the user.
 
 In the Microsoft store scenario, there are several categories:
 
 * `ProductFamily`: i.e. Surface, Xbox, Office, Windows
-* `Product`: i.e.. Surface Pro 6, Surface Go, Windows 10 professional, Xbox One X
+* `Product`: i.e. Surface Pro 6, Surface Go, Windows 10 professional, Xbox One X
 * `Memory`: i.e. 16gb
 * `Storage`: i.e. 512gb
 * `Connectivity`: i.e. Wifi, LTE
@@ -55,15 +55,17 @@ In the Microsoft store scenario, there are several categories:
 
 ### Mandatory Categories
 
-Mandatory categories exist so that if the provides a particular value for a particular category, the bot will require values for other categories that are mandatory for the one provided by the user.
+Mandatory categories exist so that if the user provides a particular value for a particular category, the bot will require values for other categories that are mandatory for the one provided by the user.
 
-For example, if the user asks for a Surface (which is a `ProductFamily`), the bot will also require the user to provide the `Memory`, `Storage`, and `Product` that is required before checking for link mappings.
+For example, if the user asks for a Surface (which is a value for the `ProductFamily` category), the bot will also require the user to provide values for the `Memory`, `Storage`, and `Product` categories because they are all mandatory categories for `ProductFamily`.
 
-Mandatory categories are maintained in an Azure Storage Table Container called `mandatorycategories`. They are inserted, updated and queried in code via the `TableStore` repository.
+Mandatory categories are maintained in an Azure Storage Table Container called `mandatorycategories`. 
+
+They are inserted, updated and queried in code via the `TableStore` repository.
 
 ### Link Mappings
 
-Link mappings are used to map a set of specific values to certain categories to a link. 
+Link mappings are used to map a set of specific category values to a link. 
 
 The link could be any URL addressable resource, such as website, search query or SharePoint Url.
 
@@ -80,7 +82,9 @@ Link mappings are maintained using a QNAMaker knowledge base where the metadata 
 
 This bot supports 4 main user flows.
 
-### QNA Flow
+![Logical bot flow](https://raw.githubusercontent.com/martinkearn/Bot-Guided-Search/master/docs/Bot%20Flow.JPG?token=ACTI5r7Tb4HBZUTAjiFzdoy7pNUIVjylks5cpdIFwA%3D%3D)
+
+### FAQ Flow
 
 This flow is designed to give the users natural language querying capabilities over pre-existing FAQs. 
 
@@ -89,7 +93,7 @@ For this flow, we've used the following websites as a source of content for a QN
 - <https://surfacetip.com/surface-go-faq> 
 - <https://surfacetip.com/surface-book-2-faq> 
 
-To try it out ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
+To try it out, ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
 
 - *"What is the weight of a Surface Go?"*
 - *"Does Surface Go include a pen?"*
@@ -99,7 +103,7 @@ To try it out ask these questions on the [published version of the bot](https://
 
 This flow is for when the user asks something that is not answerable by QNAMaker but the user has provided all mandatory categories in the initial question.
 
-To try it out ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
+To try it out, ask this questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
 
 * *"I want a Surface Pro 6 with 8gb Memory"*
 
@@ -109,14 +113,14 @@ This flow is where the user asks something that is not answerable by the QNAMake
 
 The bot will prompt the user to provide details for the mandatory categories.
 
-An example of this using the Microsoft store is that if the bot asks for a "*Surface with 16Gb memory*", the bot identifies the following from the utterance:
+An example of this using the Microsoft store is that if the user asks for a "*Surface with 16Gb memory*", the bot identifies the following from the utterance:
 
 - `ProductFamily` = "Surface"
 - `Memory` = "16Gb"
 
-The mandatory categories for `ProductFamily` = "Surface" also require that the user provides values for `Storage` and `Product` categories before executing the search.
+The mandatory categories for `ProductFamily` = "Surface" also require that the user provides values for `Storage` and `Product` categories before executing the search so the bot will ask the user for values to ths categories.
 
-To try it out ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
+To try it out, ask these questions on the [published version of the bot](https://webchat.botframework.com/embed/GuidedSearchBot?s=LIgAt-fF7DE.RMxLyIXpOx52dMFJJB0MjJGrUXM4y68od_Qh7vIxtpA):
 
 - *"I want a Surface with 16Gb memory"*
 - The bot will ask "*Which specific product would you like?*", answer "*Surface Pro 6*"
@@ -141,6 +145,6 @@ In order to run locally, follow these high level steps:
 3. Create a QNAMaker model for FAQ's by importing `MicrosoftStoreFAQ-KB.tsv`
 4. Create a QNAMaker model by for link mapping importing `LinkMappings-KB.tsv.tsv`
 5. Create a Dispatch model which includes the main Luis model and the FAQ QNAMaker model. Refer to [Dispatch Command Line tool](https://github.com/Microsoft/botbuilder-tools/tree/master/packages/Dispatch).
-6. Create a Table container called `MandatoryCategories` beneath the Azure Storage Account that was created as part of step 1
+6. Create an Azure Storage Table container called `MandatoryCategories` beneath the Azure Storage Account that was created as part of step 1
 7. Add all the relevant values from steps 1-6 to `AppSettings.json` or `Secrets.json` if you are using open source and want to protect your secrets.
 8. Run and debug the bot as usual

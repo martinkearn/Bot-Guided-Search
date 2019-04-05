@@ -16,6 +16,7 @@ The bot makes use of several online services:
 In terms of bot code, this is a good example of the following (all based on v4.3 patterns):
 
 * General v4.3 patterns and practices
+* Welcoming the user
 * Using Dispatch
 * Using QNAMaker
 * Using Luis
